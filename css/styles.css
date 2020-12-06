@@ -58,14 +58,14 @@ body.fullpage {
     border-top-right-radius: 0;
 }
 
-#table_players_total_filter {
+.dataTables_filter input[type="search"] {
+  width: 12rem!important;
+}
+
+.dataTables_filter {
   float: right;
   width: auto;
   margin-top: 0.5rem;
-}
-
-#table_player_total_filer label input {
-  width: 20rem;
 }
 
 .dt-buttons.btn-group.flex-wrap {
@@ -74,9 +74,9 @@ body.fullpage {
   margin-bottom: 0.5rem;
 }
 
-.dataTables_paginate {
-  width: 50%;
-  margin: auto;
+.dataTables_paginate {
+  width: 50%!important;
+  margin: auto!important;
 }
 
 #table_players_total_info {
