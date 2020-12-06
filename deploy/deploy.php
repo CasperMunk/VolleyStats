@@ -1,5 +1,7 @@
 <?php
 require('../includes/functions.php');
+require('../includes/secrets.php');
+
 if (get('key') != $secrets['deploy_key']){
     echo 'Access denied!';
     exit;
