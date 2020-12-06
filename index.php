@@ -2,7 +2,7 @@
 <?php require('includes/header.php'); ?>
 
 <p>
-test! Denne lille service er lavet for at give et overblik over spillere og kampe i VolleyLigaen. Der indsamles kun data for VolleyLigaen og kun kampe som er færdigspillede. Data for den indeværende sæson opdateres en gang i døgnet. Data fra tidligere sæsoner opdateres ved lejlighed.
+Denne lille service er lavet for at give et overblik over spillere og kampe i VolleyLigaen. Der indsamles kun data for VolleyLigaen og kun kampe som er færdigspillede. Data for den indeværende sæson opdateres en gang i døgnet. Data fra tidligere sæsoner opdateres ved lejlighed.
 </p>
 
 <p>
