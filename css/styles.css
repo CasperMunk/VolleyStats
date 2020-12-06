@@ -56,3 +56,17 @@ body.fullpage {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
+#table_players_total_filter {
+  float: left;
+  width: auto;
+}
+
+#table_player_total_filer label input {
+  width: 20rem;
+}
+
+.dt-buttons.btn-group.flex-wrap {
+  float: right;
+  width: auto;
+}

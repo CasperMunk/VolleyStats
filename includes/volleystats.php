@@ -58,9 +58,19 @@ class VolleyStats {
         if ($result = $this->db->query($query)) {
             if ($result->num_rows>0){
                 $numbers = $result->fetch_all(MYSQLI_ASSOC)[0];
-                return array_map(function($num){return number_format($num,0,",",".");}, $numbers);
+                return $this->formatNumber($numbers);
             }
         }
+    }
+
+    function formatNumber($val,$decimal=0)
+    {
+        if (is_array($val)){
+            return array_map(function($num){return number_format($num,0,",",".");}, $val);
+        }else{
+            return number_format($val,$decimal,",",".");
+        }
+        
     }
 
     function reloadGames($competition_id){
