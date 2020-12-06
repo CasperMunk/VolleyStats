@@ -1,4 +1,4 @@
-<?php require('includes/top.php'); ?>
+<?php require_once('includes/top.php'); ?>
 <?php $full_page = true; ?>
 <?php require('includes/header.php'); ?> 
 
