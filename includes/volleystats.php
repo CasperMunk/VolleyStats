@@ -285,7 +285,7 @@ class VolleyStats {
     }
 
     function reverseName($name){
-        return strstr($name," ")." ".substr($name,0,strpos($name," "));
+        return trim(strstr($name," "))." ".substr($name,0,strpos($name," "));
     }
 
     function translateText($text){

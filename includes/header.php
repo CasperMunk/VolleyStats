@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="css/styles.css" />
     
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/datatables.min.css"/>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/site.webmanifest">
 </head>
 <body class="d-flex flex-column h-100<?php if ($full_page) echo ' fullpage' ?>">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -38,9 +43,13 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown'.$url.'">
                     ';
                     foreach ($name as $dropdown_item_url => $dropdown_item_name) {
-                        echo '<a class="dropdown-item';
-                        if ($current_page == $dropdown_item_url) echo ' active';
-                        echo '" href="'.$dropdown_item_url.'">'.$dropdown_item_name.'</a>';
+                        if ($dropdown_item_url == "<divider>"){
+                            echo '<div class="dropdown-divider"></div>';
+                        }else{
+                            echo '<a class="dropdown-item';
+                            if ($current_page == $dropdown_item_url) echo ' active';
+                            echo '" href="'.$dropdown_item_url.'">'.$dropdown_item_name.'</a>';    
+                        }                        
                     }
                     echo '
                         </div>

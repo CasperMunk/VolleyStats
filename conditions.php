@@ -15,7 +15,7 @@ Alle data er indsamlet via offentlige kilder:
 </p>
 
 <p>
-    Hvis du ønsker data fjernet fra dette website, så skal du kontakte <a href="https://volleyball.dk">Volleyball Danmark</a> da data trækkes fra deres hjemmeside.    
+    Hvis du ønsker data fjernet fra dette website, så skal du kontakte <a href="https://volleyball.dk">Volleyball Danmark</a> da data trækkes fra deres hjemmesider.    
 </p>
 
 <?php require('includes/footer.php'); ?>

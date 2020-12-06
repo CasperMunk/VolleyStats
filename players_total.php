@@ -23,13 +23,29 @@ $(document).ready( function () {
                 "colvisRestore": 'Nulstil kolonner'
             }
         },
-        "dom": "fBrtilp",
+        "dom": "fBrtlpi",
         "buttons": [
             {
                 extend: 'colvis',
-                postfixButtons: [ 'colvisRestore' ]
+                postfixButtons: [ 'colvisRestore' ],
+                collectionLayout: 'two-column',
+                columns: ':not(.noVis)'
             }
         ],
+        columnDefs: [
+            {
+                "targets": [ 0,1,2,3,4,5 ],
+                "visible": true
+            },
+            {
+                "targets": [ '_all' ],
+                "visible": false
+            },
+            {
+                "targets": 0,
+                "className": 'noVis'
+            }
+        ]
     });
 
     table.buttons().container()
@@ -43,13 +59,15 @@ $(document).ready( function () {
             <th>Spillernavn</th>
             <th>Køn</th>
             <th>Kampe spillet</th>
-            <th>Points</th>
+            <th>Points total</th>
+            <th>Angrebspoint</th>
             <th>Esser</th>
+            <th>Blocks</th>
         </tr>
     </thead>
     <tbody>
     <?php 
-    if ($result = $VolleyStats->db->query("SELECT players.*, SUM(player_stats.points_total) as points_total, SUM(player_stats.serve_ace) as serve_ace, COUNT(player_stats.player_id) as games_played from players
+    if ($result = $VolleyStats->db->query("SELECT players.*, SUM(player_stats.points_total) as points_total, SUM(player_stats.serve_ace) as serve_ace, COUNT(player_stats.player_id) as games_played, SUM(player_stats.spike_win) as spike_win, SUM(player_stats.block_win) as block_win from players
 LEFT JOIN player_stats ON players.id = player_stats.player_id
 GROUP BY players.id
 ORDER BY points_total DESC")) {
@@ -61,7 +79,9 @@ ORDER BY points_total DESC")) {
                     <td>".ucfirst($VolleyStats->translateText($row['gender']))."</td>
                     <td>".$VolleyStats->formatNumber($row['games_played'])."</td>
                     <td>".$VolleyStats->formatNumber($row['points_total'])."</td>
+                    <td>".$VolleyStats->formatNumber($row['spike_win'])."</td>
                     <td>".$VolleyStats->formatNumber($row['serve_ace'])."</td>
+                    <td>".$VolleyStats->formatNumber($row['block_win'])."</td>
                 </tr>
                 ";
             }

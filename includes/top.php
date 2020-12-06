@@ -30,7 +30,11 @@ $navigation = array(
     'index.php' => 'Velkommen',
     'Spillere' => array(
         'players_total.php' => 'Spillere totalt',
-        'players_per_game.php' => 'Spillere pr. kamp'
+        'players_per_game.php' => 'Spillere pr. kamp',
+        '<divider>' => '',
+        '#' => 'Serv',
+        '#1' => 'Angreb',
+        '#2' => 'Blok',
     ),
     'Hold' => array(
         'teams.php' => 'Hold',

@@ -58,7 +58,7 @@ body.fullpage {
 }
 
 #table_players_total_filter {
-  float: left;
+  float: right;
   width: auto;
 }
 
@@ -67,6 +67,21 @@ body.fullpage {
 }
 
 .dt-buttons.btn-group.flex-wrap {
+  float: left;
+  width: auto;
+}
+
+#table_players_total_paginate {
   float: right;
   width: auto;
+}
+
+#table_players_total_info, #table_players_total_length {
+  float: left;
+  width: auto;
+}
+
+#table_players_total_info {
+  padding-top: 0;
+  padding-bottom: 1rem;
 }
