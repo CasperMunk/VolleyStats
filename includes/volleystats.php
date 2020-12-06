@@ -6,19 +6,24 @@ class VolleyStats {
     var $db;
 
     function __construct() {
+
+    }
+
+    function initializeMysql($host,$user,$pass,$db){
         if (!isset($this->db)){
-            $this->db = new mysqli("localhost", "root", "root", "volleystats");
+            $this->db = new mysqli($host, $user, $pass, $db);
 
             /* check connection */
             if ($this->db->connect_errno) {
                 printf("Connect failed: %s\n", $this->db->connect_error);
                 exit();
-            }
+            }    
         }
+
     }
 
     function __destruct(){
-        $this->db->close();
+        if (isset($this->db)) $this->db->close();
     }
 
     function getCompetitions(){
@@ -266,6 +271,10 @@ class VolleyStats {
         if (preg_match('#(<'.$tag.'[^>]*id=[\'|"]'.$id.'[\'|"][^>]*>)(.*)</'.$tag.'>#isU', $content, $response)){
             return $response[0];
         }    
+    }
+
+    function reverseName($name){
+        return strstr($name," ")." ".substr($name,0,strpos($name," "));
     }
 }
 ?>

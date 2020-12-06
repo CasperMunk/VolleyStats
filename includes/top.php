@@ -1,7 +1,8 @@
 <?php require_once('functions.php'); ?>
 <?php require_once('protect.php'); ?>
-<?php require_once('volleystats.php'); ?>
 <?php require_once('secrets.php'); ?>
+<?php require_once('volleystats.php'); ?>
+
 
 
 <?php
@@ -41,4 +42,6 @@ foreach ($navigation as $key => $value){
 
 
 $VolleyStats = new VolleyStats();
+$VolleyStats->initializeMysql($secrets['mysql_host'],$secrets['mysql_username'],$secrets['mysql_password'],$secrets['mysql_database']);
+
 ?>

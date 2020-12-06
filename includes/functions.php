@@ -14,8 +14,4 @@ function post($name){
         return false;
     }
 }
-
-function reverseName($name){
-    return strstr($name," ")." ".substr($name,0,strpos($name," "));
-}
 ?>

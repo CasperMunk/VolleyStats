@@ -41,7 +41,7 @@ ORDER BY total_points DESC")) {
             while($row = $result->fetch_assoc()) {
                 echo "
                 <tr>
-                    <td>".reverseName($row['player_name'])."</td>
+                    <td>".$VolleyStats->reverseName($row['player_name'])."</td>
                     <td>".ucfirst($row['gender'])."</td>
                     <td>".$row['games_played']."</td>
                     <td>".$row['total_points']."</td>
