@@ -1,5 +1,5 @@
 <?php
-require('../includes/secrets.php')
+require('../includes/secrets.php');
 /**
  * Deployment configuration
  *
