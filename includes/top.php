@@ -3,8 +3,6 @@
 <?php require_once('secrets.php'); ?>
 <?php require_once('volleystats.php'); ?>
 
-
-
 <?php
 $mode = get('mode');
 $game_id = get('game_id');
@@ -19,14 +17,28 @@ if ($update_type == 'competition_and_games'){
 
 $full_page = false;
 
+// $navigation = array(
+//     'index.php' => 'Velkommen',
+//     'Data' => array(
+//         'data_players.php' => 'Spillere',
+//         'data_games.php' => 'Kampe'
+//         ),
+//     'updater.php' => 'Opdatering'
+// );
+
 $navigation = array(
     'index.php' => 'Velkommen',
-    'Data' => array(
-        'data_players.php' => 'Spillere',
-        'data_games.php' => 'Kampe'
-        ),
+    'Spillere' => array(
+        'players_total.php' => 'Spillere totalt',
+        'players_per_game.php' => 'Spillere pr. kamp'
+    ),
+    'Hold' => array(
+        'teams.php' => 'Hold',
+        'teams_pr_game.php' => 'Hold pr. kamp'
+    ),    
     'updater.php' => 'Opdatering'
 );
+
 $current_page = basename($_SERVER['SCRIPT_NAME']);
 foreach ($navigation as $key => $value){
     if ($key == $current_page){

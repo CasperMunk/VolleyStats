@@ -33,19 +33,19 @@ $(document).ready( function () {
     </thead>
     <tbody>
     <?php 
-    if ($result = $VolleyStats->db->query("SELECT players.*, SUM(player_stats.total_points) as total_points, SUM(player_stats.serve_aces) as serve_aces, COUNT(player_stats.total_points) as games_played from players
+    if ($result = $VolleyStats->db->query("SELECT players.*, SUM(player_stats.points_total) as points_total, SUM(player_stats.serve_ace) as serve_ace, COUNT(player_stats.points_total) as games_played from players
 LEFT JOIN player_stats ON players.id = player_stats.player_id
 GROUP BY players.id
-ORDER BY total_points DESC")) {
+ORDER BY points_total DESC")) {
         if ($result->num_rows>0){
             while($row = $result->fetch_assoc()) {
                 echo "
                 <tr>
                     <td>".$VolleyStats->reverseName($row['player_name'])."</td>
-                    <td>".ucfirst($row['gender'])."</td>
+                    <td>".ucfirst($VolleyStats->translateText($row['gender']))."</td>
                     <td>".$row['games_played']."</td>
-                    <td>".$row['total_points']."</td>
-                    <td>".$row['serve_aces']."</td>
+                    <td>".$row['points_total']."</td>
+                    <td>".$row['serve_ace']."</td>
                 </tr>
                 ";
             }

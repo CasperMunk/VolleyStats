@@ -6,7 +6,10 @@ class VolleyStats {
     var $db;
 
     function __construct() {
-
+        $this->translations = array(
+            'male' => 'mand',
+            'female' => 'kvinde'
+        );
     }
 
     function initializeMysql($host,$user,$pass,$db){
@@ -27,7 +30,7 @@ class VolleyStats {
     }
 
     function getCompetitions(){
-        if ($result = $this->db->query("SELECT id, gender, year FROM competitions")) {
+        if ($result = $this->db->query("SELECT id, gender, year FROM competitions ORDER BY year DESC")) {
             if ($result->num_rows>0){
                 return $result->fetch_all(MYSQLI_ASSOC);
             }
@@ -35,7 +38,7 @@ class VolleyStats {
     }
 
     function getSeasonYears(){
-        if ($result = $this->db->query("SELECT year FROM competitions GROUP BY year")) {
+        if ($result = $this->db->query("SELECT year FROM competitions GROUP BY year ORDER BY year DESC")) {
             if ($result->num_rows>0){
                 return $result->fetch_all(MYSQLI_ASSOC);
             }
@@ -180,45 +183,43 @@ class VolleyStats {
     function addPlayerStats($game_id,$team_id,$player_id,$data){
         if (empty($player_id) OR empty($game_id)) return false;
 
-        $total_points = intval($data->find("span[id=PointsTot]",0)->plaintext);
-        $serve_aces = intval($data->find("span[id=ServeAce]",0)->plaintext);
+        $points_total =     $this->cleanStatsData($data->find("span[id=PointsTot]",0)->plaintext);
+        $break_points =     $this->cleanStatsData($data->find("span[id=Points]",0)->plaintext);
+        $serve_total =      $this->cleanStatsData($data->find("span[id=ServeTot]",0)->plaintext);
+        $serve_error =      $this->cleanStatsData($data->find("span[id=ServeErr]",0)->plaintext);
+        $serve_ace =        $this->cleanStatsData($data->find("span[id=ServeAce]",0)->plaintext);
+        $recieve_total =    $this->cleanStatsData($data->find("span[id=RecTot]",0)->plaintext);
+        $recieve_error =    $this->cleanStatsData($data->find("span[id=RecErr]",0)->plaintext);
 
-        if ($result = $this->db->query("REPLACE INTO player_stats (player_id,game_id,team_id,total_points,serve_aces) VALUES ($player_id,$game_id,$team_id,$total_points,$serve_aces)") === TRUE){
+        $RecPos = $data->find("span[id=RecPos]",0);
+        if (isset($RecPos)) $recieve_position = $this->cleanStatsData($RecPos->plaintext);
+
+        $RecPos0 = $data->find("span[id=RecPos0]",0);
+        if (isset($RecPos0)) $recieve_position = $this->cleanStatsData($RecPos0->plaintext);
+
+        $recieve_position = $recieve_total * ($recieve_position/100);
+
+        $RecPerf = $data->find("span[id=RecPerf]",0);
+        if (isset($RecPerf)) $recieve_perfect = $this->cleanStatsData($RecPerf->plaintext);
+
+        $RecPerf0 = $data->find("span[id=RecPerf0]",0);
+        if (isset($RecPerf0)) $recieve_perfect = $this->cleanStatsData($RecPerf0->plaintext);
+
+        $recieve_perfect = $recieve_total * ($recieve_perfect/100);
+
+        $spike_total =      $this->cleanStatsData($data->find("span[id=SpikeTot]",0)->plaintext);
+        $spike_error =      $this->cleanStatsData($data->find("span[id=SpikeErr]",0)->plaintext);
+        $spike_blocked =    $this->cleanStatsData($data->find("span[id=SpikeHP]",0)->plaintext);
+        $spike_win =        $this->cleanStatsData($data->find("span[id=SpikeWin]",0)->plaintext);
+        $block_win =        $this->cleanStatsData($data->find("span[id=BlockWin]",0)->plaintext);
+
+        if ($result = $this->db->query("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,recieve_total,recieve_error,recieve_position,recieve_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$recieve_total,$recieve_error,$recieve_position,$recieve_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win)") === TRUE){
             return true;
         }
+    }
 
-        // Played Matches
-        // Played Sets
-        // Total Points
-        // Break Points
-        // W-L
-        // Serve Err
-        // Serve Ex
-        // Serve HP
-        // Serve Minus
-        // Serve Plus
-        // Serve Win
-        // Rec Err
-        // Rec Ex
-        // Rec HP
-        // Rec Minus
-        // Rec Plus
-        // Rec Win
-        // Rec Pos%
-        // Rec Perf%
-        // Spike Err
-        // Spike Ex
-        // Spike HP
-        // Spike Minus
-        // Spike Plus
-        // Spike Win
-        // Spike Pos%
-        // Block Err
-        // Block Ex
-        // Block HP
-        // Block Minus
-        // Block Plus
-        // Block Win
+    function cleanStatsData($val){
+        return intval(trim(str_replace('%', '', $val)));
     }
 
     function getPlayerId($player_name,$gender){
@@ -275,6 +276,10 @@ class VolleyStats {
 
     function reverseName($name){
         return strstr($name," ")." ".substr($name,0,strpos($name," "));
+    }
+
+    function translateText($text){
+        return strtr($text,$this->translations);
     }
 }
 ?>

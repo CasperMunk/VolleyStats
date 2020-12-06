@@ -4,6 +4,8 @@
 <?php
 if ($mode == 'update'){
     foreach($VolleyStats->getCompetitions() as $competition){
+        //Check if competition should be updated!!!
+        
         echo '<h3>'.$competition['year'].' ('.$competition['gender'].')</h3>';
         echo '<div id="'.$competition['id'].'" class="competition">';
         
@@ -57,6 +59,19 @@ if ($mode == 'update'){
                   </div>
                 </div>
               </fieldset>
+              <div class="form-group row">
+                <div class="col-sm-2 text-nowrap"><label for="competitions">Turneringer</label></div>
+                <div class="col-sm-10">
+                  <div class="form-check">
+                    <select multiple class="form-control" id="competitions">
+                      <?php foreach($VolleyStats->getCompetitions() as $comp): ?>
+                        <option value="<?php echo $comp['id']; ?>"><?php echo $comp['year']; ?> - <?php echo $comp['gender']; ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                        
+                  </div>
+                </div>
+              </div>
               <div class="form-group row">
                 <div class="col-sm-2 text-nowrap">Debug mode</div>
                 <div class="col-sm-10">
