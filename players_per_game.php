@@ -1,9 +1,35 @@
 <?php require('includes/top.php'); ?>
 <?php require('includes/header.php'); ?> 
 
+<p>
+    Spillere med under <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="10" size="2"> kampe er undtaget fra denne liste.
+</p>
+
 <script>
 $(document).ready( function () {
-    var dataTable = $('#table_players_total').DataTable({
+    $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            var min = parseInt( $('#played_games_min').val(), 10 );
+            // var max = parseInt( $('#max').val(), 10 );
+            var max = parseInt( '', 10 );
+            var games_played = parseFloat( data[3] ) || 0; // use data from the games played column
+     
+            if ( ( isNaN( min ) && isNaN( max ) ) ||
+                 ( isNaN( min ) && games_played <= max ) ||
+                 ( min <= games_played   && isNaN( max ) ) ||
+                 ( min <= games_played   && games_played <= max ) )
+            {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $("input#played_games_min").keyup( function() {
+        dataTable.draw();
+    } );
+
+    var dataTable = $('#table_players_per_game').DataTable({
         "responsive": true,
         "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Alle"]],
         "fixedHeader": true,
@@ -92,7 +118,7 @@ $(document).ready( function () {
 });
 </script>
 
-<table id="table_players_total" class="table table-striped table-sm table-bordered compact" style="width:100%">
+<table id="table_players_per_game" class="table table-striped table-sm table-bordered compact" style="width:100%">
     <thead>
         <tr>
             <th rowspan="2">Spillernavn</th>
@@ -183,30 +209,30 @@ $(document).ready( function () {
                     <!-- 4 --><td><!-- Antal klubber --></td>
                     
                     <! -- Point -->
-                    <!-- 5 --><td>".$VolleyStats->formatNumber($row['points_total'])."</td>
-                    <!-- 6 --><td>".$VolleyStats->formatNumber($row['error_total'])."</td>
-                    <!-- 7 --><td>".$VolleyStats->formatNumber($row['break_points'])."</td>
-                    <!-- 8 --><td>".$VolleyStats->formatNumber($row['win_loss'])."</td>
+                    <!-- 5 --><td>".$VolleyStats->formatNumber($row['points_total']/$row['games_played'],2)."</td>
+                    <!-- 6 --><td>".$VolleyStats->formatNumber($row['error_total']/$row['games_played'],2)."</td>
+                    <!-- 7 --><td>".$VolleyStats->formatNumber($row['break_points']/$row['games_played'],2)."</td>
+                    <!-- 8 --><td>".$VolleyStats->formatNumber($row['win_loss']/$row['games_played'],2)."</td>
 
                     <! -- Serv -->
-                    <!-- 9 --><td>".$VolleyStats->formatNumber($row['serve_total'])."</td>
-                    <!-- 10 --><td>".$VolleyStats->formatNumber($row['serve_error'])."</td>
-                    <!-- 11 --><td>".$VolleyStats->formatNumber($row['serve_ace'])."</td>
+                    <!-- 9 --><td>".$VolleyStats->formatNumber($row['serve_total']/$row['games_played'],2)."</td>
+                    <!-- 10 --><td>".$VolleyStats->formatNumber($row['serve_error']/$row['games_played'],2)."</td>
+                    <!-- 11 --><td>".$VolleyStats->formatNumber($row['serve_ace']/$row['games_played'],2)."</td>
             
                     <! -- Modtagning -->
-                    <!-- 12 --><td>".$VolleyStats->formatNumber($row['recieve_total'])."</td>
-                    <!-- 13 --><td>".$VolleyStats->formatNumber($row['recieve_error'])."</td>
-                    <!-- 14 --><td>".$VolleyStats->formatNumber($row['recieve_position'])."</td>
-                    <!-- 15 --><td>".$VolleyStats->formatNumber($row['recieve_perfect'])."</td>
+                    <!-- 12 --><td>".$VolleyStats->formatNumber($row['recieve_total']/$row['games_played'],2)."</td>
+                    <!-- 13 --><td>".$VolleyStats->formatNumber($row['recieve_error']/$row['games_played'],2)."</td>
+                    <!-- 14 --><td>".$VolleyStats->formatNumber($row['recieve_position']/$row['games_played'],2)."</td>
+                    <!-- 15 --><td>".$VolleyStats->formatNumber($row['recieve_perfect']/$row['games_played'],2)."</td>
 
                     <! -- Angreb -->
-                    <!-- 16 --><td>".$VolleyStats->formatNumber($row['spike_total'])."</td>
-                    <!-- 17 --><td>".$VolleyStats->formatNumber($row['spike_error'])."</td>
-                    <!-- 18 --><td>".$VolleyStats->formatNumber($row['spike_blocked'])."</td>
-                    <!-- 19 --><td>".$VolleyStats->formatNumber($row['spike_win'])."</td>
+                    <!-- 16 --><td>".$VolleyStats->formatNumber($row['spike_total']/$row['games_played'],2)."</td>
+                    <!-- 17 --><td>".$VolleyStats->formatNumber($row['spike_error']/$row['games_played'],2)."</td>
+                    <!-- 18 --><td>".$VolleyStats->formatNumber($row['spike_blocked']/$row['games_played'],2)."</td>
+                    <!-- 19 --><td>".$VolleyStats->formatNumber($row['spike_win']/$row['games_played'],2)."</td>
 
                     <! -- Block -->
-                    <!-- 20 --><td>".$VolleyStats->formatNumber($row['block_win'])."</td>
+                    <!-- 20 --><td>".$VolleyStats->formatNumber($row['block_win']/$row['games_played'],2)."</td>
                 </tr>
                 ";
             }
