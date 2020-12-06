@@ -47,22 +47,22 @@ $(document).ready( function () {
                 columns: '.colvisGroupGeneral'
             },
             {
-                text: 'Points',
+                text: 'Point',
                 extend: 'colvis',
                 columns: '.colvisGroupPoints'
             },
             {
-                text: 'Serve',
+                text: 'Serv',
                 extend: 'colvis',
                 columns: '.colvisGroupServe'
             },
             {
-                text: 'Receive',
+                text: 'Modtagning',
                 extend: 'colvis',
                 columns: '.colvisGroupReceive'
             },
             {
-                text: 'Spike',
+                text: 'Angreb',
                 extend: 'colvis',
                 columns: '.colvisGroupSpike'
             },
