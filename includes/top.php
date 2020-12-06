@@ -1,9 +1,9 @@
-<?php require_once('functions.php'); ?>
-<?php require_once('protect.php'); ?>
-<?php require_once('secrets.php'); ?>
-<?php require_once('volleystats.php'); ?>
+<?php 
+require_once('functions.php');
+require_once('protect.php');
+require_once('secrets.php');
+require_once('volleystats.php'); 
 
-<?php
 $mode = get('mode');
 $game_id = get('game_id');
 $gender = get('gender');

@@ -1,10 +1,11 @@
-<?php require_once('includes/top.php'); ?>
-<?php $full_page = true; ?>
-<?php require('includes/header.php'); ?> 
+<?php require_once('includes/top.php'); 
+$full_page = true;
+$current_page_title = "VolleyStats - Login";
+require('includes/header.php'); ?> 
 
   <form class="form-signin" method="POST">
     <img class="mb-4" src="img/icon-volleyball-large.png" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    <h1 class="h3 mb-3 font-weight-normal"><?php echo $current_page_title; ?></h1>
     <label for="password" class="sr-only">Password</label>
     <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
     <div class="checkbox mb-3">
