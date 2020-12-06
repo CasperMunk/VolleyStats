@@ -1,5 +1,6 @@
 main > .container {
   padding: 20px 15px 0;
+  max-width: 90%;
 }
 
 .footer {
@@ -60,6 +61,7 @@ body.fullpage {
 #table_players_total_filter {
   float: right;
   width: auto;
+  margin-top: 0.5rem;
 }
 
 #table_player_total_filer label input {
@@ -69,19 +71,17 @@ body.fullpage {
 .dt-buttons.btn-group.flex-wrap {
   float: left;
   width: auto;
+  margin-bottom: 0.5rem;
 }
 
-#table_players_total_paginate {
-  float: right;
-  width: auto;
-}
-
-#table_players_total_info, #table_players_total_length {
-  float: left;
-  width: auto;
+.dataTables_paginate {
+  width: 50%;
+  margin: auto;
 }
 
 #table_players_total_info {
+  float: right;
+  width: auto;
   padding-top: 0;
   padding-bottom: 1rem;
 }
