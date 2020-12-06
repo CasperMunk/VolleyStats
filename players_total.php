@@ -41,7 +41,7 @@ $(document).ready( function () {
                 columns: '.colvisGroupSpike'
             },
             {
-                text: 'Block',
+                text: 'Blok',
                 extend: 'colvis',
                 columns: '.colvisGroupBlock'
             },
@@ -130,10 +130,10 @@ $(document).ready( function () {
             <! -- Angreb -->
             <th>Total</th>
             <th>Fejl</th>
-            <th>Block</th>
+            <th>Blok</th>
             <th>Perf</th>
 
-            <! -- Block -->
+            <! -- Blok -->
             <th>Point</th>            
         </tr>
     </thead>
@@ -205,7 +205,7 @@ $(document).ready( function () {
                     <!-- 18 --><td>".$VolleyStats->formatNumber($row['spike_blocked'])."</td>
                     <!-- 19 --><td>".$VolleyStats->formatNumber($row['spike_win'])."</td>
 
-                    <! -- Block -->
+                    <! -- Blok -->
                     <!-- 20 --><td>".$VolleyStats->formatNumber($row['block_win'])."</td>
                 </tr>
                 ";
