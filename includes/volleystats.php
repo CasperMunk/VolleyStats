@@ -181,7 +181,7 @@ class VolleyStats {
         curl_setopt($ch, CURLOPT_MAXREDIRS, 4);
         curl_setopt($ch, CURLOPT_COOKIESESSION, TRUE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_ENCODING, "");
+        curl_setopt($ch, CURLOPT_ENCODING, "UTF-8");
 
         if (!$content = curl_exec($ch)){     
             echo 'Error getting data';
