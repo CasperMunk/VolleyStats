@@ -224,7 +224,7 @@ class VolleyStats {
         $spike_blocked =    $this->cleanStatsData($data->find("span[id=SpikeHP]",0)->plaintext);
         $spike_win =        $this->cleanStatsData($data->find("span[id=SpikeWin]",0)->plaintext);
         $block_win =        $this->cleanStatsData($data->find("span[id=BlockWin]",0)->plaintext);
-        $win_loss =         $this->cleanStatsData($data->find("span[id=Points]",0)->plaintext);
+        $win_loss =         $this->cleanStatsData($data->find("span[id=L_VP]",0)->plaintext);
 
         if ($result = $this->db->query("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,recieve_total,recieve_error,recieve_position,recieve_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$recieve_total,$recieve_error,$recieve_position,$recieve_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)") === TRUE){
             return true;
