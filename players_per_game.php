@@ -2,7 +2,7 @@
 <?php require('includes/header.php'); ?> 
 
 <p>
-    Spillere med under <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="10" size="2"> kampe er undtaget fra denne liste.
+    Spillere med under <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="10" size="3"> kampe er undtaget fra denne liste.
 </p>
 
 <script>
