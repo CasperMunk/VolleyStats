@@ -1,6 +1,8 @@
 <?php require('includes/top.php'); ?>
 <?php require('includes/header.php'); ?>
 
+
+<img src="img/volleyball.jpg" class="img-rounded float-right p-3" width="250" alt="&copy; Intofoto" title="&copy; Intofoto">
 <p>
 Denne lille side er lavet for at kunne dykke ned i statistik fra VolleyLigaen på tværs af alle sæsoner. Denne side indsamler statistik fra alle tilgængelige sæsoner og viser dem på forskellige måder. Du kan f.eks. se:
 </p>
