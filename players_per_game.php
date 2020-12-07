@@ -32,7 +32,9 @@ $(document).ready( function () {
     var dataTable = $('#table_players_per_game').DataTable({
         "responsive": true,
         "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Alle"]],
-        "fixedHeader": true,
+        "fixedHeader": {
+            headerOffset: $('nav.navbar').outerHeight()
+        },
         // "stateSave": true,
         "language": {
             "url": '//cdn.datatables.net/plug-ins/1.10.22/i18n/Danish.json',
