@@ -1,11 +1,12 @@
 <?php require('includes/top.php'); ?>
 <?php require('includes/header.php'); ?> 
-<div class="input-group input-group-md mb-3 ml-auto mr-auto w-50">
+<div class="input-group input-group-md mb-2 ml-auto mr-auto w-50">
     <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-md">Søg</span>
     </div>
-    <input type="text" id="custom_search" class="form-control">
+    <input type="text" id="custom_search" class="form-control" placeholder="Søg f.eks. på 'kvinde' og/eller navn på spiller(e).">
 </div>
+    
 <script>
 $(document).ready( function () {
     var dataTable = $('#table_players_total').DataTable({

@@ -4,11 +4,11 @@
 <p>
     Spillere med under <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="10" size="3"> kampe er undtaget fra denne liste.
 </p>
-<div class="input-group input-group-md mb-3 ml-auto mr-auto w-50">
+<div class="input-group input-group-md mb-2 ml-auto mr-auto w-50">
     <div class="input-group-prepend">
         <span class="input-group-text" id="inputGroup-sizing-md">Søg</span>
     </div>
-    <input type="text" id="custom_search" class="form-control">
+    <input type="text" id="custom_search" class="form-control" placeholder="Søg f.eks. på 'kvinde' og/eller navn på spiller(e).">
 </div>
 <script>
 $(document).ready( function () {

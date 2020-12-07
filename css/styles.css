@@ -69,12 +69,14 @@ div.dataTables_filter {
 .dt-buttons.btn-group.flex-wrap {
   float: right;
   width: auto;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .dataTables_paginate {
   width: 50%!important;
-  margin: auto!important;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  margin-top: 0.5rem!important;
 }
 
 .dataTables_paginate ul.pagination {
