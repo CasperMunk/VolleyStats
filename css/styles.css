@@ -59,19 +59,17 @@ body.fullpage {
 }
 
 .dataTables_filter input[type="search"] {
-  width: 12rem!important;
+  width: 20rem!important;
 }
 
-.dataTables_filter {
-  float: right;
-  width: auto;
-  margin-top: 0.5rem;
+div.dataTables_filter {
+  text-align: center!important;
 }
 
 .dt-buttons.btn-group.flex-wrap {
-  float: left;
+  float: right;
   width: auto;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
 }
 
 .dataTables_paginate {
@@ -79,9 +77,23 @@ body.fullpage {
   margin: auto!important;
 }
 
-#table_players_total_info {
-  float: right;
+.dataTables_paginate ul.pagination {
+  justify-content: center!important;
+}
+
+.dataTables_info {
   width: auto;
-  padding-top: 0;
-  padding-bottom: 1rem;
+  padding-top: 0.3rem!important;
+  margin:auto;
+  width:50%;
+  text-align: center;
+}
+
+.dataTables_length {
+  float: left;
+  margin-top: 0.3rem;
+}
+
+.dataTables_length label {
+  margin:0!important;
 }

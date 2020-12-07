@@ -1,6 +1,11 @@
 <?php require('includes/top.php'); ?>
 <?php require('includes/header.php'); ?> 
-
+<div class="input-group input-group-md mb-3 ml-auto mr-auto w-50">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-md">Søg</span>
+    </div>
+    <input type="text" id="custom_search" class="form-control">
+</div>
 <script>
 $(document).ready( function () {
     var dataTable = $('#table_players_total').DataTable({
@@ -15,7 +20,7 @@ $(document).ready( function () {
             "decimal": ",",
             "thousands": "."
         },
-        "dom": "Bfrtilp",
+        "dom": '<"d-none"f>lBrtpi',
         "buttons": [
             {
                 text: 'Generelt',
@@ -102,6 +107,10 @@ $(document).ready( function () {
         ],
         "order": [[ 5, "desc" ]],
     });
+
+    $('#custom_search').on( 'keyup click', function () {
+        dataTable.search($('#custom_search').val()).draw();
+  } );
 });
 </script>
 

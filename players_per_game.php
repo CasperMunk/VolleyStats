@@ -4,7 +4,12 @@
 <p>
     Spillere med under <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="10" size="3"> kampe er undtaget fra denne liste.
 </p>
-
+<div class="input-group input-group-md mb-3 ml-auto mr-auto w-50">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-md">Søg</span>
+    </div>
+    <input type="text" id="custom_search" class="form-control">
+</div>
 <script>
 $(document).ready( function () {
     $.fn.dataTable.ext.search.push(
@@ -41,7 +46,7 @@ $(document).ready( function () {
             "decimal": ",",
             "thousands": "."
         },
-        "dom": "Bfrtilp",
+        "dom": '<"d-none"f>lBrtpi',
         "buttons": [
             {
                 text: 'Generelt',
@@ -128,6 +133,10 @@ $(document).ready( function () {
         ],
         "order": [[ 5, "desc" ]],
     });
+
+    $('#custom_search').on( 'keyup click', function () {
+        dataTable.search($('#custom_search').val()).draw();
+  } );
 });
 </script>
 
