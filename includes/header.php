@@ -24,7 +24,7 @@
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="?"><img src="img/icon-volleyball.png" height="25" border="none" /> VolleyStats</a>
+            <a class="navbar-brand" href="/"><img src="img/icon-volleyball.png" height="25" border="none" /> VolleyStats</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
