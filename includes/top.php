@@ -17,15 +17,6 @@ if ($update_type == 'competition_and_games'){
 
 $full_page = false;
 
-// $navigation = array(
-//     'index.php' => 'Velkommen',
-//     'Data' => array(
-//         'data_players.php' => 'Spillere',
-//         'data_games.php' => 'Kampe'
-//         ),
-//     'updater.php' => 'Opdatering'
-// );
-
 $navigation = array(
     'index.php' => 'Velkommen',
     'Spillere' => array(
