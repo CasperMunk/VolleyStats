@@ -2,11 +2,24 @@
 <?php require('includes/header.php'); ?>
 
 <p>
-Denne lille side er lavet for at kunne dybbe ned i statistik fra VolleyLigaen. Der indsamles kun data for VolleyLigaen og kun kampe som er færdigspillede. Data for den indeværende sæson opdateres en gang i døgnet. Data fra tidligere sæsoner opdateres ved lejlighed.
+Denne lille side er lavet for at kunne dykke ned i statistik fra VolleyLigaen på tværs af alle sæsoner. Denne side indsamler statistik fra alle tilgængelige sæsoner og viser dem på forskellige måder. Du kan f.eks. se:
+</p>
+<ul>
+    <li>Hvilken mand har lavet flest esser?</li>
+    <li>Hvilken kvinde har scoret angrebspoint?</li>
+    <li>Hvilken mand har lavet flest per kamp?</li>
+    <li>Hvilket hold har lavet flest bloks?</li>
+    <li>Hvilket hold har lavet flest servefejl per kamp?</li>
+    <li>Hvilken kvinde har spillet flest kampe?</li>
+    <li>Hvilken mand har den bedste effektivitet i modtagningen?</li>
+    <li>Etc.</li>
+</ul>
+
+<p>Der indsamles kun data for VolleyLigaen og kun kampe som er færdigspillede. Data for den indeværende sæson opdateres en gang i døgnet. Data fra tidligere sæsoner opdateres ved lejlighed.
 </p>
 
 <p>
-    Der findes data for nedenstående sæsoner:
+    Der findes data for disse sæsoner:
     <ul>
         <?php foreach($VolleyStats->getSeasonYears() as $comp): ?>
         <li><?php echo $comp['year']; ?></li>
