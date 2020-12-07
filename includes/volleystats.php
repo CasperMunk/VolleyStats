@@ -20,7 +20,9 @@ class VolleyStats {
             if ($this->db->connect_errno) {
                 printf("Connect failed: %s\n", $this->db->connect_error);
                 exit();
-            }    
+            }
+
+            $this->db->set_charset("utf8");
         }
 
     }
