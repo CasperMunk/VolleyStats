@@ -38,8 +38,8 @@ $navigation = array(
         // '#3' => 'Modtagning'
     ),
     'Hold' => array(
-        'teams.php' => 'Hold',
-        'teams_pr_game.php' => 'Hold pr. kamp'
+        'teams_total.php' => 'Hold totalt',
+        'teams_per_game.php' => 'Hold pr. kamp'
     ),    
     'updater.php' => 'Opdatering'
 );

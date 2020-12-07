@@ -112,8 +112,19 @@ $(document).ready( function () {
             {
                 "targets": [20],
                 "className": 'colvisGroupBlock'
-            }
-        ]
+            },
+            { 
+                "targets": [0] ,
+                "orderSequence": [ "asc","desc" ]
+                
+            },
+            { 
+                "targets": "_all" ,
+                "orderSequence": [ "desc","asc" ]
+                
+            },
+        ],
+        "order": [[ 5, "desc" ]],
     });
 });
 </script>
