@@ -11,7 +11,7 @@ Denne lille side er lavet for at kunne dykke ned i statistik fra VolleyLigaen p�
     <li>Hvilket hold har lavet flest bloks?</li>
     <li>Hvilket hold har lavet flest servefejl per kamp?</li>
     <li>Hvilken kvinde har spillet flest kampe?</li>
-    <li>Hvilken mand har den bedste effektivitet i modtagningen?</li>
+    <!-- <li>Hvilken mand har den bedste effektivitet i modtagningen?</li> -->
 </ul>
 
 <p>Der indsamles kun data for VolleyLigaen og kun kampe som er færdigspillede. Data for den indeværende sæson opdateres en gang i døgnet. Data fra tidligere sæsoner opdateres ved lejlighed.
