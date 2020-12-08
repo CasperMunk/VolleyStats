@@ -99,3 +99,11 @@ div.dataTables_filter {
 .dataTables_length label {
   margin:0!important;
 }
+
+ol.records li.hidden {
+  display: none;
+}
+
+ol.records li.bold {
+  font-weight: bold;
+}

@@ -32,19 +32,13 @@ class VolleyStats {
     }
 
     function getCompetitions(){
-        if ($result = $this->db->query("SELECT id, gender, year FROM competitions ORDER BY year DESC")) {
-            if ($result->num_rows>0){
-                return $result->fetch_all(MYSQLI_ASSOC);
-            }
-        }
+        $query = "SELECT id, gender, year FROM competitions ORDER BY year DESC";
+        return $this->fetchMysqlAll($query);
     }
 
     function getSeasonYears(){
-        if ($result = $this->db->query("SELECT year FROM competitions GROUP BY year ORDER BY year DESC")) {
-            if ($result->num_rows>0){
-                return $result->fetch_all(MYSQLI_ASSOC);
-            }
-        }
+        $query = "SELECT year FROM competitions GROUP BY year ORDER BY year DESC";
+        return $this->fetchMysqlAll($query);
     }
 
     function getOverviewStats(){
@@ -293,6 +287,30 @@ class VolleyStats {
 
     function translateText($text){
         return strtr($text,$this->translations);
+    }
+
+    function getRecords($type){
+        if (empty($type)) return false;
+        $query = "
+            SELECT 
+                players.id, players.player_name, players.gender, player_stats.game_id, MAX(player_stats.".$type.") as ".$type." 
+            FROM players 
+                INNER JOIN player_stats ON player_stats.player_id = players.id 
+                LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
+                WHERE excluded_games.game_id IS NULL
+            GROUP BY players.id, players.gender, player_stats.game_id 
+            ORDER BY ".$type." DESC 
+            LIMIT 40
+        ";
+        return $this->fetchMysqlAll($query);
+    }
+
+    function fetchMysqlAll($query){
+        if ($result = $this->db->query($query)) {
+            if ($result->num_rows>0){
+                return $result->fetch_all(MYSQLI_ASSOC);
+            }
+        }
     }
 }
 ?>

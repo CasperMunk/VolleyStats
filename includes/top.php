@@ -31,7 +31,14 @@ $navigation = array(
     'Hold' => array(
         'teams_total.php' => 'Hold totalt',
         'teams_per_game.php' => 'Hold pr. kamp'
-    ),    
+    ),
+    'Rekorder' => array(
+        'records_point.php' => 'Point',
+        'records_serve.php' => 'Serv',
+        'records_receive.php' => 'Modtagning',
+        'records_spike.php' => 'Angreb',
+        'records_block.php' => 'Blok',
+    ),  
     'updater.php' => 'Opdatering'
 );
 
