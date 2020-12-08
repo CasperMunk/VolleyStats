@@ -33,6 +33,7 @@ $navigation = array(
         'teams_per_game.php' => 'Hold pr. kamp'
     ),
     'Rekorder' => array(
+        'records_games.php' => 'Kampe',
         'records_point.php' => 'Point',
         'records_serve.php' => 'Serv',
         'records_receive.php' => 'Modtagning',

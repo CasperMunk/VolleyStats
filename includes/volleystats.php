@@ -291,17 +291,33 @@ class VolleyStats {
 
     function getRecords($type){
         if (empty($type)) return false;
-        $query = "
-            SELECT 
-                players.id, players.player_name, players.gender, player_stats.game_id, MAX(player_stats.".$type.") as ".$type." 
-            FROM players 
-                INNER JOIN player_stats ON player_stats.player_id = players.id 
-                LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
-                WHERE excluded_games.game_id IS NULL
-            GROUP BY players.id, players.gender, player_stats.game_id 
-            ORDER BY ".$type." DESC 
-            LIMIT 40
-        ";
+        // COUNT(player_stats.player_id) as games_played
+        
+        if ($type == 'games_played'){
+            $query = "
+                SELECT 
+                    players.id, players.player_name, players.gender, COUNT(player_stats.player_id) as ".$type."
+                FROM players 
+                    INNER JOIN player_stats ON player_stats.player_id = players.id 
+                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
+                    WHERE excluded_games.game_id IS NULL
+                GROUP BY players.id  
+                ORDER BY ".$type." DESC 
+                LIMIT 40
+            ";
+        }else{
+            $query = "
+                SELECT 
+                    players.id, players.player_name, players.gender, player_stats.game_id, MAX(player_stats.".$type.") as ".$type."    
+                FROM players 
+                    INNER JOIN player_stats ON player_stats.player_id = players.id 
+                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
+                    WHERE excluded_games.game_id IS NULL
+                GROUP BY players.id, players.gender, player_stats.game_id
+                ORDER BY ".$type." DESC 
+                LIMIT 40
+            ";
+        }
         return $this->fetchMysqlAll($query);
     }
 
