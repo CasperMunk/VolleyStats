@@ -194,24 +194,24 @@ class VolleyStats {
         $serve_total =      $this->cleanStatsData($data->find("span[id=ServeTot]",0)->plaintext);
         $serve_error =      $this->cleanStatsData($data->find("span[id=ServeErr]",0)->plaintext);
         $serve_ace =        $this->cleanStatsData($data->find("span[id=ServeAce]",0)->plaintext);
-        $recieve_total =    $this->cleanStatsData($data->find("span[id=RecTot]",0)->plaintext);
-        $recieve_error =    $this->cleanStatsData($data->find("span[id=RecErr]",0)->plaintext);
+        $receive_total =    $this->cleanStatsData($data->find("span[id=RecTot]",0)->plaintext);
+        $receive_error =    $this->cleanStatsData($data->find("span[id=RecErr]",0)->plaintext);
 
         $RecPos = $data->find("span[id=RecPos]",0);
-        if (isset($RecPos)) $recieve_position = $this->cleanStatsData($RecPos->plaintext);
+        if (isset($RecPos)) $receive_position = $this->cleanStatsData($RecPos->plaintext);
 
         $RecPos0 = $data->find("span[id=RecPos0]",0);
-        if (isset($RecPos0)) $recieve_position = $this->cleanStatsData($RecPos0->plaintext);
+        if (isset($RecPos0)) $receive_position = $this->cleanStatsData($RecPos0->plaintext);
 
-        $recieve_position = $recieve_total * ($recieve_position/100);
+        $receive_position = $receive_total * ($receive_position/100);
 
         $RecPerf = $data->find("span[id=RecPerf]",0);
-        if (isset($RecPerf)) $recieve_perfect = $this->cleanStatsData($RecPerf->plaintext);
+        if (isset($RecPerf)) $receive_perfect = $this->cleanStatsData($RecPerf->plaintext);
 
         $RecPerf0 = $data->find("span[id=RecPerf0]",0);
-        if (isset($RecPerf0)) $recieve_perfect = $this->cleanStatsData($RecPerf0->plaintext);
+        if (isset($RecPerf0)) $receive_perfect = $this->cleanStatsData($RecPerf0->plaintext);
 
-        $recieve_perfect = $recieve_total * ($recieve_perfect/100);
+        $receive_perfect = $receive_total * ($receive_perfect/100);
 
         $spike_total =      $this->cleanStatsData($data->find("span[id=SpikeTot]",0)->plaintext);
         $spike_error =      $this->cleanStatsData($data->find("span[id=SpikeErr]",0)->plaintext);
@@ -220,7 +220,7 @@ class VolleyStats {
         $block_win =        $this->cleanStatsData($data->find("span[id=BlockWin]",0)->plaintext);
         $win_loss =         $this->cleanStatsData($data->find("span[id=L_VP]",0)->plaintext);
 
-        if ($result = $this->db->query("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,recieve_total,recieve_error,recieve_position,recieve_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$recieve_total,$recieve_error,$recieve_position,$recieve_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)") === TRUE){
+        if ($result = $this->db->query("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,receive_total,receive_error,receive_position,receive_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$receive_total,$receive_error,$receive_position,$receive_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)") === TRUE){
             return true;
         }
     }

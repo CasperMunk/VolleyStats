@@ -4,12 +4,12 @@ require('includes/header.php');
 
 $records = array(
     array(
-        "id" => "recieve_total",
+        "id" => "receive_total",
         "title" => "Antal modtagninger i en kamp",
         "measurement" => "modtagninger"
     ),
     array(
-        "id" => "recieve_perfect",
+        "id" => "receive_perfect",
         "title" => "Antal perfekte modtagning i en kamp",
         "measurement" => "modtagninger"
     )

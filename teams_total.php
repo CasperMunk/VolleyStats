@@ -166,7 +166,7 @@ $(document).ready( function () {
             ,COUNT(player_stats.player_id) as games_played 
 
             ,SUM(player_stats.points_total) as points_total
-            ,SUM(player_stats.recieve_error+player_stats.spike_error+player_stats.serve_error) as error_total
+            ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error) as error_total
             ,SUM(player_stats.break_points) as break_points 
             ,SUM(player_stats.win_loss) as win_loss
 
@@ -174,10 +174,10 @@ $(document).ready( function () {
             ,SUM(player_stats.serve_ace) as serve_ace 
             ,SUM(player_stats.serve_error) as serve_error
 
-            ,SUM(player_stats.recieve_total) as recieve_total 
-            ,SUM(player_stats.recieve_position) as recieve_position 
-            ,SUM(player_stats.recieve_perfect) as recieve_perfect
-            ,SUM(player_stats.recieve_error) as recieve_error 
+            ,SUM(player_stats.receive_total) as receive_total 
+            ,SUM(player_stats.receive_position) as receive_position 
+            ,SUM(player_stats.receive_perfect) as receive_perfect
+            ,SUM(player_stats.receive_error) as receive_error 
             
             ,SUM(player_stats.spike_total) as spike_total 
             ,SUM(player_stats.spike_win) as spike_win 
@@ -214,10 +214,10 @@ $(document).ready( function () {
                     <!-- 11 --><td>".$VolleyStats->formatNumber($row['serve_ace'])."</td>
             
                     <! -- Modtagning -->
-                    <!-- 12 --><td>".$VolleyStats->formatNumber($row['recieve_total'])."</td>
-                    <!-- 13 --><td>".$VolleyStats->formatNumber($row['recieve_error'])."</td>
-                    <!-- 14 --><td>".$VolleyStats->formatNumber($row['recieve_position'])."</td>
-                    <!-- 15 --><td>".$VolleyStats->formatNumber($row['recieve_perfect'])."</td>
+                    <!-- 12 --><td>".$VolleyStats->formatNumber($row['receive_total'])."</td>
+                    <!-- 13 --><td>".$VolleyStats->formatNumber($row['receive_error'])."</td>
+                    <!-- 14 --><td>".$VolleyStats->formatNumber($row['receive_position'])."</td>
+                    <!-- 15 --><td>".$VolleyStats->formatNumber($row['receive_perfect'])."</td>
 
                     <! -- Angreb -->
                     <!-- 16 --><td>".$VolleyStats->formatNumber($row['spike_total'])."</td>
