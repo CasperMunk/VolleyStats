@@ -40,9 +40,9 @@ $navigation = array(
         'records_players_spike.php' => 'Angreb',
         'records_players_block.php' => 'Blok'
     ),
-    'Rekorder kampe' => array(
-        'records_games.php' => 'Kampe'
-    ),  
+    // 'Rekorder kampe' => array(
+    //     'records_games.php' => 'Kampe'
+    // ),  
     'updater.php' => 'Opdatering'
 );
 

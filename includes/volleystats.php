@@ -342,7 +342,7 @@ class VolleyStats {
                     WHERE excluded_games.game_id IS NULL
                 GROUP BY players.id  
                 ORDER BY ".$type." DESC 
-                LIMIT 40
+                LIMIT 50
             ";
         }else{
             $query = "
@@ -354,7 +354,7 @@ class VolleyStats {
                     WHERE excluded_games.game_id IS NULL
                 GROUP BY players.id, players.gender, player_stats.game_id
                 ORDER BY ".$type." DESC 
-                LIMIT 40
+                LIMIT 50
             ";
         }
         return $this->fetchMysqlAll($query);
