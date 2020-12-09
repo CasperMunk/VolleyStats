@@ -1,26 +1,40 @@
 <?php require('includes/top.php'); ?>
 <?php require('includes/header.php'); ?> 
-<div class="input-group input-group-md mb-2 ml-auto mr-auto w-50">
-    <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-md">Søg</span>
-    </div>
-    <input type="text" id="custom_search" class="form-control" placeholder="Søg f.eks. på 'kvinde' og/eller navn på spiller(e).">
-</div>
 <script>
 $(document).ready( function () {
-    var dataTable = $('#table_teams_total').DataTable({
+    var dataTable = $('#DataTable').DataTable({
         "responsive": true,
-        "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "Alle"]],
         "fixedHeader": {
             headerOffset: $('nav.navbar').outerHeight()
         },
+        "pageLength": 20,
         // "stateSave": true,
         "language": {
-            "url": '//cdn.datatables.net/plug-ins/1.10.22/i18n/Danish.json',
-            "decimal": ",",
-            "thousands": "."
+            "decimal":        ",",
+            "emptyTable":     "Ingen data",
+            "info":           "Viser _START_ til _END_ af _TOTAL_ linjer",
+            "infoEmpty":      "Viser 0 til 0 af 0 linjer",
+            "infoFiltered":   "(filtreret fra _MAX_ linjer)",
+            "infoPostFix":    "",
+            "thousands":      ".",
+            "lengthMenu":     "Vis _MENU_ linjer",
+            "loadingRecords": "Hender...",
+            "processing":     "Arbejder...",
+            "search":         "",
+            "zeroRecords":    "Ingen linjer matcher s&oslash;gningen",
+            "paginate": {
+                "first":      "F&oslash;rste",
+                "last":       "Sidste",
+                "next":       "N&aelig;ste",
+                "previous":   "Forrige"
+            },
+            "aria": {
+                "sortAscending":  ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            },
+            "searchPlaceholder": "Søg f.eks. på 'kvinde' og/eller navn på spiller..."
         },
-        "dom": '<"d-none"f>lBrtpi',
+        "dom": 'fBrtpi',
         "buttons": [
             {
                 text: 'Generelt',
@@ -54,6 +68,7 @@ $(document).ready( function () {
             },
             {
                 text: 'Nulstil',
+                className: 'btn-dark',
                 extend: 'colvisRestore',
             }
         ],
@@ -107,14 +122,10 @@ $(document).ready( function () {
         ],
         "order": [[ 5, "desc" ]],
     });
-
-    $('#custom_search').on( 'keyup click', function () {
-        dataTable.search($('#custom_search').val()).draw();
-  } );
 });
 </script>
 
-<table id="table_teams_total" class="table table-striped table-sm table-bordered compact" style="width:100%">
+<table id="DataTable" class="table table-striped table-sm table-bordered compact" style="width:100%">
     <thead>
         <tr>
             <th rowspan="2">Klubnavn</th>

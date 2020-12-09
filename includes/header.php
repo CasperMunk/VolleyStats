@@ -19,6 +19,11 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/datatables.min.js"></script>
+    <script>
+        $(document).ready( function () {
+            $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-md ml-0";    
+        });
+    </script>
     
     <?php if ($full_page == false): ?>
     <header>

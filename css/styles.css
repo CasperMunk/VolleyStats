@@ -59,7 +59,7 @@ body.fullpage {
 }
 
 .dataTables_filter input[type="search"] {
-  width: 20rem!important;
+  width: 25rem!important;
 }
 
 div.dataTables_filter {
@@ -98,6 +98,14 @@ div.dataTables_filter {
 
 .dataTables_length label {
   margin:0!important;
+}
+
+.dataTables_filter {
+  float: left!important;
+}
+
+.dataTables_filter label{
+  
 }
 
 ol.records li.hidden {

@@ -1,4 +1,4 @@
-<?php require('includes/top.php'); ?>
+    <?php require('includes/top.php'); ?>
 <?php Protect\with('login.php', $secrets['password'],'updater.php'); ?>
 
 <?php
