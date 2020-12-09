@@ -32,13 +32,16 @@ $navigation = array(
         'teams_total.php' => 'Hold totalt',
         'teams_per_game.php' => 'Hold pr. kamp'
     ),
-    'Rekorder' => array(
-        'records_games.php' => 'Kampe',
-        'records_point.php' => 'Point',
-        'records_serve.php' => 'Serv',
-        'records_receive.php' => 'Modtagning',
-        'records_spike.php' => 'Angreb',
-        'records_block.php' => 'Blok',
+    'Rekorder spillere' => array(
+        'records_players_general.php' => 'Generelt',
+        'records_players_point.php' => 'Point',
+        'records_players_serve.php' => 'Serv',
+        'records_players_receive.php' => 'Modtagning',
+        'records_players_spike.php' => 'Angreb',
+        'records_players_block.php' => 'Blok'
+    ),
+    'Rekorder kampe' => array(
+        'records_games.php' => 'Kampe'
     ),  
     'updater.php' => 'Opdatering'
 );

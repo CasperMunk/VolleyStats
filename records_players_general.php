@@ -7,7 +7,7 @@ $records = array(
         "id" => "games_played",
         "title" => "Antal kampe spillet",
         "measurement" => "kampe"
-    )
+    ),
 );
 
 require('includes/records_include.php');

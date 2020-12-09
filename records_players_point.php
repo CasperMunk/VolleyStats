@@ -15,7 +15,7 @@ $records = array(
     ),
     array(
         "id" => "win_loss",
-        "title" => "Højeste  i en kamp",
+        "title" => "Højeste V-T i en kamp",
         "measurement" => "V-T"
     )
 );
