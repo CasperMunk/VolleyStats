@@ -236,7 +236,7 @@ $(document).ready( function () {
                     <! -- Generelt -->
                     <!-- 1 --><td>".ucfirst($VolleyStats->translateText($row['gender']))."</td>
                     <!-- 2 --><td><!-- Sæsoner spillet --></td>
-                    <!-- 3 --><td>".$VolleyStats->formatNumber($row['games_played'])."</td>
+                    <!-- 3 --><td data-order='".$row['games_played']."' data-filter='".$row['games_played']."''>".$VolleyStats->formatNumber($row['games_played'])."</td>
                     <!-- 4 --><td><!-- Antal spillere --></td>
                     
                     <! -- Point -->

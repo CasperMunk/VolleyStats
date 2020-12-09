@@ -54,8 +54,7 @@ class VolleyStats {
         return $this->formatNumber($this->fetchMysqlAll($query)[0]);
     }
 
-    function formatNumber($val,$decimal=0)
-    {
+    function formatNumber($val,$decimal=0){
         if (is_array($val)){
             return array_map(function($num){return number_format($num,0,",",".");}, $val);
         }else{

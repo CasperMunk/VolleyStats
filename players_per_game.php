@@ -8,7 +8,7 @@
 $(document).ready( function () {
     $.fn.dataTable.ext.search.push(
         function( settings, data, dataIndex ) {
-            var min = parseInt( $('#DataTable').val(), 10 );
+            var min = parseInt( $('#played_games_min').val(), 10 );
             // var max = parseInt( $('#max').val(), 10 );
             var max = parseInt( '', 10 );
             var games_played = parseFloat( data[3] ) || 0; // use data from the games played column

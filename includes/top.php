@@ -43,7 +43,6 @@ $navigation = array(
     // 'Rekorder kampe' => array(
     //     'records_games.php' => 'Kampe'
     // ),  
-    'updater.php' => 'Opdatering'
 );
 
 $current_page = basename($_SERVER['SCRIPT_NAME']);
