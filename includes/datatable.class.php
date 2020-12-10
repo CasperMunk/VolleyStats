@@ -111,11 +111,11 @@ class dataTable {
 		            	}
 		            }
 			echo '
-							{
-				                text: "Nulstil",
-				                className: "btn-dark",
-				                extend: "colvisRestore",
-				            }		            
+							// {
+				   //              text: "Nulstil",
+				   //              className: "btn-dark",
+				   //              extend: "colvisRestore",
+				   //          }		            
 		        ],
 		        columnDefs: [';
 		        $columnDefCount = 0;
