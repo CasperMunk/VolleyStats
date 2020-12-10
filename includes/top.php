@@ -2,7 +2,8 @@
 require_once('functions.php');
 require_once('protect.php');
 require_once('secrets.php');
-require_once('volleystats.php'); 
+require_once('volleystats.class.php'); 
+require_once('datatable.class.php'); 
 
 $mode = get('mode');
 $game_id = get('game_id');

@@ -1,252 +1,418 @@
-<?php require('includes/top.php'); ?>
-<?php require('includes/header.php'); ?> 
-<script>
-$(document).ready( function () {
-    var dataTable = $('#DataTable').DataTable({
-        "responsive": true,
-        "fixedHeader": {
-            headerOffset: $('nav.navbar').outerHeight()
-        },
-        "pageLength": 20,
-        // "stateSave": true,
-        "language": {
-            "decimal":        ",",
-            "emptyTable":     "Ingen data",
-            "info":           "Viser _START_ til _END_ af _TOTAL_ linjer",
-            "infoEmpty":      "Viser 0 til 0 af 0 linjer",
-            "infoFiltered":   "(filtreret fra _MAX_ linjer)",
-            "infoPostFix":    "",
-            "thousands":      ".",
-            "lengthMenu":     "Vis _MENU_ linjer",
-            "loadingRecords": "Hender...",
-            "processing":     "Arbejder...",
-            "search":         "",
-            "zeroRecords":    "Ingen linjer matcher s&oslash;gningen",
-            "paginate": {
-                "first":      "F&oslash;rste",
-                "last":       "Sidste",
-                "next":       "N&aelig;ste",
-                "previous":   "Forrige"
-            },
-            "aria": {
-                "sortAscending":  ": activate to sort column ascending",
-                "sortDescending": ": activate to sort column descending"
-            },
-            "searchPlaceholder": "Søg f.eks. på 'kvinde' og/eller navn på spiller..."
-        },
-        "dom": 'fBrtpi',
-        "buttons": [
-            {
-                text: 'Generelt',
-                extend: 'colvis',
-                columns: '.colvisGroupGeneral'
-            },
-            {
-                text: 'Point',
-                extend: 'colvis',
-                columns: '.colvisGroupPoints'
-            },
-            {
-                text: 'Serv',
-                extend: 'colvis',
-                columns: '.colvisGroupServe'
-            },
-            {
-                text: 'Modtagning',
-                extend: 'colvis',
-                columns: '.colvisGroupReceive'
-            },
-            {
-                text: 'Angreb',
-                extend: 'colvis',
-                columns: '.colvisGroupSpike'
-            },
-            {
-                text: 'Blok',
-                extend: 'colvis',
-                columns: '.colvisGroupBlock'
-            },
-            {
-                text: 'Nulstil',
-                className: 'btn-dark',
-                extend: 'colvisRestore',
-            }
-        ],
-        columnDefs: [
-            {
-                "targets": [ 0,1,3,5,11,19,20 ],
-                "visible": true
-            },
-            {
-                "targets": "_all",
-                "visible": false
-            },
-            {
-                "targets": [0],
-                "className": 'noVis'
-            },
-            {
-                "targets": [1,2,3,4],
-                "className": 'colvisGroupGeneral'
-            },
-            {
-                "targets": [5,6,7,8],
-                "className": 'colvisGroupPoints'
-            },
-            {
-                "targets": [9,10,11],
-                "className": 'colvisGroupServe'
-            },
-            {
-                "targets": [12,13,14,15],
-                "className": 'colvisGroupReceive'
-            },
-            {
-                "targets": [16,17,18,19],
-                "className": 'colvisGroupSpike'
-            },
-            {
-                "targets": [20],
-                "className": 'colvisGroupBlock'
-            },
-            { 
-                "targets": [0] ,
-                "orderSequence": [ "asc","desc" ]
-                
-            },
-            { 
-                "targets": "_all" ,
-                "orderSequence": [ "desc","asc" ]
-                
-            },
-        ],
-        "order": [[ 5, "desc" ]],
-    });
-});
-</script>
+<?php 
+require('includes/top.php');
+require('includes/header.php'); 
 
-<table id="DataTable" class="table table-striped table-sm table-bordered compact" style="width:100%">
-    <thead>
-        <tr>
-            <th rowspan="2">Klubnavn</th>
-            <th colspan="4">Generelt</th>
-            <th colspan="4">Point</th>
-            <th colspan="3">Serv</th>
-            <th colspan="4">Modtagning</th>
-            <th colspan="4">Angreb</th>
-            <th colspan="1">Blok</th>
-        </tr>
-        <tr>
-            <! -- Generelt -->
-            <th>Køn</th>
-            <th>Sæsoner spillet</th>
-            <th>Kampe spillet</th>
-            <th>Antal spillere</th>
-            
-            <! -- Point -->
-            <th>Total</th>
-            <th>Fejl</th>
-            <th>BP</th>
-            <th>VT</th>
+$dataTable = new DataTable();
+$dataTable->setHeaders(
+    array(
+        array(
+            array(
+                'title' => '#',
+                'colspan' => null,
+                'rowspan' => 2,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Klubnavn',
+                'colspan' => null,
+                'rowspan' => 2,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Generelt',
+                'colspan' => 2,
+                'rowspan' => null,
+                'filter_button' => true,
+            ),
+            array(
+                'title' => 'Point',
+                'colspan' => 4,
+                'rowspan' => null,
+                'filter_button' => true,
+            ),
+            array(
+                'title' => 'Serv',
+                'colspan' => 3,
+                'rowspan' => null,
+                'filter_button' => true,
+            ),
+            array(
+                'title' => 'Modtagning',
+                'colspan' => 4,
+                'rowspan' => null,
+                'filter_button' => true,
+            ),
+            array(
+                'title' => 'Angreb',
+                'colspan' => 4,
+                'rowspan' => null,
+                'filter_button' => true,
+            ),
+            array(
+                'title' => 'Blok',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => true,
+            )
+        ),
+        array(
+            array(
+                'title' => 'Køn',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Kampe spillet',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Total',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Fejl',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'BP',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'VT',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Total',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Fejl',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Es',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Total',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Fejl',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Pos',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Perf',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Total',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Fejl',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Blok',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Perf',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            ),
+            array(
+                'title' => 'Point',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+            )
+        )
+    )
+);
 
-            <! -- Serv -->
-            <th>Total</th>
-            <th>Fejl</th>
-            <th>Es</th>
+$dataTable->setColumnDefs(
+    array(
+        array(
+            // 'title' => '#',
+            'visible' => 'true',
+            'className' => null,
+            'orderable' => 'false',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Spillernavn',
+            'visible' => 'true',
+            'className' => null,
+            'orderable' => 'false',
+            'searchable' => 'true',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Køn',
+            'visible' => 'true',
+            'className' => '"colvisGroupGenerelt"',
+            'orderable' => 'false',
+            'searchable' => 'true',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Kampe spillet',
+            'visible' => 'true',
+            'className' => '"colvisGroupGenerelt"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Total',
+            'visible' => 'true',
+            'className' => '"colvisGroupPoint"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => '"desc"'
+        ),
+        array(
+            // 'title' => 'Fejl',
+            'visible' => 'false',
+            'className' => '"colvisGroupPoint"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'BP',
+            'visible' => 'false',
+            'className' => '"colvisGroupPoint"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'VT',
+            'visible' => 'false',
+            'className' => '"colvisGroupPoint"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Total',
+            'visible' => 'false',
+            'className' => '"colvisGroupServ"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Fejl',
+            'visible' => 'false',
+            'className' => '"colvisGroupServ"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Es',
+            'visible' => 'true',
+            'className' => '"colvisGroupServ"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Total',
+            'visible' => 'false',
+            'className' => '"colvisGroupModtagning"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Fejl',
+            'visible' => 'false',
+            'className' => '"colvisGroupModtagning"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Pos',
+            'visible' => 'false',
+            'className' => '"colvisGroupModtagning"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Perf',
+            'visible' => 'false',
+            'className' => '"colvisGroupModtagning"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Total',
+            'visible' => 'false',
+            'className' => '"colvisGroupAngreb"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Fejl',
+            'visible' => 'false',
+            'className' => '"colvisGroupAngreb"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Blok',
+            'visible' => 'false',
+            'className' => '"colvisGroupAngreb"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Perf',
+            'visible' => 'true',
+            'className' => '"colvisGroupAngreb"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        ),
+        array(
+            // 'title' => 'Point',
+            'visible' => 'true',
+            'className' => '"colvisGroupBlok"',
+            'orderable' => 'true',
+            'searchable' => 'false',
+            'orderSequence' => '[ "desc","asc" ]',
+            'order' => null,
+        )
+    )
+);
+
+$data = array();
+$query = "
+SELECT teams.team_name, competitions.gender
+    ,COUNT(player_stats.player_id) as games_played 
+
+    ,SUM(player_stats.points_total) as points_total
+    ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error) as error_total
+    ,SUM(player_stats.break_points) as break_points 
+    ,SUM(player_stats.win_loss) as win_loss
+
+    ,SUM(player_stats.serve_total) as serve_total 
+    ,SUM(player_stats.serve_ace) as serve_ace 
+    ,SUM(player_stats.serve_error) as serve_error
+
+    ,SUM(player_stats.receive_total) as receive_total 
+    ,SUM(player_stats.receive_position) as receive_position 
+    ,SUM(player_stats.receive_perfect) as receive_perfect
+    ,SUM(player_stats.receive_error) as receive_error 
     
-            <! -- Modtagning -->
-            <th>Total</th>
-            <th>Fejl</th>
-            <th>Pos</th>
-            <th>Perf</th>
-
-            <! -- Angreb -->
-            <th>Total</th>
-            <th>Fejl</th>
-            <th>Blok</th>
-            <th>Perf</th>
-
-            <! -- Blok -->
-            <th>Point</th>            
-        </tr>
-    </thead>
-    <tbody>
-    <?php 
-    if ($result = $VolleyStats->db->query("
-        SELECT teams.team_name, competitions.gender
-            ,COUNT(player_stats.player_id) as games_played 
-
-            ,SUM(player_stats.points_total) as points_total
-            ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error) as error_total
-            ,SUM(player_stats.break_points) as break_points 
-            ,SUM(player_stats.win_loss) as win_loss
-
-            ,SUM(player_stats.serve_total) as serve_total 
-            ,SUM(player_stats.serve_ace) as serve_ace 
-            ,SUM(player_stats.serve_error) as serve_error
-
-            ,SUM(player_stats.receive_total) as receive_total 
-            ,SUM(player_stats.receive_position) as receive_position 
-            ,SUM(player_stats.receive_perfect) as receive_perfect
-            ,SUM(player_stats.receive_error) as receive_error 
-            
-            ,SUM(player_stats.spike_total) as spike_total 
-            ,SUM(player_stats.spike_win) as spike_win 
-            ,SUM(player_stats.spike_error) as spike_error 
-            ,SUM(player_stats.spike_blocked) as spike_blocked             
-            
-            ,SUM(player_stats.block_win) as block_win 
-        FROM player_stats 
-        INNER JOIN teams ON teams.id = player_stats.team_id 
-        INNER JOIN competitions ON competitions.id = teams.competition_id 
-        GROUP BY teams.team_name, competitions.gender")) {
-        if ($result->num_rows>0){
-            while($row = $result->fetch_assoc()) {
-                echo "
-
-                <tr>
-                     <!-- 0 --><td>".$row['team_name']."</td>
-
-                    <! -- Generelt -->
-                    <!-- 1 --><td>".ucfirst($VolleyStats->translateText($row['gender']))."</td>
-                    <!-- 2 --><td><!-- Sæsoner spillet --></td>
-                    <!-- 3 --><td>".$VolleyStats->formatNumber($row['games_played'])."</td>
-                    <!-- 4 --><td><!-- Antal spillere --></td>
-                    
-                    <! -- Point -->
-                    <!-- 5 --><td>".$VolleyStats->formatNumber($row['points_total'])."</td>
-                    <!-- 6 --><td>".$VolleyStats->formatNumber($row['error_total'])."</td>
-                    <!-- 7 --><td>".$VolleyStats->formatNumber($row['break_points'])."</td>
-                    <!-- 8 --><td>".$VolleyStats->formatNumber($row['win_loss'])."</td>
-
-                    <! -- Serv -->
-                    <!-- 9 --><td>".$VolleyStats->formatNumber($row['serve_total'])."</td>
-                    <!-- 10 --><td>".$VolleyStats->formatNumber($row['serve_error'])."</td>
-                    <!-- 11 --><td>".$VolleyStats->formatNumber($row['serve_ace'])."</td>
-            
-                    <! -- Modtagning -->
-                    <!-- 12 --><td>".$VolleyStats->formatNumber($row['receive_total'])."</td>
-                    <!-- 13 --><td>".$VolleyStats->formatNumber($row['receive_error'])."</td>
-                    <!-- 14 --><td>".$VolleyStats->formatNumber($row['receive_position'])."</td>
-                    <!-- 15 --><td>".$VolleyStats->formatNumber($row['receive_perfect'])."</td>
-
-                    <! -- Angreb -->
-                    <!-- 16 --><td>".$VolleyStats->formatNumber($row['spike_total'])."</td>
-                    <!-- 17 --><td>".$VolleyStats->formatNumber($row['spike_error'])."</td>
-                    <!-- 18 --><td>".$VolleyStats->formatNumber($row['spike_blocked'])."</td>
-                    <!-- 19 --><td>".$VolleyStats->formatNumber($row['spike_win'])."</td>
-
-                    <! -- Blok -->
-                    <!-- 20 --><td>".$VolleyStats->formatNumber($row['block_win'])."</td>
-                </tr>
-                ";
-            }
+    ,SUM(player_stats.spike_total) as spike_total 
+    ,SUM(player_stats.spike_win) as spike_win 
+    ,SUM(player_stats.spike_error) as spike_error 
+    ,SUM(player_stats.spike_blocked) as spike_blocked             
+    
+    ,SUM(player_stats.block_win) as block_win 
+FROM player_stats 
+    INNER JOIN teams ON teams.id = player_stats.team_id 
+    INNER JOIN competitions ON competitions.id = teams.competition_id 
+GROUP BY teams.team_name, competitions.gender
+";
+if ($result = $VolleyStats->db->query($query)) {
+    if ($result->num_rows>0){
+        while($row = $result->fetch_assoc()) {
+            $data[] = array(
+                '',
+                $row['team_name'],
+                ucfirst($VolleyStats->translateText($row['gender'])),
+                $VolleyStats->formatNumber($row['games_played']),
+                $VolleyStats->formatNumber($row['points_total']),
+                $VolleyStats->formatNumber($row['error_total']),
+                $VolleyStats->formatNumber($row['break_points']),
+                $VolleyStats->formatNumber($row['win_loss']),
+                $VolleyStats->formatNumber($row['serve_total']),
+                $VolleyStats->formatNumber($row['serve_error']),
+                $VolleyStats->formatNumber($row['serve_ace']),
+                $VolleyStats->formatNumber($row['receive_total']),
+                $VolleyStats->formatNumber($row['receive_error']),
+                $VolleyStats->formatNumber($row['receive_position']),
+                $VolleyStats->formatNumber($row['receive_perfect']),
+                $VolleyStats->formatNumber($row['spike_total']),
+                $VolleyStats->formatNumber($row['spike_error']),
+                $VolleyStats->formatNumber($row['spike_blocked']),
+                $VolleyStats->formatNumber($row['spike_win']),
+                $VolleyStats->formatNumber($row['block_win'])
+            );
         }
     }
-    ?> 
-    </tbody>
-</table>
-            
-<p>
- 
-<?php require('includes/footer.php'); ?>
+}
+$dataTable->setData($data);
+
+$dataTable->drawTable();
+
+require('includes/footer.php'); ?>
