@@ -1,7 +1,8 @@
-    <?php require('includes/top.php'); ?>
-<?php Protect\with('login.php', $secrets['password'],'updater.php'); ?>
+<?php 
+require('includes/top.php');
+Protect\with('login.php', $secrets['password'],'updater.php'); 
 
-<?php
+
 if ($mode == 'update'){
     foreach($VolleyStats->getCompetitions() as $competition){
         //Check if competition should be updated!!!
@@ -32,9 +33,9 @@ if ($mode == 'update'){
     }
     exit;
 }
-?>
 
-<?php require('includes/header.php'); ?> 
+
+require('includes/header.php'); ?> 
 
             
 
