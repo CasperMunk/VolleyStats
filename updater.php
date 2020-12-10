@@ -34,7 +34,7 @@ if ($mode == 'update'){
     exit;
 }
 
-
+$current_page_title = "Opdatering";
 require('includes/header.php'); ?> 
 
             
