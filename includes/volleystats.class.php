@@ -114,33 +114,33 @@ class VolleyStats {
         $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$game_id;
         $content = $this->getHtmlData($url);
 
+        //Get general info about game
+        $game_data = array();
+
+        // $federation_id = preg_match_all("\d*(?=.*[0-9])\.pdf",$content,$matches);
+        // $game_data["federation_id"] = str_replace(".pdf","",);
+
+        $game_data["location"] = "'".$this->cleanInputData($this->getTagById("span","Content_Main_LB_Stadium",$content),"text")."'";
+
+        $game_data["spectators"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_Spectators",$content));
+
+        $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));
+
+        $game_data["guest_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetGuest",$content));
+
+        //Get set scores an loop through them
+        $set_scores = explode(" ",trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text")));
+
+        $set_count = 1;
+        foreach ($set_scores as $score){
+            $game_data["home_set".$set_count] = explode("/",$score)[0];
+            $game_data["guest_set".$set_count] = explode("/",$score)[1];
+            $set_count++;
+        }
+
         if (strpos($content, '_DIV_MatchStats') == false) {
             return 'skipped';
         }else{
-            //Get general info about game
-            $game_data = array();
-
-            // $federation_id = preg_match_all("\d*(?=.*[0-9])\.pdf",$content,$matches);
-            // $game_data["federation_id"] = str_replace(".pdf","",);
-
-            $game_data["location"] = "'".$this->cleanInputData($this->getTagById("span","Content_Main_LB_Stadium",$content),"text")."'";
-
-            $game_data["spectators"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_Spectators",$content));
-
-            $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));
-
-            $game_data["guest_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetGuest",$content));
-
-            //Get set scores an loop through them
-            $set_scores = explode(" ",trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text")));
-
-            $set_count = 1;
-            foreach ($set_scores as $score){
-                $game_data["home_set".$set_count] = explode("/",$score)[0];
-                $game_data["guest_set".$set_count] = explode("/",$score)[1];
-                $set_count++;
-            }
-
             //Get player statistics
             foreach (array("Home","Guest") as $team_type){
                 //Get team name
