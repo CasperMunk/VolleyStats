@@ -115,3 +115,7 @@ ol.records li.hidden {
 ol.records li.bold {
   font-weight: bold;
 }
+
+table thead tr th.hasrowspan, table thead tr:last-child th {
+  border-bottom-color: currentColor!important;
+}

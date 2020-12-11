@@ -171,7 +171,7 @@ class dataTable {
 		        	foreach ($headerRows as $array){
 		        		echo '<th';
 		        		if ($array['colspan'] != null) echo ' colspan="'.$array['colspan'].'"';
-		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'"';
+		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'" class="hasrowspan"';
 		        		echo '>'.$array['title'].'</th>';
 		        	}
 		        	echo '</tr>';

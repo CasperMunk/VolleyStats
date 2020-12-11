@@ -1,4 +1,15 @@
-<div id="gender_picker" class="btn-group btn-group-toggle btn-sm" data-toggle="buttons">
+<div id="gender_picker" class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" name="gender_picker" value="all" id="gender_picker1" autocomplete="off" checked>
+    <label class="btn btn-outline-primary" for="gender_picker1">Begge køn</label>
+
+    <input type="radio" class="btn-check" name="gender_picker" value="female" id="gender_picker2" autocomplete="off">
+    <label class="btn btn-outline-primary" for="gender_picker2">Kvinder</label>
+
+    <input type="radio" class="btn-check" name="gender_picker" value="male" id="gender_picker3" autocomplete="off">
+    <label class="btn btn-outline-primary" for="gender_picker3">Mænd</label>    
+</div>
+
+<!-- <div id="gender_picker" class="btn-group btn-group-toggle btn-sm" data-toggle="buttons">
     <span class="input-group-text">Filter:</span>
     <label class="btn btn-light active">
         <input type="radio" name="gender_picker" value="all" autocomplete="off" checked="checked"> Begge
@@ -9,7 +20,7 @@
     <label class="btn btn-light ">
         <input type="radio" name="gender_picker" value="female" autocomplete="off"> Kvinde
     </label>
-</div>
+</div> -->
 
 <?php foreach ($records as $record): ?>
     <h3><?php echo $record['title']?></h3>
@@ -22,21 +33,3 @@
         <?php endforeach; ?>
     </ol>
 <?php endforeach; ?>
-
-<script>
-$(document).ready( function () {
-    $("input[type='radio'][name='gender_picker']").change(function() {
-        var val = $("input[type='radio'][name='gender_picker']:checked").val();
-        $("ol.records").each(function(){
-            $(this).children("li").removeClass("hidden bold");
-            if (val != 'all') {            
-                $(this).children("li:not(."+val+")").addClass("hidden");
-            }
-            $(this).children("li:not(.hidden)").slice(10).addClass("hidden");
-            $(this).children("li:not(.hidden)").slice(0,1).addClass("bold");
-        });
-    });
-
-    $("input[type='radio'][name='gender_picker']").trigger("change");
-});
-</script>

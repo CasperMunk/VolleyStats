@@ -1,6 +1,6 @@
 <?php 
 require('includes/top.php');
-$loadElements = array("jQuery");
+$loadElements = array("jQuery","records.js");
 require('includes/header.php');
 
 $records = array(
