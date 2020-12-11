@@ -19,10 +19,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/datatables.min.css"/>
     <link rel="stylesheet" href="css/styles.css" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-    <link rel="manifest" href="img/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="img/icon-volleyball.svg">
+    <link rel="mask-icon" href="img/icon-volleyball.svg" color="#ffffff">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel="manifest" href="img/manifest.json">
 </head>
 <body class="d-flex flex-column h-100<?php if ($full_page) echo ' fullpage' ?>">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -38,7 +39,7 @@
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="/"><img src="img/icon-volleyball.png" height="25" border="none" /> VolleyStats</a>
+            <a class="navbar-brand" href="/"><img src="img/icon-volleyball.svg" height="25" border="none" /> VolleyStats</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
