@@ -1,6 +1,7 @@
 <?php 
 require('includes/top.php');
-Protect\with('login.php', $secrets['password'],'updater.php'); 
+Protect\with('login.php', $secrets['password'],'updater.php');
+$loadElements = array("jQuery");
 
 
 if ($mode == 'update'){

@@ -4,6 +4,7 @@ class dataTable {
 	var $columnDefs;
 	var $data;
 	var $filter;
+	var $jsFile;
 
 	function setHeaders($array){
 		if (is_array($array)) $this->headers = $array;
@@ -34,13 +35,13 @@ class dataTable {
 			';
 		}
 
-		echo '
-		<script>';
-		echo '
+		$js = '
+		<script type="text/javascript">';
+		$js .= '
 		$(document).ready( function () {
 			';
 			if (isset($this->filter)){
-				echo '
+				$js .= '
 				$.fn.dataTable.ext.search.push(
 			        function( settings, data, dataIndex ) {
 			            var min = parseInt( $("#played_games_min").val(), 10 );
@@ -64,11 +65,11 @@ class dataTable {
 			    } );
 				';
 			}
-			echo '
+			$js .= '
 		    var dataTable = $("#DataTable").DataTable({
 		        "responsive": true,
 		        "fixedHeader": {
-		            headerOffset: $("nav.navbar").outerHeight()
+		            //headerOffset: $("nav.navbar").outerHeight()
 		        },
 		        "pageLength": 20,
 		        // "stateSave": true,
@@ -102,7 +103,7 @@ class dataTable {
 		            ';
 		            foreach ($this->headers[0] as $array){
 		            	if ($array['filter_button']){
-		            		echo '
+		            		$js .= '
 		            		{
 				                text: "'.$array['title'].'",
 				                extend: "colvis",
@@ -110,7 +111,7 @@ class dataTable {
 				            },';		
 		            	}
 		            }
-			echo '
+			$js .= '
 							// {
 				   //              text: "Nulstil",
 				   //              className: "btn-dark",
@@ -120,33 +121,33 @@ class dataTable {
 		        columnDefs: [';
 		        $columnDefCount = 0;
 	        	foreach ($this->columnDefs as $array){
-	            		echo '
+	            		$js .= '
 	            		{
 	            			"targets": '.$columnDefCount.',
 	            			';
 			                foreach ($array as $key => $value){
 			                	if ($value != null AND $key != "order"){
-			                		echo '"'.$key.'": '.$value.',
+			                		$js .= '"'.$key.'": '.$value.',
 			                		';
 			                	}
 
 			                }
-			            echo '},';
+			            $js .= '},';
 			            $columnDefCount++;
 		            }
-		        echo '
+		        $js .= '
 		        ],
 		        "order": [ ';
 		        $columnDefCount = 0;
 	        	foreach ($this->columnDefs as $array){
 	                foreach ($array as $key => $value){
 	                	if ($key == 'order' AND $value != null){
-	                		echo '['.$columnDefCount.', '.$value.' ],';
+	                		$js .= '['.$columnDefCount.', '.$value.' ],';
 	                	}
 	                }
 	                $columnDefCount++;
 	            }
-		    	echo '],
+		    	$js .= '],
 		    });
 
 		    dataTable.on( "order.dt search.dt", function () {
@@ -154,10 +155,15 @@ class dataTable {
 		            cell.innerHTML = i+1;
 		        } );
 		    } ).draw();
-		});
-		</script>
 
-		<table id="DataTable" class="table table-striped table-sm table-bordered compact" style="width:100%">
+		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
+		});
+		</script>';
+
+		$this->jsFile = $js;
+
+		echo '
+		<table id="DataTable" class="table table-hover table-sm" style="width:100%">
 		    <thead>
 		        ';
 		        foreach ($this->headers as $headerRows){
@@ -190,7 +196,6 @@ class dataTable {
 		</table>
 		            
 		<p>
-
 		';
 	}
 }

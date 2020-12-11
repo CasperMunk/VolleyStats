@@ -3,9 +3,27 @@
     </main>
     <footer class="footer mt-auto py-3">
         <div class="container">
-            <div class="text-muted small float-left display-inline">Lavet af Casper Munk Christiansen</div>
-            <div class="text-muted text-right small"><a href="conditions.php" class="text-muted"><u>Betingelser for brug</u></a></div>
+            <div class="float-start text-muted text-start small">Lavet af Casper Munk Christiansen</div>
+            <div class="float-end text-muted text-end small"><a href="conditions.php" class="text-muted"><u>Betingelser for brug</u></a></div>
         </div>
+        
     </footer>
     <?php endif; ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous" async></script>
+    
+    <?php if (in_array('jQuery',$loadElements) AND !in_array('DataTables',$loadElements)): ?>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" async></script>
+    <?php endif; ?>
+
+    <?php if (in_array('DataTables',$loadElements)): ?>
+        <link rel="preload" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css"></noscript>
+
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/datatables.min.js" async></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js" async></script>
+        
+        <?php if (isset($dataTable)) echo $dataTable->jsFile; ?>
+    <?php endif; ?>
+</body>
 </html>

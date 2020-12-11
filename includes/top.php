@@ -17,9 +17,10 @@ if ($update_type == 'competition_and_games'){
 }
 
 $full_page = false;
+$loadElements = array();
 
 $navigation = array(
-    'index.php' => 'Velkommen',
+    'index.php' => 'Hjem',
     'Spillere' => array(
         'players_total.php' => 'Spillere totalt',
         'players_per_game.php' => 'Spillere pr. kamp',

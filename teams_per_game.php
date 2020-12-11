@@ -1,5 +1,6 @@
 <?php 
 require('includes/top.php');
+$loadElements = array("jQuery","DataTables");
 require('includes/header.php'); 
 
 $dataTable = new DataTable();

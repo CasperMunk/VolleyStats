@@ -1,6 +1,7 @@
 <?php require_once('includes/top.php'); 
 $full_page = true;
-$current_page_title = "VolleyStats - Login";
+$current_page_title = "Login";
+$loadElements = array();
 require('includes/header.php'); ?> 
 
   <form class="form-signin" method="POST">
