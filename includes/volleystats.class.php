@@ -49,10 +49,11 @@ class VolleyStats {
     function getOverviewStats(){
         $query = "
         SELECT
-            (SELECT COUNT(id) FROM competitions) as competitions,
-            (SELECT COUNT(id) FROM teams) as teams,
-            (SELECT COUNT(id) FROM games) as games,
-            (SELECT COUNT(id) FROM players) as players,
+            (SELECT COUNT(DISTINCT(year)) FROM competitions) as seasons,
+            (SELECT COUNT(*) FROM competitions) as competitions,
+            (SELECT COUNT(*) FROM teams) as teams,
+            (SELECT COUNT(*) FROM games) as games,
+            (SELECT COUNT(*) FROM players) as players,
             (SELECT COUNT(*) FROM player_stats) as player_stats
         ";
 
@@ -189,7 +190,6 @@ class VolleyStats {
             }
         }
 
-        
         $this->updateGameData($game_id,$game_data);
         return true;
     }
