@@ -119,6 +119,12 @@ class VolleyStats {
         $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$game_id;
         $content = $this->getHtmlData($url);
 
+        $set_score_data = trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text"));
+
+        if (empty($set_score_data)) {
+            return 'Kampen er ikke spillet endnu';
+        }
+
         //Get general info about game
         $game_data = array();
 
@@ -134,7 +140,7 @@ class VolleyStats {
         $game_data["guest_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetGuest",$content));
 
         //Get set scores an loop through them
-        $set_scores = explode(" ",trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text")));
+        $set_scores = explode(" ",$set_score_data);
 
         $set_count = 1;
         foreach ($set_scores as $score){
@@ -144,47 +150,48 @@ class VolleyStats {
         }
 
         if (strpos($content, '_DIV_MatchStats') == false) {
-            return 'skipped';
-        }else{
-            //Get player statistics
-            foreach (array("Home","Guest") as $team_type){
-                //Get team name
-                $team_name = $this->cleanInputData($this->getTagById("span","Content_Main_ctl17_RP_MatchStats_TeamName_".$team_type."_0",$content),"text");
-
-                //Get team id (create one if it doesn't exist)
-                $team_id = $this->getTeamId($team_name,$competition_id);
-                if ($team_id == false){
-                    echo 'No team ID for game no. '.$game_id;
-                    exit;
-                }
-
-                $game_data[strtolower($team_type)."_team_id"] = $team_id;
-
-                //Load stat table
-                $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
-
-                if ($html = str_get_html($team_table)){
-                    foreach ($html->find('table.rgMasterTable tbody tr') as $row){
-                        //Trim name
-                        $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
-                        if ($player_name == 'TOTALER') continue;
-
-                        //Get player id (create one if it doesn't exist)
-                        $player_id = $this->getPlayerId($player_name,$gender);
-                        
-                        //Add stats for player
-                        $this->addPlayerStats($game_id,$team_id,$player_id,$row);
-                    }
-                }else{
-                    return false;
-                }
-            }
-
             //Update general info about game
             $this->updateGameData($game_id,$game_data);
+            return 'Kampstats opdateret. Ingen spillerstat tilgængelig.';
+        }
+        
+        //Get player statistics
+        foreach (array("Home","Guest") as $team_type){
+            //Get team name
+            $team_name = $this->cleanInputData($this->getTagById("span","Content_Main_ctl17_RP_MatchStats_TeamName_".$team_type."_0",$content),"text");
 
-            return true;
-        } 
+            //Get team id (create one if it doesn't exist)
+            $team_id = $this->getTeamId($team_name,$competition_id);
+            if ($team_id == false){
+                echo 'Intet team ID for kamp ID '.$game_id;
+                exit;
+            }
+
+            $game_data[strtolower($team_type)."_team_id"] = $team_id;
+
+            //Load stat table
+            $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
+
+            if ($html = str_get_html($team_table)){
+                foreach ($html->find('table.rgMasterTable tbody tr') as $row){
+                    //Trim name
+                    $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
+                    if ($player_name == 'TOTALER') continue;
+
+                    //Get player id (create one if it doesn't exist)
+                    $player_id = $this->getPlayerId($player_name,$gender);
+                    
+                    //Add stats for player
+                    $this->addPlayerStats($game_id,$team_id,$player_id,$row);
+                }
+            }else{
+                return 'Fejl ved load af HTML-data';
+            }
+        }
+
+        
+        $this->updateGameData($game_id,$game_data);
+        return true;
     }
 
     function updateGameData($game_id,$dataset){

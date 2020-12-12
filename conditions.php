@@ -8,11 +8,7 @@ require('includes/header.php'); ?>
 </p>
 
 <p>
-Alle data er indsamlet via offentlige kilder:
-<ul>
-    <li><a href="https://volleyball.dk/">https://volleyball.dk/</a></li>
-    <li><a href="https://resultater.volleyball.dk/">https://resultater.volleyball.dk/</a></li>
-</ul>
+Alle data er indsamlet via <a href="https://volleyball.dk">Volleyball Danmarks hjemmeside</a>.
 </p>
 
 <p>

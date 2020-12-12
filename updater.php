@@ -25,14 +25,12 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
 }elseif ($mode == "update_game"){
     if ($result = $VolleyStats->getGameData($game_id,$competition_id,$gender)){
         if ($result === true){
-            echo '<span class="badge bg-success">Updated</span>';        
-        }elseif ($result == 'skipped'){
-            echo '<span class="badge bg-info">Could not get data</span>';
+            echo '<span class="badge bg-success">Opdateret</span>';        
         }else{
-            echo '<span class="badge bg-warning">Unknown error</span>';
+            echo '<span class="badge bg-warning">'.$result.'</span>';
         }
     }else{
-            echo '<span class="badge bg-warning">Error in calling getGameData</span>';
+            echo '<span class="badge bg-warning">Kamp findes ikke i lokal database!</span>';
     }
     exit;
 }
