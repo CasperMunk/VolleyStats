@@ -381,7 +381,9 @@ SELECT teams.team_name, competitions.gender
     ,SUM(player_stats.block_win) as block_win 
 FROM player_stats 
     INNER JOIN teams ON teams.id = player_stats.team_id 
-    INNER JOIN competitions ON competitions.id = teams.competition_id 
+    INNER JOIN competitions ON competitions.id = teams.competition_id
+    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
+WHERE excluded_games.game_id IS NULL
 GROUP BY teams.team_name, competitions.gender
 ";
 if ($result = $VolleyStats->db->query($query)) {

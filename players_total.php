@@ -383,6 +383,8 @@ SELECT
           
 FROM players
     LEFT JOIN player_stats ON players.id = player_stats.player_id
+    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
+WHERE excluded_games.game_id IS NULL
     GROUP BY players.id
     ORDER BY points_total DESC
 ";
