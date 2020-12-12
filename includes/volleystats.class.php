@@ -32,8 +32,13 @@ class VolleyStats {
     }
 
     function getCompetitions(){
-        $query = "SELECT id, gender, year FROM competitions ORDER BY year DESC";
+        $query = "SELECT id, gender, year, auto_update FROM competitions ORDER BY year DESC";
         return $this->fetchMysqlAll($query);
+    }
+
+    function getCompetition($competition_id){
+        $query = "SELECT id, gender, year, auto_update FROM competitions WHERE id = ".$competition_id;
+        return $this->fetchMysqlAll($query)[0];
     }
 
     function getSeasonYears(){

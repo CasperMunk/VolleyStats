@@ -9,12 +9,6 @@ $mode = get('mode');
 $game_id = get('game_id');
 $gender = get('gender');
 $competition_id = get('competition_id');
-$update_type = get('update_type');
-if ($update_type == 'competition_and_games'){
-    $update_type = true;
-}else{
-    $update_type = false;
-}
 
 $full_page = false;
 $loadElements = array();

@@ -119,3 +119,8 @@ ol.records li.bold {
 table thead tr th.hasrowspan, table thead tr:last-child th {
   border-bottom-color: currentColor!important;
 }
+
+#status {
+  max-height: 5.5rem;
+  overflow-y: scroll;
+}
