@@ -15,20 +15,24 @@ $loadElements = array();
 
 $navigation = array(
     'index.php' => 'Hjem',
-    'Spillere' => array(
+    'Data analyse' => array(
         'players_total.php' => 'Spillere totalt',
         'players_per_game.php' => 'Spillere pr. kamp',
-        // '<divider>' => '',
-        // '#' => 'Serv',
-        // '#1' => 'Angreb',
-        // '#2' => 'Blok',
-        // '#3' => 'Modtagning'
-    ),
-    'Hold' => array(
+
+        '<divider>' => '',
+
         'teams_total.php' => 'Hold totalt',
         'teams_per_game.php' => 'Hold pr. kamp'
     ),
-    'Rekorder spillere' => array(
+    'Rekorder kampe' => array(
+        'records_players_general.php' => 'Generelt',
+        'records_players_point.php' => 'Point',
+        'records_players_serve.php' => 'Serv',
+        'records_players_receive.php' => 'Modtagning',
+        'records_players_spike.php' => 'Angreb',
+        'records_players_block.php' => 'Blok'
+    ),
+     'Rekorder spillere' => array(
         'records_players_general.php' => 'Generelt',
         'records_players_point.php' => 'Point',
         'records_players_serve.php' => 'Serv',

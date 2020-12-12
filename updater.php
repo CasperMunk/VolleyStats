@@ -4,6 +4,7 @@ Protect\with('login.php', $secrets['password'],'updater.php');
 $loadElements = array("jQuery","updater.js");
 
 if ($mode == 'update_competition' OR $mode == 'get_competition'){
+    //Ajax response for update competitions
     if (empty($competition_id)) exit();
 
     $competition = $VolleyStats->getCompetition($competition_id);
@@ -23,6 +24,7 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
     }
     exit;
 }elseif ($mode == "update_game"){
+    //Ajax response for update game
     if ($result = $VolleyStats->getGameData($game_id,$competition_id,$gender)){
         if ($result === true){
             echo '<span class="badge bg-success">Opdateret</span>';        
@@ -32,6 +34,21 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
     }else{
             echo '<span class="badge bg-warning">Kamp findes ikke i lokal database!</span>';
     }
+    exit;
+}elseif ($mode == 'update_competitions_sync' OR $mode == 'get_competitions_sync'){
+    //Non-Ajax updates for cronjobs
+    $updateGameList = false;
+    if ($mode == 'update_competitions_sync') $updateGameList = true;
+
+    foreach ($VolleyStats->getCompetitions(true) as $comp){
+        foreach ($VolleyStats->getGames($comp['id'],$updateGameList) as $game){
+
+            if ($result = $VolleyStats->getGameData($game,$comp['id'],$comp['gender'])){
+                echo $result;
+            }
+        }
+    }
+
     exit;
 }
 

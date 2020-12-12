@@ -31,8 +31,10 @@ class VolleyStats {
         if (isset($this->db)) $this->db->close();
     }
 
-    function getCompetitions(){
-        $query = "SELECT id, gender, year, auto_update FROM competitions ORDER BY year DESC";
+    function getCompetitions($only_auto_update=false){
+        $query = "SELECT id, gender, year, auto_update FROM competitions";
+        if ($only_auto_update) $query .= " WHERE auto_update";
+        $query .= " ORDER BY year DESC";
         return $this->fetchMysqlAll($query);
     }
 
