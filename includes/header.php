@@ -12,8 +12,9 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $current_page_title ?> - VolleyStats</title>
-    <!-- <link rel="stylesheet" href="css/bootstrap.darkly.min.css" /> -->
+    <title><?php echo $current_page['title'] ?> - VolleyStats.dk</title>
+    <meta name="description" content="<?php echo $current_page['meta_description'] ?>">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css" />
 
@@ -37,26 +38,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <?php 
-                        foreach ($navigation as $url => $name){ 
-                            if (!is_array($name)){
+                        // echo '<pre>';
+                        // print_r($pages);
+                        foreach ($pages as $key => $naviarray){ 
+                            if (isset($naviarray['exclude_from_navi'])) continue;
+                            if (!isset($naviarray['items'])){
                                 echo '
                                     <li class="nav-item">
-                                        <a class="nav-link '.(($current_page == $url)?' active':'').'" aria-current="page" href="'.$url.'">'.$name.'</a>
+                                        <a class="nav-link'.(($script_name == $naviarray['filename'])?' active':'').'" aria-current="page" href="'.$naviarray['url'].'">'.$naviarray['navi_title'].'</a>
                                     </li>
                                 ';
                             }else{
                                 echo '
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown'.$url.'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        '.$url.'
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        '.$naviarray['navi_title'].'
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">';
-
-                                    foreach ($name as $dropdown_item_url => $dropdown_item_name) {
-                                        if ($dropdown_item_url == "<divider>"){
+                                    foreach ($naviarray['items'] as $subnaviarray) {
+                                        if ($subnaviarray['navi_title'] == "<divider>"){
                                             echo '<li><hr class="dropdown-divider"></li>';    
                                         }else{
-                                            echo '<li><a class="dropdown-item" href="'.$dropdown_item_url.'">'.$dropdown_item_name.'</a></li>';
+                                            echo '<li><a class="dropdown-item" href="'.$subnaviarray['url'].'">'.$subnaviarray['navi_title'].'</a></li>';
                                         }
                                     }
                                     echo '
@@ -75,5 +78,5 @@
     <!-- Begin page content -->
     <main role="main" class="flex-shrink-0">
         <div class="container">
-            <h1><?php echo $current_page_title ?></h1>
+            <h1 class="h2"><?php echo $current_page['title'] ?></h1>
     <?php endif; ?>

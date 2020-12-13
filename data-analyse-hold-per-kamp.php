@@ -14,7 +14,7 @@ $dataTable->setHeaders(
                 'filter_button' => false,
             ),
             array(
-                'title' => 'Spillernavn',
+                'title' => 'Klubnavn',
                 'colspan' => null,
                 'rowspan' => 2,
                 'filter_button' => false,
@@ -184,7 +184,7 @@ $dataTable->setColumnDefs(
             // 'title' => 'Spillernavn',
             'visible' => 'true',
             'className' => null,
-            'orderable' => 'false',
+            'orderable' => 'true',
             'searchable' => 'true',
             'orderSequence' => '[ "desc","asc" ]',
             'order' => null,
@@ -203,7 +203,7 @@ $dataTable->setColumnDefs(
             'visible' => 'true',
             'className' => '"colvisGroupGenerelt"',
             'orderable' => 'true',
-            'searchable' => 'false',
+            'searchable' => 'true',
             'orderSequence' => '[ "desc","asc" ]',
             'order' => null,
         ),
@@ -356,8 +356,7 @@ $dataTable->setColumnDefs(
 
 $data = array();
 $query = "
-SELECT 
-    players.* 
+SELECT teams.team_name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played 
 
     ,SUM(player_stats.points_total) as points_total
@@ -380,43 +379,47 @@ SELECT
     ,SUM(player_stats.spike_blocked) as spike_blocked             
     
     ,SUM(player_stats.block_win) as block_win 
-          
-FROM players
-    LEFT JOIN player_stats ON players.id = player_stats.player_id
+FROM player_stats 
+    INNER JOIN teams ON teams.id = player_stats.team_id 
+    INNER JOIN competitions ON competitions.id = teams.competition_id
     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
 WHERE excluded_games.game_id IS NULL
-    GROUP BY players.id
-    ORDER BY points_total DESC
+GROUP BY teams.team_name, competitions.gender
 ";
 if ($result = $VolleyStats->db->query($query)) {
     if ($result->num_rows>0){
         while($row = $result->fetch_assoc()) {
             $data[] = array(
                 '',
-                $VolleyStats->reverseName($row['player_name']),
+                $row['team_name'],
                 ucfirst($VolleyStats->translateText($row['gender'])),
-                $VolleyStats->formatNumber($row['games_played']),
-                $VolleyStats->formatNumber($row['points_total']),
-                $VolleyStats->formatNumber($row['error_total']),
-                $VolleyStats->formatNumber($row['break_points']),
-                $VolleyStats->formatNumber($row['win_loss']),
-                $VolleyStats->formatNumber($row['serve_total']),
-                $VolleyStats->formatNumber($row['serve_error']),
-                $VolleyStats->formatNumber($row['serve_ace']),
-                $VolleyStats->formatNumber($row['receive_total']),
-                $VolleyStats->formatNumber($row['receive_error']),
-                $VolleyStats->formatNumber($row['receive_position']),
-                $VolleyStats->formatNumber($row['receive_perfect']),
-                $VolleyStats->formatNumber($row['spike_total']),
-                $VolleyStats->formatNumber($row['spike_error']),
-                $VolleyStats->formatNumber($row['spike_blocked']),
-                $VolleyStats->formatNumber($row['spike_win']),
-                $VolleyStats->formatNumber($row['block_win'])
+                array($row['games_played'],$VolleyStats->formatNumber($row['games_played'])),
+                $VolleyStats->formatNumber($row['points_total']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['error_total']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['break_points']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['win_loss']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['serve_total']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['serve_error']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['serve_ace']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['receive_total']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['receive_error']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['receive_position']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['receive_perfect']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['spike_total']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['spike_error']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['spike_blocked']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['spike_win']/$row['games_played'],2),
+                $VolleyStats->formatNumber($row['block_win']/$row['games_played'],2)
             );
         }
     }
 }
 $dataTable->setData($data);
+
+$dataTable->setFilter(array(
+    'text' => 'Hold med mindre end <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="100" size="4"> kampe er undtaget fra denne liste.',
+    'columnNumber' => 3
+));
 
 $dataTable->drawTable();
 

@@ -62,15 +62,6 @@ class VolleyStats {
         return $this->formatNumber($this->fetchMysqlAll($query)[0]);
     }
 
-    function formatNumber($val,$decimal=0){
-        if (is_array($val)){
-            return array_map(function($num){return number_format($num,0,",",".");}, $val);
-        }else{
-            return number_format($val,$decimal,",",".");
-        }
-        
-    }
-
     function reloadGames($competition_id){
         $all_games = array();
         $url = "http://dvbf-web.dataproject.com/CompetitionMatches.aspx?ID=".$competition_id;
@@ -178,8 +169,8 @@ class VolleyStats {
             if ($html = str_get_html($team_table)){
                 foreach ($html->find('table.rgMasterTable tbody tr') as $row){
                     //Trim name
-                    $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
-                    if ($player_name == 'TOTALER') continue;
+                    $player_name = $this->ucname(strtolower(trim(str_replace('(L)', '', $row->find('td', 1)->plaintext))));
+                    if (in_array($player_name,$this->getExcludedPlayers())) continue;
 
                     //Get player id (create one if it doesn't exist)
                     $player_id = $this->getPlayerId($player_name,$gender);
@@ -272,23 +263,13 @@ class VolleyStats {
         $this->executeMysql("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,receive_total,receive_error,receive_position,receive_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$receive_total,$receive_error,$receive_position,$receive_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)");
     }
 
-    function cleanInputData($val,$type="int"){
-        $val = strip_tags($val);
-        if ($type == "int"){
-            return intval(preg_replace('/\D/', '',$val));
-        }else{
-            return $val;
-        }
-        
-    }
-
     function getPlayerId($player_name,$gender){
         if (empty($player_name) OR $player_name == null) return false;
 
         if (empty($this->player_list) OR $this->player_list == null) $this->reloadPlayers();
 
         //Search for player
-        $player_id = array_search($player_name,$this->player_list,true);
+        $player_id = array_search($player_name,$this->player_list);
         if ($player_id == false){
             //Add new player
             $query = "INSERT INTO players (player_name,gender) VALUES ('$player_name','$gender')";
@@ -310,6 +291,19 @@ class VolleyStats {
         }
     }
 
+    function getExcludedPlayers(){
+        if (!isset($this->excluded_player_list)){
+            if ($result = $this->db->query("SELECT player_name FROM excluded_players")) {
+                if ($result->num_rows>0){
+                    while($row = $result->fetch_assoc()) {
+                        $this->excluded_player_list[] = $row['player_name'];
+                    }
+                }
+            }
+        }
+        return $this->excluded_player_list;
+    }
+
     function getTeamId($team_name,$competition_id){
         if (empty($team_name) OR empty($competition_id)) return false;
 
@@ -325,20 +319,6 @@ class VolleyStats {
             }
         }
         return false;
-    }
-
-    function getTagById($tag,$id,$content){
-        if (preg_match('#(<'.$tag.'[^>]*id=[\'|"]'.$id.'[\'|"][^>]*>)(.*)</'.$tag.'>#isU', $content, $response)){
-            return $response[0];
-        }    
-    }
-
-    function reverseName($name){
-        return trim(strstr($name," "))." ".substr($name,0,strpos($name," "));
-    }
-
-    function translateText($text){
-        return strtr($text,$this->translations);
     }
 
     function getRecords($type){
@@ -389,13 +369,55 @@ class VolleyStats {
 
     function executeMysql($query){
         if ($result = $this->db->query($query) === TRUE){
-            if ($this->db->insert_id <> 0){
-                return $result->insert_id;
-            }
+            return $this->db->insert_id;
         }else{
             printf("MySQL Error: %s\n", $this->db->error);
             exit();
         }
+    }
+
+    function ucname($string) {
+        $string =ucwords(strtolower($string));
+
+        foreach (array('-', '\'') as $delimiter) {
+          if (strpos($string, $delimiter)!==false) {
+            $string =implode($delimiter, array_map('ucfirst', explode($delimiter, $string)));
+          }
+        }
+        return $string;
+    }
+
+        function formatNumber($val,$decimal=0){
+        if (is_array($val)){
+            return array_map(function($num){return number_format($num,0,",",".");}, $val);
+        }else{
+            return number_format($val,$decimal,",",".");
+        }
+        
+    }
+
+        function cleanInputData($val,$type="int"){
+        $val = strip_tags($val);
+        if ($type == "int"){
+            return intval(preg_replace('/\D/', '',$val));
+        }else{
+            return $val;
+        }
+        
+    }
+
+    function getTagById($tag,$id,$content){
+        if (preg_match('#(<'.$tag.'[^>]*id=[\'|"]'.$id.'[\'|"][^>]*>)(.*)</'.$tag.'>#isU', $content, $response)){
+            return $response[0];
+        }    
+    }
+
+    function reverseName($name){
+        return trim(strstr($name," "))." ".substr($name,0,strpos($name," "));
+    }
+
+    function translateText($text){
+        return strtr($text,$this->translations);
     }
 }
 ?>

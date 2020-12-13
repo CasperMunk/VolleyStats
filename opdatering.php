@@ -1,6 +1,7 @@
 <?php 
 require('includes/top.php');
-Protect\with('login.php', $secrets['password'],'updater.php');
+require('includes/protect.php');
+Protect\with('login.php', $secrets['password'],"VolleyStats");
 $loadElements = array("jQuery","updater.js");
 
 if ($mode == 'update_competition' OR $mode == 'get_competition'){
@@ -52,7 +53,6 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
     exit;
 }
 
-$current_page_title = "Opdatering";
 require('includes/header.php'); ?>
 
 <form method="get" action="?mode=update">
