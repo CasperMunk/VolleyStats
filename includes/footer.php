@@ -5,7 +5,7 @@
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
             <div class="float-start text-muted text-start small">Lavet af Casper Munk Christiansen</div>
-            <div class="float-end text-muted text-end small"><a href="betingelser.php" class="text-muted">Betingelser for brug</a></div>
+            <div class="float-end text-muted text-end small"><a href="betingelser" class="text-muted">Betingelser for brug</a></div>
         </div>
     </footer>
     <?php endif; ?>
