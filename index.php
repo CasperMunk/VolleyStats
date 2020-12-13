@@ -1,11 +1,10 @@
 <?php 
 require('includes/top.php');
 $loadElements = array();
-$current_page_title = "Statistik og rekorder fra VolleyLigaen";
 require('includes/header.php'); 
 ?>
     
-        <div class="float-end">
+    <div class="float-end">
         <img src="img/volleyball.jpg" class="img-rounded float-right p-3" width="250" alt="Volleyball statistik i VolleyLigaen &copy; Intofoto" title="Volleyball statistik i VolleyLigaen &copy; Intofoto">
     </div>
 

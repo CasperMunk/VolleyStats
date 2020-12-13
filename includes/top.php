@@ -59,16 +59,16 @@ array(
         "navi_title" => "Rekorder",
         "items" => 
         array(
-            array(
-                "url" => "rekorder-oversigt",
-                "navi_title" => "Oversigt",
-                "title" => "Oversigt over rekorder",
-                "meta_description" => "",
-            ),
-            array(
-                "navi_title" => "<divider>",
-                "url" => "",
-            ),
+            // array(
+            //     "url" => "rekorder-oversigt",
+            //     "navi_title" => "Oversigt",
+            //     "title" => "Oversigt over rekorder",
+            //     "meta_description" => "",
+            // ),
+            // array(
+            //     "navi_title" => "<divider>",
+            //     "url" => "",
+            // ),
             array(
                 "url" => "rekorder-spiller",
                 "navi_title" => "Spillere",

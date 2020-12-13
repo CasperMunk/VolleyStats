@@ -24,7 +24,7 @@
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
     <link rel="manifest" href="img/manifest.json">
 </head>
-<body class="d-flex flex-column h-100<?php if ($full_page) echo ' fullpage' ?>">
+<body class="d-flex flex-column min-vh-100<?php if ($full_page) echo ' fullpage' ?>">
     <?php if ($full_page == false): ?>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
