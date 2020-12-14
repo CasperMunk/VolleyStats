@@ -59,7 +59,7 @@ body.fullpage {
 }
 
 .dataTables_filter input[type="search"] {
-  width: 10rem!important;
+  width: 12rem!important;
 }
 
 .dataTables_paginate ul.pagination {
