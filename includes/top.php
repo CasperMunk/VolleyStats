@@ -1,8 +1,7 @@
 <?php 
 require_once('functions.php');
 require('secrets.php');
-require_once('volleystats.class.php');
-require_once('datatable.class.php');
+include('autoload.php');
 
 $mode = get('mode');
 $game_id = get('game_id');
@@ -60,9 +59,9 @@ array(
         "items" => 
         array(
             // array(
-            //     "url" => "rekorder-oversigt",
-            //     "navi_title" => "Oversigt",
-            //     "title" => "Oversigt over rekorder",
+            //     "url" => "rekorder-tidslinje",
+            //     "navi_title" => "Tidslinje",
+            //     "title" => "Tidslinje over rekorder",
             //     "meta_description" => "",
             // ),
             // array(
@@ -129,5 +128,3 @@ foreach ($pages as $key => $array){
 
 $VolleyStats = new VolleyStats();
 $VolleyStats->initializeMysql($secrets['mysql_host'],$secrets['mysql_username'],$secrets['mysql_password'],$secrets['mysql_database']);
-
-?>

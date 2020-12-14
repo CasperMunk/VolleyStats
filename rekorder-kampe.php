@@ -21,7 +21,4 @@ $records = array(
     )
 );
 
-require('includes/records_include.php');
-
-require('includes/footer.php'); 
-?>
+require('includes/footer.php');

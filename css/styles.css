@@ -59,24 +59,7 @@ body.fullpage {
 }
 
 .dataTables_filter input[type="search"] {
-  width: 25rem!important;
-}
-
-div.dataTables_filter {
-  text-align: center!important;
-}
-
-.dt-buttons.btn-group.flex-wrap {
-  float: right;
-  width: auto;
-  margin-bottom: 0.5rem;
-}
-
-.dataTables_paginate {
-  width: 50%!important;
-  margin-left: auto!important;
-  margin-right: auto!important;
-  margin-top: 0.5rem!important;
+  width: 10rem!important;
 }
 
 .dataTables_paginate ul.pagination {
@@ -84,28 +67,9 @@ div.dataTables_filter {
 }
 
 .dataTables_info {
-  width: auto;
   padding-top: 0.3rem!important;
   margin:auto;
-  width:50%;
   text-align: center;
-}
-
-.dataTables_length {
-  float: left;
-  margin-top: 0.3rem;
-}
-
-.dataTables_length label {
-  margin:0!important;
-}
-
-.dataTables_filter {
-  float: left!important;
-}
-
-.dataTables_filter label{
-  
 }
 
 ol.records li.hidden {

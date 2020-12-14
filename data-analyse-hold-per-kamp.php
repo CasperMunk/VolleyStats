@@ -8,162 +8,182 @@ $dataTable->setHeaders(
     array(
         array(
             array(
-                'title' => '#',
-                'colspan' => null,
-                'rowspan' => 2,
-                'filter_button' => false,
-            ),
-            array(
-                'title' => 'Klubnavn',
-                'colspan' => null,
-                'rowspan' => 2,
-                'filter_button' => false,
-            ),
-            array(
                 'title' => 'Generelt',
-                'colspan' => 2,
+                'colspan' => 4,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             ),
             array(
                 'title' => 'Point',
                 'colspan' => 4,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             ),
             array(
                 'title' => 'Serv',
                 'colspan' => 3,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             ),
             array(
                 'title' => 'Modtagning',
                 'colspan' => 4,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             ),
             array(
                 'title' => 'Angreb',
                 'colspan' => 4,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             ),
             array(
                 'title' => 'Blok',
                 'colspan' => null,
                 'rowspan' => null,
-                'filter_button' => true,
+                'category' => null,
             )
         ),
         array(
+            array(
+                'title' => '#',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+                'category' => 'Generelt',
+            ),
+            array(
+                'title' => 'Klubnavn',
+                'colspan' => null,
+                'rowspan' => null,
+                'filter_button' => false,
+                'category' => 'Generelt',
+            ),
             array(
                 'title' => 'Køn',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Generelt',
             ),
             array(
                 'title' => 'Kampe spillet',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Generelt',
             ),
             array(
                 'title' => 'Total',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Point',
             ),
             array(
                 'title' => 'Fejl',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Point',
             ),
             array(
                 'title' => 'BP',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Point',
             ),
             array(
                 'title' => 'VT',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Point',
             ),
             array(
                 'title' => 'Total',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Serv',
             ),
             array(
                 'title' => 'Fejl',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Serv',
             ),
             array(
                 'title' => 'Es',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Serv',
             ),
             array(
                 'title' => 'Total',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Modtagning',
             ),
             array(
                 'title' => 'Fejl',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Modtagning',
             ),
             array(
                 'title' => 'Pos',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Modtagning',
             ),
             array(
                 'title' => 'Perf',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Modtagning',
             ),
             array(
                 'title' => 'Total',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Angreb',
             ),
             array(
                 'title' => 'Fejl',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Angreb',
             ),
             array(
                 'title' => 'Blok',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Angreb',
             ),
             array(
                 'title' => 'Perf',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Angreb',
             ),
             array(
                 'title' => 'Point',
                 'colspan' => null,
                 'rowspan' => null,
                 'filter_button' => false,
+                'category' => 'Blok',
             )
         )
     )
@@ -174,16 +194,16 @@ $dataTable->setColumnDefs(
         array(
             // 'title' => '#',
             'visible' => 'true',
-            'className' => null,
+            'className' => '"noColVis colvisGroupGenerelt"',
             'orderable' => 'false',
             'searchable' => 'false',
             'orderSequence' => '[ "desc","asc" ]',
             'order' => null,
         ),
         array(
-            // 'title' => 'Spillernavn',
+            // 'title' => 'Klubnavn',
             'visible' => 'true',
-            'className' => null,
+            'className' => '"noColVis colvisGroupGenerelt"',
             'orderable' => 'true',
             'searchable' => 'true',
             'orderSequence' => '[ "desc","asc" ]',
@@ -385,6 +405,7 @@ FROM player_stats
     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
 WHERE excluded_games.game_id IS NULL
 GROUP BY teams.team_name, competitions.gender
+HAVING games_played > 100
 ";
 if ($result = $VolleyStats->db->query($query)) {
     if ($result->num_rows>0){
@@ -392,7 +413,7 @@ if ($result = $VolleyStats->db->query($query)) {
             $data[] = array(
                 '',
                 $row['team_name'],
-                ucfirst($VolleyStats->translateText($row['gender'])),
+                array($row['gender'],ucfirst($VolleyStats->translateText($row['gender']))),
                 array($row['games_played'],$VolleyStats->formatNumber($row['games_played'])),
                 $VolleyStats->formatNumber($row['points_total']/$row['games_played'],2),
                 $VolleyStats->formatNumber($row['error_total']/$row['games_played'],2),
@@ -416,11 +437,15 @@ if ($result = $VolleyStats->db->query($query)) {
 }
 $dataTable->setData($data);
 
-$dataTable->setFilter(array(
-    'text' => 'Hold med mindre end <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="100" size="4"> kampe er undtaget fra denne liste.',
-    'columnNumber' => 3
-));
+// $dataTable->setFilter(array(
+//     'text' => 'Hold med mindre end <input type="text" class="input-small text-center" aria-label="Small" aria-describedby="inputGroup-sizing-sm" id="played_games_min" value="100" size="4"> kampe er undtaget fra denne liste.',
+//     'columnNumber' => 3
+// ));
+?>
 
+<p>Hold med mindre end 100 kampe er undtaget fra denne liste.</p>
+
+<?php
 $dataTable->drawTable();
 
 require('includes/footer.php'); ?>

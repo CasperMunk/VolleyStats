@@ -353,6 +353,20 @@ class VolleyStats {
         return $this->fetchMysqlAll($query);
     }
 
+    function printRecordTable($record){
+        echo '<h5 class="mt-2">'.$record['title'].'</h5>
+        <ol class="records">';
+            foreach ($this->getRecords($record['id']) as $result){
+                echo '
+                <li class="'.$result['gender'].' hidden">
+                    <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
+                    <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
+                </li>
+                ';
+            }
+        echo '</ol>';
+    }
+
     function fetchMysqlAll($query){
         if ($result = $this->db->query($query)) {
             if ($result->num_rows>0){

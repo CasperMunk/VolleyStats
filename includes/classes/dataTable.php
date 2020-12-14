@@ -67,11 +67,9 @@ class dataTable {
 			}
 			$js .= '
 		    var dataTable = $("#DataTable").DataTable({
-		        "responsive": true,
-		        "fixedHeader": {
-		            //headerOffset: $("nav.navbar").outerHeight()
-		        },
-		        "pageLength": 20,
+		        //"responsive": true,
+		        "fixedHeader": true,
+		        "pageLength": 30,
 		        // "stateSave": true,
 		        "language": {
 		            "decimal":        ",",
@@ -96,27 +94,33 @@ class dataTable {
 		                "sortAscending":  ": activate to sort column ascending",
 		                "sortDescending": ": activate to sort column descending"
 		            },
-		            "searchPlaceholder": "Søg f.eks. på \'kvinde\' og/eller navn på spiller..."
+		            "searchPlaceholder": "Søg på navn..",
+		            buttons: {
+		                colvis: "Rediger kolonner"
+		            }
 		        },
-		        "dom": "fBrtpi",
+		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md\'B><\'col-md text-center\'><\'col-md pr-0\'f>>>rtpi",
 		        "buttons": [
 		            ';
-		            foreach ($this->headers[0] as $array){
-		            	if ($array['filter_button']){
-		            		$js .= '
-		            		{
-				                text: "'.$array['title'].'",
-				                extend: "colvis",
-				                columns: ".colvisGroup'.$array['title'].'",
-				            },';		
-		            	}
-		            }
-			$js .= '
-							// {
-				   //              text: "Nulstil",
-				   //              className: "btn-dark",
-				   //              extend: "colvisRestore",
-				   //          }		            
+		            // foreach ($this->headers[0] as $array){
+		            // 	if ($array['filter_button']){
+		            // 		$js .= '
+		            // 		{
+				          //       text: "'.$array['title'].'",
+				          //       extend: "colvis",
+				          //       columns: ".colvisGroup'.$array['title'].'",
+				          //   },';		
+		            // 	}
+		            // }
+		            $js .= '
+		            {
+		                extend: "colvis",
+		                collectionLayout: "two-column",
+		                columns: ":not(.noColVis)",
+		                columnText: function ( dt, idx, title ) {
+			                return dt.column(idx).header().getAttribute("data-category")+\': \'+title;
+			            }
+		            }           
 		        ],
 		        columnDefs: [';
 		        $columnDefCount = 0;
@@ -157,11 +161,26 @@ class dataTable {
 		    } ).draw();
 
 		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
+		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
+		    $("#gender_picker").show().appendTo($(".top-buttons div:nth-child(2)"));
+
+		    $("#gender_picker",this).on("keyup change", function () {
+		    	var val = $("#gender_picker :checked").val();
+	            if (val == "all" ){
+	            	val = "";
+	            }
+                // dataTable.column(2).search(val,false,false,true).draw();
+                dataTable
+                	.column(2)
+                	.search( val ? \'^\'+val+\'$\' : \'\', true, false)
+                	.draw();
+	        } );
 		});
 		</script>';
 
 		$this->jsFile = $js;
 
+		include('includes/gender_picker.php');
 		echo '
 		<table id="DataTable" class="table table-hover table-sm" style="width:100%">
 		    <thead>
@@ -172,6 +191,7 @@ class dataTable {
 		        		echo '<th';
 		        		if ($array['colspan'] != null) echo ' colspan="'.$array['colspan'].'"';
 		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'" class="hasrowspan"';
+		        		if ($array['category'] != null) echo ' data-category="'.$array['category'].'"';
 		        		echo '>'.$array['title'].'</th>';
 		        	}
 		        	echo '</tr>';

@@ -1,6 +1,6 @@
 $(document).ready( function () {
-    $("input[type='radio'][name='gender_picker']").change(function() {
-        var val = $("input[type='radio'][name='gender_picker']:checked").val();
+    $("#gender_picker",this).on("keyup change", function () {
+        var val = $("#gender_picker :checked").val();
         $("ol.records").each(function(){
             $(this).children("li").removeClass("hidden bold");
             if (val != 'all') {            
@@ -11,5 +11,5 @@ $(document).ready( function () {
         });
     });
 
-    $("input[type='radio'][name='gender_picker']").trigger("change");
+    $("#gender_picker").trigger("change");
 });
