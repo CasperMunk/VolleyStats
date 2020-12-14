@@ -1,5 +1,5 @@
 <?php 
-class dataTable {
+class DataTable {
 	var $headers;
 	var $columnDefs;
 	var $data;
