@@ -99,7 +99,7 @@ class DataTable {
 		                colvis: "Rediger kolonner"
 		            }
 		        },
-		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md\'B><\'col-md text-center\'><\'col-md pr-0\'f>>>rtpi",
+		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md\'B><\'col-md text-center\'f><\'col-md pr-0 text-end\'>>>rtpi",
 		        "buttons": [
 		            ';
 		            // foreach ($this->headers[0] as $array){
@@ -162,7 +162,7 @@ class DataTable {
 
 		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
 		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
-		    $("#gender_picker").show().appendTo($(".top-buttons div:nth-child(2)"));
+		    $("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
 
 		    $("#gender_picker",this).on("keyup change", function () {
 		    	var val = $("#gender_picker :checked").val();

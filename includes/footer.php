@@ -33,5 +33,13 @@
     <?php if (in_array('records.js',$loadElements)): ?>
         <script type="text/javascript" src="js/records.js" async></script>
     <?php endif; ?>
+
+    <!-- <script type="text/javascript">
+        //Bootstrap Tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script> -->
 </body>
 </html>

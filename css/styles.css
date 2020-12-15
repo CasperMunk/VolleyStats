@@ -1,6 +1,5 @@
 main > .container {
   padding: 20px 15px 0;
-  max-width: 90%;
 }
 
 .footer {
@@ -62,6 +61,10 @@ body.fullpage {
   width: 12rem!important;
 }
 
+.dataTables_filter{
+  text-align: center!important;
+}
+
 .dataTables_paginate ul.pagination {
   justify-content: center!important;
 }
@@ -80,6 +83,10 @@ ol.records li.bold {
   font-weight: bold;
 }
 
+ol.records li a {
+  color: #212529!important;
+}
+
 table thead tr th.hasrowspan, table thead tr:last-child th {
   border-bottom-color: currentColor!important;
 }
@@ -87,4 +94,8 @@ table thead tr th.hasrowspan, table thead tr:last-child th {
 #status {
   max-height: 5.5rem;
   overflow-y: scroll;
+}
+
+.record-tabs {
+  display: inherit;
 }

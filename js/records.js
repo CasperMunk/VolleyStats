@@ -12,4 +12,10 @@ $(document).ready( function () {
     });
 
     $("#gender_picker").trigger("change");
+
+    // $("#record_tabs",this).on("keyup change", function () {
+    //     var val = $("#record_tabs :checked").val();
+    //     var triggerEl = document.querySelector('#record_tabs a[href="#profile"]')
+    //     bootstrap.Tab.getInstance(triggerEl).show()
+    // });
 });

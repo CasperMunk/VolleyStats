@@ -340,7 +340,7 @@ class VolleyStats {
         }else{
             $query = "
                 SELECT 
-                    players.id, players.player_name, players.gender, player_stats.game_id, MAX(player_stats.".$type.") as ".$type."    
+                    players.id, players.player_name, players.gender, player_stats.game_id as game_id, MAX(player_stats.".$type.") as ".$type." 
                 FROM players 
                     INNER JOIN player_stats ON player_stats.player_id = players.id 
                     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
@@ -359,8 +359,10 @@ class VolleyStats {
             foreach ($this->getRecords($record['id']) as $result){
                 echo '
                 <li class="'.$result['gender'].' hidden">
-                    <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
-                    <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
+                    <a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" data-bs-toggle="tooltip" title="Some tooltip text!" target="_blank">
+                        <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
+                        <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
+                    </a>
                 </li>
                 ';
             }
@@ -401,7 +403,7 @@ class VolleyStats {
         return $string;
     }
 
-        function formatNumber($val,$decimal=0){
+    function formatNumber($val,$decimal=0){
         if (is_array($val)){
             return array_map(function($num){return number_format($num,0,",",".");}, $val);
         }else{
@@ -410,7 +412,7 @@ class VolleyStats {
         
     }
 
-        function cleanInputData($val,$type="int"){
+    function cleanInputData($val,$type="int"){
         $val = strip_tags($val);
         if ($type == "int"){
             return intval(preg_replace('/\D/', '',$val));
