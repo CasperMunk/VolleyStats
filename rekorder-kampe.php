@@ -31,13 +31,7 @@ array(
 <div class="tab-content" id="nav-tabContent">
     <div class="tab-pane fade show active" id="nav-games" role="tabpanel" aria-labelledby="nav-games-tab">
         <?php 
-        $VolleyStats->printRecordTable(
-            array(
-                "id" => "games_played",
-                "title" => "Antal kampe spillet",
-                "measurement" => "kampe"
-            )
-        );
+        
         ?>
     </div>
     <div class="tab-pane fade" id="nav-sets" role="tabpanel" aria-labelledby="nav-sets-tab">

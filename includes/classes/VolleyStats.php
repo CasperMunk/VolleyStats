@@ -383,12 +383,14 @@ class VolleyStats {
         <ol class="records">';
             foreach ($this->getRecords($record['id']) as $result){
                 echo '
-                <li class="'.$result['gender'].' hidden">
-                    <a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" target="_blank">
+                <li class="'.$result['gender'].' hidden">';
+                    if (isset($result['game_id'])) echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" target="_blank">';
+                        echo '
                         <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
                         <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
-                    </a>
-                </li>
+                        ';
+                    if (isset($result['game_id'])) echo '</a>';
+                echo '</li>
                 ';
             }
         echo '</ol>';
