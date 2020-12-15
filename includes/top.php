@@ -70,9 +70,9 @@ array(
             //     "url" => "",
             // ),
             array(
-                "url" => "rekorder-spiller",
-                "navi_title" => "Spillere",
-                "title" => "Rekorder for spillere",
+                "url" => "rekorder-spiller-statistik",
+                "navi_title" => "Spiller-statistik",
+                "title" => "Rekorder for spiller-statistik",
                 "meta_description" => "",
             ),
             array(

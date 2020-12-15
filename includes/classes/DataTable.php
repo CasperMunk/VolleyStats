@@ -6,6 +6,393 @@ class DataTable {
 	var $filter;
 	var $jsFile;
 
+	function __construct(){
+		$this->setHeaders(
+		    array(
+		        array(
+		            array(
+		                'title' => 'Generelt',
+		                'colspan' => 4,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 100,
+		            ),
+		            array(
+		                'title' => 'Point',
+		                'colspan' => 4,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 200,
+		            ),
+		            array(
+		                'title' => 'Serv',
+		                'colspan' => 3,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 300,
+		            ),
+		            array(
+		                'title' => 'Modtagning',
+		                'colspan' => 4,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 400,
+		            ),
+		            array(
+		                'title' => 'Angreb',
+		                'colspan' => 4,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 800,
+		            ),
+		            array(
+		                'title' => 'Blok',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => null,
+		                'prio' => 900,
+		            )
+		        ),
+		        array(
+		            array(
+		                'title' => '#',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Generelt',
+		                'prio' => 200,
+		            ),
+		            array(
+		                'title' => 'Navn',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Generelt',
+		                'prio' => 100,
+		            ),
+		            array(
+		                'title' => 'Køn',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Generelt',
+		                'prio' => 600,
+		            ),
+		            array(
+		                'title' => 'Kampe',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Generelt',
+		                'prio' => 300,
+		            ),
+		            array(
+		                'title' => 'Tot',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Point',
+		                'prio' => 400,
+		            ),
+		            array(
+		                'title' => 'Fejl',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Point',
+		            ),
+		            array(
+		                'title' => 'BP',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Point',
+		            ),
+		            array(
+		                'title' => 'VT',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Point',
+		            ),
+		            array(
+		                'title' => 'Tot',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Serv',
+		            ),
+		            array(
+		                'title' => 'Fejl',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Serv',
+		            ),
+		            array(
+		                'title' => 'Es',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Serv',
+		                'prio' => 600,
+		            ),
+		            array(
+		                'title' => 'Tot',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Modtagning',
+		            ),
+		            array(
+		                'title' => 'Fejl',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Modtagning',
+		            ),
+		            array(
+		                'title' => 'Pos',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Modtagning',
+		            ),
+		            array(
+		                'title' => 'Perf',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Modtagning',
+		                'prio' => 700,
+		            ),
+		            array(
+		                'title' => 'Tot',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Angreb',
+		            ),
+		            array(
+		                'title' => 'Fejl',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Angreb',
+		            ),
+		            array(
+		                'title' => 'Blok',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Angreb',
+		            ),
+		            array(
+		                'title' => 'Perf',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Angreb',
+		                'prio' => 800,
+		            ),
+		            array(
+		                'title' => 'Point',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'filter_button' => false,
+		                'category' => 'Blok',
+		                'prio' => 900,
+		            )
+		        )
+		    )
+		);
+
+		$this->setColumnDefs(
+		    array(
+		        array(
+		            // 'title' => '#',
+		            'visible' => 'true',
+		            'className' => '"noColVis colvisGroupGenerelt"',
+		            'orderable' => 'false',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Navn',
+		            'visible' => 'true',
+		            'className' => '"noColVis colvisGroupGenerelt"',
+		            'orderable' => 'true',
+		            'searchable' => 'true',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Køn',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupGenerelt"',
+		            'orderable' => 'false',
+		            'searchable' => 'true',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Kampe spillet',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupGenerelt"',
+		            'orderable' => 'true',
+		            'searchable' => 'true',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Total',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupPoint"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => '"desc"'
+		        ),
+		        array(
+		            // 'title' => 'Fejl',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupPoint"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'BP',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupPoint"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'VT',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupPoint"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Total',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupServ"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Fejl',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupServ"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Es',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupServ"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Total',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Fejl',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Pos',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Perf',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Total',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Fejl',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Blok',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Perf',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        ),
+		        array(
+		            // 'title' => 'Point',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupBlok"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+		            'order' => null,
+		        )
+		    )
+		);
+	}
+
 	function setHeaders($array){
 		if (is_array($array)) $this->headers = $array;
 	}
@@ -67,7 +454,7 @@ class DataTable {
 			}
 			$js .= '
 		    var dataTable = $("#DataTable").DataTable({
-		        //"responsive": true,
+		        "responsive": true,
 		        "fixedHeader": true,
 		        "pageLength": 30,
 		        // "stateSave": true,
@@ -192,6 +579,7 @@ class DataTable {
 		        		if ($array['colspan'] != null) echo ' colspan="'.$array['colspan'].'"';
 		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'" class="hasrowspan"';
 		        		if ($array['category'] != null) echo ' data-category="'.$array['category'].'"';
+		        		if ($array['prio'] != null) echo ' data-priority="'.$array['prio'].'"';
 		        		echo '>'.$array['title'].'</th>';
 		        	}
 		        	echo '</tr>';

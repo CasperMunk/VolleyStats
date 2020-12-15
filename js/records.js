@@ -11,7 +11,7 @@ $(document).ready( function () {
         });
     });
 
-    $("#gender_picker").trigger("change");
+    $("#gender_picker").show().trigger("change");
 
     // $("#record_tabs",this).on("keyup change", function () {
     //     var val = $("#record_tabs :checked").val();
