@@ -1,7 +1,9 @@
 <?php 
 require('includes/top.php');
-require('includes/protect.php');
-Protect\with('login.php', $secrets['password'],"VolleyStats");
+if ($key != $secrets['cronjob_key']){
+    require('includes/protect.php');
+    Protect\with('login.php', $secrets['password'],"VolleyStats");    
+}
 $loadElements = array("jQuery","updater.js");
 
 if ($mode == 'update_competition' OR $mode == 'get_competition'){
