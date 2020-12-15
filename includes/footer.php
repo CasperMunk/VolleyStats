@@ -4,8 +4,8 @@
 
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container">
-            <div class="float-start text-muted text-start small">Lavet af Casper Munk Christiansen</div>
-            <div class="float-end text-muted text-end small"><a href="betingelser" class="text-muted">Betingelser for brug</a></div>
+            <div class="float-start text-muted text-start small">Lavet af Casper Munk<span class="d-none d-md-inline"> Christiansen</span></div>
+            <div class="float-end text-muted text-end small"><a href="betingelser" class="text-muted">Betingelser<span class="d-none d-md-inline"> for brug</span></a></div>
         </div>
     </footer>
     <?php endif; ?>
@@ -34,12 +34,12 @@
         <script type="text/javascript" src="js/records.js" async></script>
     <?php endif; ?>
 
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         //Bootstrap Tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-    </script> -->
+    </script>
 </body>
 </html>
