@@ -99,7 +99,7 @@ class DataTable {
 		                colvis: "Rediger kolonner"
 		            }
 		        },
-		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md\'B><\'col-md text-md-center mb-2\'f><\'col-md pr-0 text-md-end\'>>>rtpi",
+		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md text-start\'B><\'col-md text-md-center mb-2\'f><\'col-md pr-0 text-md-end\'>>>rtpi",
 		        "buttons": [
 		            ';
 		            // foreach ($this->headers[0] as $array){
