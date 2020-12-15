@@ -359,7 +359,7 @@ class VolleyStats {
             foreach ($this->getRecords($record['id']) as $result){
                 echo '
                 <li class="'.$result['gender'].' hidden">
-                    <a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" data-bs-toggle="tooltip" title="Some tooltip text!" target="_blank">
+                    <a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" target="_blank">
                         <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
                         <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
                     </a>

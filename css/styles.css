@@ -58,11 +58,11 @@ body.fullpage {
 }
 
 .dataTables_filter input[type="search"] {
-  width: 12rem!important;
+  width: 13rem!important;
 }
 
 .dataTables_filter{
-  text-align: center!important;
+  text-align: inherit!important;
 }
 
 .dataTables_paginate ul.pagination {
