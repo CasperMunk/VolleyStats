@@ -7,7 +7,7 @@ $mode = get('mode');
 $game_id = get('game_id');
 $gender = get('gender');
 $competition_id = get('competition_id');
-$key = get('key');
+$cronjob_key = get('cronjob_key');
 
 $full_page = false;
 $loadElements = array();

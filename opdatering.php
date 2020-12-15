@@ -1,6 +1,6 @@
 <?php 
 require('includes/top.php');
-if ($key != $secrets['cronjob_key']){
+if ($cronjob_key != $secrets['cronjob_key']){
     require('includes/protect.php');
     Protect\with('login.php', $secrets['password'],"VolleyStats");    
 }
