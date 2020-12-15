@@ -127,10 +127,22 @@ class VolleyStats {
 
         $game_data["location"] = "'".$this->cleanInputData($this->getTagById("span","Content_Main_LB_Stadium",$content),"text")."'";
 
+        $date_time = $this->cleanInputData($this->getTagById("span","Content_Main_LB_DateTime",$content),"text");
+        $months_array = array("januar" => 1, "februar" => 2, "marts" => 3, "april" => 4, "maj" => 5, "juni" => 6, "juli" => 7, "august" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
+        $date_time = strtr($date_time,$months_array);
+        $game_data["date_time"] = "'".DateTime::createFromFormat('j. n Y - H:i', $date_time)->format('Y-m-d H:i:s')."'";
+
         $game_data["spectators"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_Spectators",$content));
 
-        $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));
+        if (strpos($content, 'id="Content_Main_LB_Referees"') == true) {
+            $referee1_name = $this->reverseName(trim(explode("-",$this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text"))[0]));
+            $game_data["referee1_id"] = $this->getRefereeId($referee1_name);
 
+            $referee2_name = $this->reverseName(trim(explode("-",$this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text"))[1]));
+            $game_data["referee2_id"] = $this->getRefereeId($referee2_name);
+        }
+        
+        $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));
         $game_data["guest_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetGuest",$content));
 
         //Get set scores an loop through them
@@ -313,9 +325,22 @@ class VolleyStats {
                     return $row["id"];
                 }
             }else{
-                if ($result = $this->db->query("INSERT INTO teams (team_name, competition_id) VALUES ('$team_name', $competition_id)") === TRUE){
-                    return $this->db->insert_id;
+                return $this->executeMysql("INSERT INTO teams (team_name, competition_id) VALUES ('$team_name', $competition_id)");
+            }
+        }
+        return false;
+    }
+
+    function getRefereeId($name){
+        if (empty($name)) return false;
+
+        if ($result = $this->db->query("SELECT id FROM referees WHERE name='$name'")) {
+            if ($result->num_rows>0){
+                while($row = $result->fetch_assoc()) {
+                    return $row["id"];
                 }
+            }else{
+                return $this->executeMysql("INSERT INTO referees (name) VALUES ('$name')");
             }
         }
         return false;
@@ -384,10 +409,15 @@ class VolleyStats {
     }
 
     function executeMysql($query){
+        if (empty($query)){
+            echo 'No Query!'; 
+            return;  
+        } 
         if ($result = $this->db->query($query) === TRUE){
             return $this->db->insert_id;
         }else{
             printf("MySQL Error: %s\n", $this->db->error);
+            echo '<p><pre>MySQL Query: '.$query;
             exit();
         }
     }
