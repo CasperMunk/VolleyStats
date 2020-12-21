@@ -1,5 +1,5 @@
 var cancelAjax = false;
-var maxThreads = 5;
+var maxThreads = 1;
 var usedThreads = 1;
 $(document).ready(function(){
     $("button#update-button").click(function(e){
