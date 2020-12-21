@@ -454,7 +454,8 @@ class DataTable {
 			}
 			$js .= '
 		    var dataTable = $("#DataTable").DataTable({
-		        "responsive": true,
+				"responsive": true,
+				// "pagingType": "simple",
 		        "fixedHeader": true,
 		        "pageLength": 30,
 		        // "stateSave": true,
@@ -549,7 +550,8 @@ class DataTable {
 
 		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
 		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
-		    $("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
+			$("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
+			$(".paginate_button:not(:first-child):not(:last-child)").addClass("d-none d-sm-block");
 
 		    $("#gender_picker",this).on("keyup change", function () {
 		    	var val = $("#gender_picker :checked").val();
@@ -569,7 +571,7 @@ class DataTable {
 
 		include('includes/gender_picker.php');
 		echo '
-		<table id="DataTable" class="table table-hover table-sm" style="width:100%">
+		<table id="DataTable" class="table table-striped table-bordered table-hover table-sm" style="width:100%">
 		    <thead>
 		        ';
 		        foreach ($this->headers as $headerRows){

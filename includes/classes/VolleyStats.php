@@ -110,7 +110,7 @@ class VolleyStats {
 
     function getGameData($game_id,$competition_id,$gender){
         if (empty($game_id) OR empty($competition_id) OR empty($gender)) return false;
-        $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$game_id;
+        $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
         $content = $this->getHtmlData($url);
 
         $set_score_data = trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text"));
@@ -278,27 +278,33 @@ class VolleyStats {
     function getPlayerId($player_name,$gender){
         if (empty($player_name) OR $player_name == null) return false;
 
-        if (empty($this->player_list) OR $this->player_list == null) $this->reloadPlayers();
+        if ((time() - $_SESSION['players_updated']) > (60 * 30)) {
+            $this->reloadPlayers();
+        }
 
         //Search for player
-        $player_id = array_search($player_name,$this->player_list);
+        $player_id = array_search($player_name,$_SESSION['players']);
         if ($player_id == false){
             //Add new player
             $query = "INSERT INTO players (player_name,gender) VALUES ('$player_name','$gender')";
             $player_id = $this->executeMysql($query);
-            $this->player_list[$player_id] = $player_name;
+            $_SESSION['players'][$player_id] = $player_name;
+            $_SESSION['players_updated'] = time();
         }
 
         return $player_id;
     }
 
     function reloadPlayers(){
-        $this->player_list = array();
+        echo 'reloading players';
+        $_SESSION['players'] = array();
         if ($result = $this->db->query("SELECT id, player_name FROM players")) {
             if ($result->num_rows>0){
                 while($row = $result->fetch_assoc()) {
-                    $this->player_list[$row["id"]] = $row["player_name"];
+                    $_SESSION['players'][$row["id"]] = $row["player_name"];
                 }
+
+                $_SESSION['players_updated'] = time();
             }
         }
     }

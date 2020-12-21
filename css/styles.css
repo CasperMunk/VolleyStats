@@ -99,3 +99,7 @@ table thead tr th.hasrowspan, table thead tr:last-child th {
 .record-tabs {
 	display: inherit;
 }
+
+.navbar-brand img {
+	vertical-align: text-bottom;
+}

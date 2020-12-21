@@ -20,6 +20,9 @@
         <link rel="preload" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css"></noscript>
 
+        <link rel="preload" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap5.min.css"></noscript>
+
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap5.min.js" async></script>
         

@@ -97,7 +97,7 @@ require('includes/header.php'); ?>
 
 <div class="mb-2">
     <div class="progress" style="height: 20px; display: none;">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 </div>
 
