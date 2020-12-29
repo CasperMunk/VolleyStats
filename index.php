@@ -23,7 +23,7 @@ require('includes/header.php');
 
             <p></p>
 
-            <p>Der indsamles kun statistik data for VolleyLigaen (inkl. slutspil, playdown og kvalifikation) og kun kampe som er færdigspillede. Pokal-kampe er pt. ikke med, men kommer det måske på et senere tidspunkt. Statistik for den indeværende volleyball sæson opdateres en gang i døgnet. Statistik fra tidligere sæsoner opdateres ved lejlighed.
+            <p>Der indsamles kun statistik data for VolleyLigaen (inkl. slutspil, playdown og kvalifikation) og kun kampe som er færdigspillede. Pokal-kampe er pt. ikke med i alle sæsoner, men kommer det måske på et senere tidspunkt. Statistik for den indeværende volleyball sæson opdateres en gang i døgnet. Statistik fra tidligere sæsoner opdateres ved lejlighed.
             </p>
 
         <!--     <p>
@@ -38,7 +38,7 @@ require('includes/header.php');
             $stats = $VolleyStats->getOverviewStats();
             ?>
             <p>
-                I statistik databasen findes der i øjeblikket <b><?php echo $stats['seasons']; ?></b> sæsoner, <!-- <b><?php echo $stats['competitions']; ?></b> turneringer, --><b><?php echo $stats['teams']; ?></b> hold, <b><?php echo $stats['players']; ?></b> spillere, <b><?php echo $stats['games']; ?></b> kampe og <b><?php echo $stats['player_stats']; ?></b> volleyball kamp statistik-linjer.
+                I volleyball statistik databasen findes der i øjeblikket <b><?php echo $stats['seasons']; ?></b> sæsoner, <!-- <b><?php echo $stats['competitions']; ?></b> turneringer, --><b><?php echo $stats['teams']; ?></b> hold, <b><?php echo $stats['players']; ?></b> spillere, <b><?php echo $stats['games']; ?></b> VolleyLiga kampe og <b><?php echo $stats['player_stats']; ?></b> volleyball kamp statistik-linjer.
             </p>
 
             <p>

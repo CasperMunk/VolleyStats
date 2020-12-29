@@ -1,13 +1,25 @@
 <?php 
 class DataTable {
-	var $headers;
-	var $columnDefs;
-	var $data;
-	var $filter;
-	var $jsFile;
+	private $data = array();
+ 
+    public function __set($name, $value) 
+    {
+        $this->data[$name] = $value;
+    }
+ 
+    public function __get($name) 
+    {
+        if (isset($this->data[$name])) {
+            return $this->data[$name];
+        }
+	}
+	
+	function __construct($VolleyStats){
+		$this->VolleyStats = $VolleyStats;
+	}
 
-	function __construct(){
-		$this->setHeaders(
+	function init(){
+		$this->headers = 
 		    array(
 		        array(
 		            array(
@@ -33,14 +45,14 @@ class DataTable {
 		            ),
 		            array(
 		                'title' => 'Modtagning',
-		                'colspan' => 4,
+		                'colspan' => 6,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 400,
 		            ),
 		            array(
 		                'title' => 'Angreb',
-		                'colspan' => 4,
+		                'colspan' => 6,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 800,
@@ -58,7 +70,6 @@ class DataTable {
 		                'title' => '#',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Generelt',
 		                'prio' => 200,
 		            ),
@@ -66,7 +77,6 @@ class DataTable {
 		                'title' => 'Navn',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Generelt',
 		                'prio' => 100,
 		            ),
@@ -74,7 +84,6 @@ class DataTable {
 		                'title' => 'Køn',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Generelt',
 		                'prio' => 600,
 		            ),
@@ -82,7 +91,6 @@ class DataTable {
 		                'title' => 'Kampe',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Generelt',
 		                'prio' => 300,
 		            ),
@@ -90,7 +98,6 @@ class DataTable {
 		                'title' => 'Tot',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Point',
 		                'prio' => 400,
 		            ),
@@ -98,42 +105,36 @@ class DataTable {
 		                'title' => 'Fejl',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Point',
 		            ),
 		            array(
 		                'title' => 'BP',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Point',
 		            ),
 		            array(
 		                'title' => 'VT',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Point',
 		            ),
 		            array(
 		                'title' => 'Tot',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Serv',
 		            ),
 		            array(
 		                'title' => 'Fejl',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Serv',
 		            ),
 		            array(
 		                'title' => 'Es',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Serv',
 		                'prio' => 600,
 		            ),
@@ -141,28 +142,37 @@ class DataTable {
 		                'title' => 'Tot',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Modtagning',
 		            ),
 		            array(
 		                'title' => 'Fejl',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Modtagning',
 		            ),
 		            array(
 		                'title' => 'Pos',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
+		                'category' => 'Modtagning',
+					),
+					array(
+		                'title' => 'Pos%',
+		                'colspan' => null,
+		                'rowspan' => null,
 		                'category' => 'Modtagning',
 		            ),
 		            array(
 		                'title' => 'Perf',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
+		                'category' => 'Modtagning',
+		                'prio' => 700,
+					),
+		            array(
+		                'title' => 'Perf%',
+		                'colspan' => null,
+		                'rowspan' => null,
 		                'category' => 'Modtagning',
 		                'prio' => 700,
 		            ),
@@ -170,28 +180,38 @@ class DataTable {
 		                'title' => 'Tot',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Angreb',
 		            ),
 		            array(
 		                'title' => 'Fejl',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Angreb',
 		            ),
 		            array(
 		                'title' => 'Blok',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Angreb',
 		            ),
 		            array(
 		                'title' => 'Perf',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
+		                'category' => 'Angreb',
+		                'prio' => 800,
+					),
+					array(
+		                'title' => 'Kill%',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Angreb',
+		                'prio' => 800,
+					),
+					array(
+		                'title' => 'Eff',
+		                'colspan' => null,
+		                'rowspan' => null,
 		                'category' => 'Angreb',
 		                'prio' => 800,
 		            ),
@@ -199,18 +219,24 @@ class DataTable {
 		                'title' => 'Point',
 		                'colspan' => null,
 		                'rowspan' => null,
-		                'filter_button' => false,
 		                'category' => 'Blok',
 		                'prio' => 900,
 		            )
 		        )
 		    )
-		);
+		;
 
-		$this->setColumnDefs(
+		$defaultFormat = '$.fn.dataTable.render.number( ".", ",", 0, "", "")';	
+
+		if ($this->context == 'per_game'){
+			$defaultFormat = '$.fn.dataTable.render.number( ".", ",", 2, "", "")';	
+		}
+		
+		$this->columns = 
 		    array(
 		        array(
-		            // 'title' => '#',
+					'name' => '"number"',
+					// 'data' => '"number"',
 		            'visible' => 'true',
 		            'className' => '"noColVis colvisGroupGenerelt"',
 		            'orderable' => 'false',
@@ -219,7 +245,8 @@ class DataTable {
 		            'order' => null,
 		        ),
 		        array(
-		            // 'title' => 'Navn',
+					'name' => '"name"',
+					'data' => '"name"',
 		            'visible' => 'true',
 		            'className' => '"noColVis colvisGroupGenerelt"',
 		            'orderable' => 'true',
@@ -228,236 +255,331 @@ class DataTable {
 		            'order' => null,
 		        ),
 		        array(
-		            // 'title' => 'Køn',
+					'name' => '"gender"',
+					'data' => '"gender"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupGenerelt"',
 		            'orderable' => 'false',
 		            'searchable' => 'true',
-		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+		            'orderSequence' => null,
+					'order' => null,
+					'render' => 'function (data,type){ 
+						if (type === "display") {
+							switch (data){
+								case "male":
+									return "Mand";
+									break;
+								case "female":
+									return "Kvinde";
+									break;
+							}
+						}
+						return data;
+					}'
 		        ),
 		        array(
-		            // 'title' => 'Kampe spillet',
+					'name' => '"games_played"',
+					'data' => '"games_played"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupGenerelt"',
 		            'orderable' => 'true',
 		            'searchable' => 'true',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 0, "", "")',
 		        ),
 		        array(
-		            // 'title' => 'Total',
+					'name' => '"points_total"',
+					'data' => '"points_total"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => '"desc"'
+					'order' => '"desc"',
+					'render' => $defaultFormat
 		        ),
 		        array(
-		            // 'title' => 'Fejl',
+					'name' => '"error_total"',
+					'data' => '"error_total"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'BP',
+					'name' => '"break_points"',
+					'data' => '"break_points"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'VT',
+					'name' => '"win_loss"',
+					'data' => '"win_loss"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Total',
+					'name' => '"serve_total"',
+					'data' => '"serve_total"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupServ"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Fejl',
+					'name' => '"serve_error"',
+					'data' => '"serve_error"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupServ"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Es',
+					'name' => '"serve_ace"',
+					'data' => '"serve_ace"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupServ"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Total',
+					'name' => '"receive_total"',
+					'data' => '"receive_total"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupModtagning"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Fejl',
+					'name' => '"receive_error"',
+					'data' => '"receive_error"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupModtagning"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Pos',
+					'name' => '"receive_position"',
+					'data' => '"receive_position"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupModtagning"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
+				),
+				array(
+					'name' => '"receive_pos_percent"',
+					'data' => '"receive_pos_percent"',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
 		        ),
 		        array(
-		            // 'title' => 'Perf',
+					'name' => '"receive_perfect"',
+					'data' => '"receive_perfect"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupModtagning"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
+				),
+				array(
+					'name' => '"receive_perf_percent"',
+					'data' => '"receive_perf_percent"',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
 		        ),
 		        array(
-		            // 'title' => 'Total',
+					'name' => '"spike_total"',
+					'data' => '"spike_total"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupAngreb"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Fejl',
+					'name' => '"spike_error"',
+					'data' => '"spike_error"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupAngreb"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Blok',
+					'name' => '"spike_blocked"',
+					'data' => '"spike_blocked"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupAngreb"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        ),
 		        array(
-		            // 'title' => 'Perf',
+					'name' => '"spike_win"',
+					'data' => '"spike_win"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupAngreb"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
+				),
+				array(
+					'name' => '"kill_percent"',
+					'data' => '"kill_percent"',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
+				),
+				array(
+					'name' => '"spike_eff"',
+					'data' => '"spike_eff"',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 2, "", "")'
 		        ),
 		        array(
-		            // 'title' => 'Point',
+					'name' => '"block_win"',
+					'data' => '"block_win"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupBlok"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
-		            'order' => null,
+					'order' => null,
+					'render' => $defaultFormat,
 		        )
 		    )
-		);
+		;
 	}
 
-	function setHeaders($array){
-		if (is_array($array)) $this->headers = $array;
-	}
-
-	function setColumnDefs($array){
-		if (is_array($array)) $this->columnDefs = $array;
-	}
-
-	function setData($array){
-		if (is_array($array)) $this->data = $array;
-	}
-
-	function setFilter($array){
-		if (is_array($array)) $this->filter = $array;
-	}
-
-	function drawTable(){
-		if (!is_array($this->headers)) exit('Headers not set!');
-		if (!is_array($this->columnDefs)) exit('columnDefs not set!');
-		if (!is_array($this->data)) exit('Data not set!');
-
-		if (isset($this->filter)){
-			echo '
-			<p>
-			    '.$this->filter['text'].'
-			</p>
-			';
+	function checkSettings(){
+		foreach (array('type', 'context', 'length', 'query') AS $item){
+			if (!isset($this->data[$item])){
+				exit(ucfirst($item)." not set!");
+			}
 		}
+	}
+
+	function print(){
+		$this->init();
+		$this->checkSettings();
+		$count = $this->VolleyStats->getMysqlCount($this->query);	
+
+		include('includes/gender_picker.php');
+		echo '
+		<table id="DataTable" class="table table-striped table-bordered table-hover table-sm nowrap" style="width:100%; display:none;">
+		    <thead>
+		        ';
+		        foreach ($this->headers as $headerRows){
+		        	echo '<tr>';
+		        	foreach ($headerRows as $array){
+		        		echo '<th';
+		        		if ($array['colspan'] != null) echo ' colspan="'.$array['colspan'].'"';
+		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'" class="hasrowspan"';
+		        		if ($array['category'] != null) echo ' data-category="'.$array['category'].'"';
+		        		//if ($array['prio'] != null) echo ' data-priority="'.$array['prio'].'"';
+		        		echo '>'.$array['title'].'</th>';
+		        	}
+		        	echo '</tr>';
+		        }
+		    echo '
+		    </thead>
+		    <tbody>
+			';
+			if ($result = $this->VolleyStats->db->query($this->query.' LIMIT '.$this->length)) {
+				$table_columns = array_column($this->columns,'data');
+				if ($result->num_rows>0){
+					$n = 1;
+					echo "<tr>";
+					while($row = $result->fetch_assoc()) {
+						echo "<td>".$n."</td>";	
+						foreach ($table_columns as $item){
+							$item = trim($item,'\'"');
+							if (!empty($item)) echo "<td>".$row[$item]."</td>";	
+						}
+						$n++;
+						echo "</tr>";
+					}
+					
+				}
+			}
+		    echo ' 
+		    </tbody>
+		</table>
+		<p>
+		';
 
 		$js = '
-		<script type="text/javascript">';
-		$js .= '
+		<script type="text/javascript">
 		$(document).ready( function () {
-			';
-			if (isset($this->filter)){
-				$js .= '
-				$.fn.dataTable.ext.search.push(
-			        function( settings, data, dataIndex ) {
-			            var min = parseInt( $("#played_games_min").val(), 10 );
-			            // var max = parseInt( $("#max").val(), 10 );
-			            var max = parseInt( "", 10 );
-			            var games_played = parseFloat( data['.$this->filter["columnNumber"].'] ) || 0; // use data from the games played column
-			     
-			            if ( ( isNaN( min ) && isNaN( max ) ) ||
-			                 ( isNaN( min ) && games_played <= max ) ||
-			                 ( min <= games_played   && isNaN( max ) ) ||
-			                 ( min <= games_played   && games_played <= max ) )
-			            {
-			                return true;
-			            }
-			            return false;
-			        }
-			    );
-
-			    $("input#played_games_min").keyup( function() {
-			        dataTable.draw();
-			    } );
-				';
-			}
-			$js .= '
 		    var dataTable = $("#DataTable").DataTable({
 				"responsive": true,
-				// "pagingType": "simple",
 		        "fixedHeader": true,
-		        "pageLength": 30,
+				"pageLength": '.$this->length.',
+				"processing": true,
+				"serverSide": true,
+				"ajax": true,
+				"deferLoading": '.$count.',
 		        // "stateSave": true,
 		        "language": {
 		            "decimal":        ",",
@@ -468,10 +590,10 @@ class DataTable {
 		            "infoPostFix":    "",
 		            "thousands":      ".",
 		            "lengthMenu":     "Vis _MENU_ linjer",
-		            "loadingRecords": "Hender...",
-		            "processing":     "Arbejder...",
+		            "loadingRecords": "Henter...",
+		            "processing":     "<div class=\"spinner-border text-primary m-3\" role=\"status\"></div>",
 		            "search":         "",
-		            "zeroRecords":    "Ingen linjer matcher s&oslash;gningen",
+		            "zeroRecords":    "Ingen resultater matcher s&oslash;gningen",
 		            "paginate": {
 		                "first":      "F&oslash;rste",
 		                "last":       "Sidste",
@@ -484,23 +606,11 @@ class DataTable {
 		            },
 		            "searchPlaceholder": "Søg på navn..",
 		            buttons: {
-		                colvis: "Rediger kolonner"
+		                colvis: "Kolonner"
 		            }
 		        },
-		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-md text-start\'B><\'col-md text-md-center mb-2\'f><\'col-md pr-0 text-md-end\'>>>rtpi",
+		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-4 order-1 col-md-4 order-md-1 text-start\'B><\'col-12 order-12 col-md-4 order-md-2 text-md-center mb-2\'f><\'col-8 order-2 col-md-4 order-md-3 pr-0 text-end\'>>>rtpi",
 		        "buttons": [
-		            ';
-		            // foreach ($this->headers[0] as $array){
-		            // 	if ($array['filter_button']){
-		            // 		$js .= '
-		            // 		{
-				          //       text: "'.$array['title'].'",
-				          //       extend: "colvis",
-				          //       columns: ".colvisGroup'.$array['title'].'",
-				          //   },';		
-		            // 	}
-		            // }
-		            $js .= '
 		            {
 		                extend: "colvis",
 		                collectionLayout: "two-column",
@@ -510,13 +620,12 @@ class DataTable {
 			            }
 		            }           
 		        ],
-		        columnDefs: [';
-		        $columnDefCount = 0;
-	        	foreach ($this->columnDefs as $array){
+		        "columns": [';
+	        	foreach ($this->columns as $array){
 	            		$js .= '
 	            		{
-	            			"targets": '.$columnDefCount.',
-	            			';
+						';
+							if (!array_key_exists('data',$array)) $js .= '"data": '.$array['name'].',';
 			                foreach ($array as $key => $value){
 			                	if ($value != null AND $key != "order"){
 			                		$js .= '"'.$key.'": '.$value.',
@@ -525,13 +634,12 @@ class DataTable {
 
 			                }
 			            $js .= '},';
-			            $columnDefCount++;
 		            }
 		        $js .= '
-		        ],
+				],
 		        "order": [ ';
 		        $columnDefCount = 0;
-	        	foreach ($this->columnDefs as $array){
+	        	foreach ($this->columns as $array){
 	                foreach ($array as $key => $value){
 	                	if ($key == 'order' AND $value != null){
 	                		$js .= '['.$columnDefCount.', '.$value.' ],';
@@ -539,74 +647,68 @@ class DataTable {
 	                }
 	                $columnDefCount++;
 	            }
-		    	$js .= '],
-		    });
+				$js .= '],
+				
+			});
+			$("#DataTable").show();
 
-		    dataTable.on( "order.dt search.dt", function () {
+		    dataTable.on( "draw.dt", function () {
 		        dataTable.column(0, {order:"applied"}).nodes().each( function (cell, i) {
-		            cell.innerHTML = i+1;
+					var PageInfo = $("#DataTable").DataTable().page.info();
+		            cell.innerHTML = i+1+PageInfo.start;
 		        } );
-		    } ).draw();
+		    } );
 
 		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
 		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
 			$("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
-			$(".paginate_button:not(:first-child):not(:last-child)").addClass("d-none d-sm-block");
 
-		    $("#gender_picker",this).on("keyup change", function () {
+		    $("#gender_picker",this).on("change", function () {
 		    	var val = $("#gender_picker :checked").val();
 	            if (val == "all" ){
 	            	val = "";
-	            }
-                // dataTable.column(2).search(val,false,false,true).draw();
+				}
+
                 dataTable
-                	.column(2)
-                	.search( val ? \'^\'+val+\'$\' : \'\', true, false)
+                	.columns(2)
+                	//.search( val ? \'^\'+val+\'$\' : \'\', true, false)
+                	.search( val , true, false)
                 	.draw();
-	        } );
+			} );
+			
 		});
+		
 		</script>';
 
 		$this->jsFile = $js;
+	}
 
-		include('includes/gender_picker.php');
-		echo '
-		<table id="DataTable" class="table table-striped table-bordered table-hover table-sm" style="width:100%">
-		    <thead>
-		        ';
-		        foreach ($this->headers as $headerRows){
-		        	echo '<tr>';
-		        	foreach ($headerRows as $array){
-		        		echo '<th';
-		        		if ($array['colspan'] != null) echo ' colspan="'.$array['colspan'].'"';
-		        		if ($array['rowspan'] != null) echo ' rowspan="'.$array['rowspan'].'" class="hasrowspan"';
-		        		if ($array['category'] != null) echo ' data-category="'.$array['category'].'"';
-		        		if ($array['prio'] != null) echo ' data-priority="'.$array['prio'].'"';
-		        		echo '>'.$array['title'].'</th>';
-		        	}
-		        	echo '</tr>';
-		        }
-		    echo '
-		    </thead>
-		    <tbody>
-		    ';
-		    foreach ($this->data as $tr){
-	        		echo "<tr>\n";
-	        		foreach ($tr as $td){
-	        			if (is_array($td)){
-	        				echo "<td data-order='".$td[0]."' data-filter='".$td[0]."'>".$td[1]."</td>\n";
-	        			}else{
-	        				echo "<td>".$td."</td>\n";	
-	        			}
-	        		}
-	        		echo "</tr>\n";
-	        	}
-		    echo ' 
-		    </tbody>
-		</table>
-		            
-		<p>
-		';
+	function ajax($get){
+		$this->init();
+		$table = '('.$this->query.') AS t';
+		$ajax_columns = array();
+		foreach ($this->columns as $column){
+			if (isset($column['data'])){
+				$ajax_columns[] = array('dt' => trim($column['name'],'\'"'), 'db' => trim($column['data'],'\'"'));
+			}else{
+				$ajax_columns[] = array('dt' => trim($column['name'],'\'"', ));
+			}
+		}
+
+		require('includes/secrets.php');
+
+		$sql_details = array(
+			'user' => $secrets['mysql_username'],
+			'pass' => $secrets['mysql_password'],
+			'db'   => $secrets['mysql_database'],
+			'host' => $secrets['mysql_host']
+		);
+
+		require('includes/ssp.class.php');
+		
+		echo json_encode(
+			SSP::simple( $get, $sql_details, $table, $ajax_columns)
+		);
 	}
 }
 ?>

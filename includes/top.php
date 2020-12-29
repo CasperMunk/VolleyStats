@@ -23,19 +23,41 @@ array(
         "meta_description" => "Denne lille side er lavet for at kunne dykke ned i statistik og rekorder fra VolleyLigaen. Denne side indsamler kamp-statistik fra alle tilgængelige sæsoner og viser dem på forskellige måder. Det betyder at du finde finde rekorder for enkelte volleyball kampe i VolleyLigaen.",
     ),
     array(
-        "navi_title" => "Data analyse",
+        "navi_title" => "Spillere",
         "items" => 
         array(
             array(
+                "url" => "rekorder-spiller-statistik",
+                "navi_title" => "Rekorder for spillere",
+                "title" => "Rekorder for spiller-statistik",
+                "meta_description" => "",
+            ),
+            array(
+                "navi_title" => "<divider>",
+                "url" => "",
+            ),
+            array(
                 "url" => "data-analyse-spiller-totalt",
-                "navi_title" => "Spiller totalt",
+                "navi_title" => "Data: Spillere totalt",
                 "title" => "Data analyse: Spiller totalt",
                 "meta_description" => "",
             ),
             array(
                 "url" => "data-analyse-spiller-per-kamp",
-                "navi_title" => "Spiller pr. kamp",
+                "navi_title" => "Data: Spillere pr. kamp",
                 "title" => "Data analyse: Spiller pr. kamp",
+                "meta_description" => "",
+            ),
+        ),
+    ),
+    array(
+        "navi_title" => "Hold",
+        "items" => 
+        array(
+            array(
+                "url" => "rekorder-kampe",
+                "navi_title" => "Rekorder for kampe",
+                "title" => "Rekorder for kampe",
                 "meta_description" => "",
             ),
             array(
@@ -44,46 +66,19 @@ array(
             ),
             array(
                 "url" => "data-analyse-hold-totalt",
-                "navi_title" => "Hold totalt",
+                "navi_title" => "Data: Hold totalt",
                 "title" => "Data analyse: Hold totalt",
                 "meta_description" => "",
             ),
             array(
                 "url" => "data-analyse-hold-per-kamp",
-                "navi_title" => "Hold pr. kamp",
+                "navi_title" => "Data: Hold pr. kamp",
                 "title" => "Data analyse: Hold pr. kamp",
                 "meta_description" => "",
             ),
         ),
     ),
-    array(
-        "navi_title" => "Rekorder",
-        "items" => 
-        array(
-            // array(
-            //     "url" => "rekorder-tidslinje",
-            //     "navi_title" => "Tidslinje",
-            //     "title" => "Tidslinje over rekorder",
-            //     "meta_description" => "",
-            // ),
-            // array(
-            //     "navi_title" => "<divider>",
-            //     "url" => "",
-            // ),
-            array(
-                "url" => "rekorder-spiller-statistik",
-                "navi_title" => "Spiller-statistik",
-                "title" => "Rekorder for spiller-statistik",
-                "meta_description" => "",
-            ),
-            array(
-                "url" => "rekorder-kampe",
-                "navi_title" => "Kampe",
-                "title" => "Rekorder for kampe",
-                "meta_description" => "",
-            ),
-        ),
-    ),
+    
     array(
         "url" => "betingelser",
         "navi_title" => "",

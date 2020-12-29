@@ -57,10 +57,6 @@ body.fullpage {
 	border-top-right-radius: 0;
 }
 
-.dataTables_filter input[type="search"] {
-	width: 13rem!important;
-}
-
 .dataTables_filter{
 	text-align: inherit!important;
 }
@@ -102,4 +98,18 @@ table thead tr th.hasrowspan, table thead tr:last-child th {
 
 .navbar-brand img {
 	vertical-align: text-bottom;
+}
+
+.paginate_button:not(:first-child):not(:last-child) {
+	display: none;	
+}
+
+@media (min-width: 576px) {
+	.paginate_button:not(:first-child):not(:last-child) {
+		display: block;	
+	}
+}
+
+.dataTables_filter label, .dataTables_filter label input {
+	width: 100%!important;
 }

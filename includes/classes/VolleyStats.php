@@ -1,16 +1,9 @@
 <?php
 require 'simple_html_dom.php';
-class VolleyStats {
+class VolleyStats extends VolleyStatsHelpers {
     //Vars
     var $player_list;
     var $db;
-
-    function __construct() {
-        $this->translations = array(
-            'male' => 'mand',
-            'female' => 'kvinde'
-        );
-    }
 
     function initializeMysql($host,$user,$pass,$db){
         if (!isset($this->db)){
@@ -181,8 +174,9 @@ class VolleyStats {
             if ($html = str_get_html($team_table)){
                 foreach ($html->find('table.rgMasterTable tbody tr') as $row){
                     //Trim name
-                    $player_name = $this->ucname(strtolower(trim(str_replace('(L)', '', $row->find('td', 1)->plaintext))));
+                    $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
                     if (in_array($player_name,$this->getExcludedPlayers())) continue;
+                    $player_name = $this->ucname(strtolower($this->reverseName($player_name)));
 
                     //Get player id (create one if it doesn't exist)
                     $player_id = $this->getPlayerId($player_name,$gender);
@@ -296,7 +290,6 @@ class VolleyStats {
     }
 
     function reloadPlayers(){
-        echo 'reloading players';
         $_SESSION['players'] = array();
         if ($result = $this->db->query("SELECT id, player_name FROM players")) {
             if ($result->num_rows>0){
@@ -392,7 +385,7 @@ class VolleyStats {
                 <li class="'.$result['gender'].' hidden">';
                     if (isset($result['game_id'])) echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" target="_blank">';
                         echo '
-                        <span class="player_name">'.$this->reverseName($result['player_name']).'</span>
+                        <span class="player_name">'.$result['player_name'].'</span>
                         <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
                         ';
                     if (isset($result['game_id'])) echo '</a>';
@@ -430,48 +423,8 @@ class VolleyStats {
         }
     }
 
-    function ucname($string) {
-        $string =ucwords(strtolower($string));
-
-        foreach (array('-', '\'') as $delimiter) {
-          if (strpos($string, $delimiter)!==false) {
-            $string =implode($delimiter, array_map('ucfirst', explode($delimiter, $string)));
-          }
-        }
-        return $string;
-    }
-
-    function formatNumber($val,$decimal=0){
-        if (is_array($val)){
-            return array_map(function($num){return number_format($num,0,",",".");}, $val);
-        }else{
-            return number_format($val,$decimal,",",".");
-        }
-        
-    }
-
-    function cleanInputData($val,$type="int"){
-        $val = strip_tags($val);
-        if ($type == "int"){
-            return intval(preg_replace('/\D/', '',$val));
-        }else{
-            return $val;
-        }
-        
-    }
-
-    function getTagById($tag,$id,$content){
-        if (preg_match('#(<'.$tag.'[^>]*id=[\'|"]'.$id.'[\'|"][^>]*>)(.*)</'.$tag.'>#isU', $content, $response)){
-            return $response[0];
-        }    
-    }
-
-    function reverseName($name){
-        return trim(strstr($name," "))." ".substr($name,0,strpos($name," "));
-    }
-
-    function translateText($text){
-        return strtr($text,$this->translations);
+    function getMysqlCount($query){
+        $query = "SELECT COUNT(*) FROM ($query) t";
+        return array_shift($this->fetchMysqlAll($query)[0]);
     }
 }
-?>

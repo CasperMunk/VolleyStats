@@ -1,13 +1,12 @@
 <?php 
 require('includes/top.php');
-$loadElements = array("jQuery","DataTables");
-require('includes/header.php'); 
 
-$dataTable = new DataTable();
-
-$data = array();
-$query = "
-SELECT teams.team_name, competitions.gender
+$dataTable = new DataTable($VolleyStats);
+$dataTable->type = 'teams';
+$dataTable->context = 'total';
+$dataTable->length = 30;
+$dataTable->query = "
+SELECT teams.team_name name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played 
 
     ,SUM(player_stats.points_total) as points_total
@@ -23,50 +22,34 @@ SELECT teams.team_name, competitions.gender
     ,SUM(player_stats.receive_position) as receive_position 
     ,SUM(player_stats.receive_perfect) as receive_perfect
     ,SUM(player_stats.receive_error) as receive_error 
+    ,SUM(player_stats.receive_position)/SUM(player_stats.receive_total)*100 as receive_pos_percent
+    ,SUM(player_stats.receive_perfect)/SUM(player_stats.receive_total)*100 as receive_perf_percent
     
     ,SUM(player_stats.spike_total) as spike_total 
     ,SUM(player_stats.spike_win) as spike_win 
     ,SUM(player_stats.spike_error) as spike_error 
-    ,SUM(player_stats.spike_blocked) as spike_blocked             
+    ,SUM(player_stats.spike_blocked) as spike_blocked    
+    ,SUM(player_stats.spike_win)/SUM(player_stats.spike_total)*100 as kill_percent
+    ,(SUM(player_stats.spike_win)-SUM(player_stats.spike_error)-SUM(player_stats.spike_blocked))/SUM(player_stats.spike_total) as spike_eff         
     
-    ,SUM(player_stats.block_win) as block_win 
+    ,SUM(player_stats.block_win) as block_win
 FROM player_stats 
     INNER JOIN teams ON teams.id = player_stats.team_id 
     INNER JOIN competitions ON competitions.id = teams.competition_id
     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
 WHERE excluded_games.game_id IS NULL
 GROUP BY teams.team_name, competitions.gender
+ORDER BY points_total DESC
 ";
-if ($result = $VolleyStats->db->query($query)) {
-    if ($result->num_rows>0){
-        while($row = $result->fetch_assoc()) {
-            $data[] = array(
-                '',
-                $row['team_name'],
-                array($row['gender'],ucfirst($VolleyStats->translateText($row['gender']))),
-                $VolleyStats->formatNumber($row['games_played']),
-                $VolleyStats->formatNumber($row['points_total']),
-                $VolleyStats->formatNumber($row['error_total']),
-                $VolleyStats->formatNumber($row['break_points']),
-                $VolleyStats->formatNumber($row['win_loss']),
-                $VolleyStats->formatNumber($row['serve_total']),
-                $VolleyStats->formatNumber($row['serve_error']),
-                $VolleyStats->formatNumber($row['serve_ace']),
-                $VolleyStats->formatNumber($row['receive_total']),
-                $VolleyStats->formatNumber($row['receive_error']),
-                $VolleyStats->formatNumber($row['receive_position']),
-                $VolleyStats->formatNumber($row['receive_perfect']),
-                $VolleyStats->formatNumber($row['spike_total']),
-                $VolleyStats->formatNumber($row['spike_error']),
-                $VolleyStats->formatNumber($row['spike_blocked']),
-                $VolleyStats->formatNumber($row['spike_win']),
-                $VolleyStats->formatNumber($row['block_win'])
-            );
-        }
-    }
+
+if ((get('draw'))){
+    $dataTable->ajax($_GET);
+    exit;
 }
-$dataTable->setData($data);
 
-$dataTable->drawTable();
+$loadElements = array("jQuery","DataTables");
+require('includes/header.php');
 
-require('includes/footer.php'); ?>
+$dataTable->print();
+
+require('includes/footer.php');
