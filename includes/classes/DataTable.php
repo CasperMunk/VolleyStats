@@ -712,7 +712,13 @@ class DataTable {
 
 		require('includes/ssp.class.php');
 		
-		header('Content-type:application/json;charset=utf-8');
+		header_remove();
+		// set the actual code
+		http_response_code($code);
+		// set the header to make sure cache is forced
+		header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+		// treat this as json
+		header('Content-Type: application/json');
 		echo json_encode(
 			SSP::simple( $get, $sql_details, $table, $ajax_columns)
 		);
