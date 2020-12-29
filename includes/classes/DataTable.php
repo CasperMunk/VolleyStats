@@ -712,12 +712,26 @@ class DataTable {
 
 		require('includes/ssp.class.php');
 		
-		header_remove();
-		header('Content-Type: application/json');
+		header("Content-type: application/json; charset=utf-8");
 		echo json_encode(
-			utf8_encode(SSP::simple( $get, $sql_details, $table, $ajax_columns))
+			$this->utf8ize(SSP::simple( $get, $sql_details, $table, $ajax_columns))
 		);
 		exit;
+	}
+
+	function utf8ize($d) {
+		if (is_array($d)) 
+			foreach ($d as $k => $v) 
+				$d[$k] = $this->utf8ize($v);
+	
+		 else if(is_object($d))
+			foreach ($d as $k => $v) 
+				$d->$k = $this->utf8ize($v);
+	
+		 else 
+			return utf8_encode($d);
+	
+		return $d;
 	}
 }
 ?>
