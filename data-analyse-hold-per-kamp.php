@@ -1,11 +1,9 @@
 <?php 
 require('includes/top.php');
 
-$dataTable = new DataTable($VolleyStats);
-$dataTable->type = 'teams';
-$dataTable->context = 'per_game';
-$dataTable->length = 30;
-$dataTable->query = "
+$type = 'teams';
+$context = 'per_game';
+$query = "
 SELECT teams.team_name name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played 
 
@@ -42,15 +40,10 @@ GROUP BY teams.team_name, competitions.gender HAVING games_played > 100
 ORDER BY points_total DESC
 ";
 
-if ((get('draw'))){
-    $dataTable->ajax($_GET);
-    exit;
-}
+$dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
 require('includes/header.php');
-
-echo '<p>Hold med mindre end 100 kampe er undtaget fra denne liste.</p>';
 
 $dataTable->print();
 

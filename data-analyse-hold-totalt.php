@@ -1,11 +1,9 @@
 <?php 
 require('includes/top.php');
 
-$dataTable = new DataTable($VolleyStats);
-$dataTable->type = 'teams';
-$dataTable->context = 'total';
-$dataTable->length = 30;
-$dataTable->query = "
+$type = 'teams';
+$context = 'total';
+$query = "
 SELECT teams.team_name name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played 
 
@@ -42,10 +40,7 @@ GROUP BY teams.team_name, competitions.gender
 ORDER BY points_total DESC
 ";
 
-if ((get('draw'))){
-    $dataTable->ajax($_GET);
-    exit;
-}
+$dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
 require('includes/header.php');

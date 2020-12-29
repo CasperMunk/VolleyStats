@@ -1,11 +1,9 @@
 <?php 
 require('includes/top.php');
 
-$dataTable = new DataTable($VolleyStats);
-$dataTable->type = 'players';
-$dataTable->context = 'per_game';
-$dataTable->length = 30;
-$dataTable->query = "
+$type = 'players';
+$context = 'per_game';
+$query = "
 SELECT 
     players.id, players.player_name as name, players.gender
     ,COUNT(player_stats.player_id) as games_played 
@@ -42,16 +40,10 @@ GROUP BY players.id HAVING games_played > 20
 ORDER BY points_total DESC
 ";
 
-
-if ((get('draw'))){
-    $dataTable->ajax($_GET);
-    exit;
-}
+$dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
 require('includes/header.php');
-
-echo '<p>Spillere med mindre end 20 kampe er undtaget fra denne liste.</p>';
 
 $dataTable->print();
 

@@ -2,20 +2,29 @@
 class DataTable {
 	private $data = array();
  
-    public function __set($name, $value) 
-    {
+    public function __set($name, $value){
         $this->data[$name] = $value;
     }
  
-    public function __get($name) 
-    {
+    public function __get($name){
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
 	}
 	
-	function __construct($VolleyStats){
+	function __construct($VolleyStats,$type,$context,$query){
 		$this->VolleyStats = $VolleyStats;
+		$this->type = $type;
+		$this->context = $context;
+		$this->length = 30;
+		$this->query = $query;
+
+		$this->init();
+
+		if ((get('draw'))){
+			$this->ajax($_GET);
+			exit;
+		}
 	}
 
 	function init(){
@@ -521,7 +530,6 @@ class DataTable {
 	}
 
 	function print(){
-		$this->init();
 		$this->checkSettings();
 		$count = $this->VolleyStats->getMysqlCount($this->query);	
 
@@ -684,7 +692,6 @@ class DataTable {
 	}
 
 	function ajax($get){
-		$this->init();
 		$table = '('.$this->query.') AS t';
 		$ajax_columns = array();
 		foreach ($this->columns as $column){
