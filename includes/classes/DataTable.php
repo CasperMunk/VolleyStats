@@ -712,6 +712,7 @@ class DataTable {
 
 		require('includes/ssp.class.php');
 		
+		header('Content-type:application/json;charset=utf-8');
 		echo json_encode(
 			SSP::simple( $get, $sql_details, $table, $ajax_columns)
 		);
