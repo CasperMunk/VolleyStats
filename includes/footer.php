@@ -46,6 +46,8 @@
 
     <?php if (!is_local()): ?>
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8e413f14-cb38-4f21-b272-ef107fbe4387" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- <script id="CookieDeclaration" src="https://consent.cookiebot.com/8e413f14-cb38-4f21-b272-ef107fbe4387/cd.js" type="text/javascript" async></script> -->
+    <?php endif; ?>
     
 </body>
 </html>
