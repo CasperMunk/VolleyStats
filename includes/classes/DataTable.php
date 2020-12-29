@@ -23,7 +23,6 @@ class DataTable {
 
 		if ((get('draw'))){
 			$this->ajax($_GET);
-			exit;
 		}
 	}
 
@@ -716,6 +715,7 @@ class DataTable {
 		echo json_encode(
 			SSP::simple( $get, $sql_details, $table, $ajax_columns)
 		);
+		exit;
 	}
 }
 ?>
