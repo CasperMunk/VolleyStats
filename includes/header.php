@@ -32,7 +32,7 @@
                 <a class="navbar-brand" href="/">
                     <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" width="25" class="me-1">VolleyStats
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -45,16 +45,16 @@
                             if (!isset($naviarray['items'])){
                                 echo '
                                     <li class="nav-item">
-                                        <a class="nav-link'.(($script_name == $naviarray['filename'])?' active':'').'" aria-current="page" href="'.$naviarray['url'].'">'.$naviarray['navi_title'].'</a>
+                                        <a class="nav-link'.(($script_name == $naviarray['filename'])?' active':'').'" href="'.$naviarray['url'].'">'.$naviarray['navi_title'].'</a>
                                     </li>
                                 ';
                             }else{
                                 echo '
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
                                         '.$naviarray['navi_title'].'
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">';
+                                    <ul class="dropdown-menu">';
                                     foreach ($naviarray['items'] as $subnaviarray) {
                                         if ($subnaviarray['navi_title'] == "<divider>"){
                                             echo '<li><hr class="dropdown-divider"></li>';    
