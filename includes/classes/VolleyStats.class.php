@@ -463,7 +463,7 @@ class VolleyStats extends Helpers {
                 INNER JOIN games g ON g.id = r.game_id 
                 INNER JOIN competitions comp ON comp.id = g.competition_id
             WHERE r.record_id=".$id."
-            ORDER BY r.rank DESC
+            ORDER BY r.record_value DESC, g.date_time DESC, p.id
         ");
 
 
