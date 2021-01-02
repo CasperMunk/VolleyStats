@@ -45,6 +45,8 @@ $dataTable = new DataTable($VolleyStats,$type,$context,$query);
 $loadElements = array("jQuery","DataTables");
 require('includes/header.php');
 
+echo '<p>Hold med mindre end 100 kampe er undtaget denne liste.</p>';
+
 $dataTable->print();
 
 require('includes/footer.php');

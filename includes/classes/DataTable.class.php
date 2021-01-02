@@ -598,7 +598,7 @@ class DataTable {
 		            "thousands":      ".",
 		            "lengthMenu":     "Vis _MENU_ linjer",
 		            "loadingRecords": "Henter...",
-		            "processing":     "<div class=\"spinner-border text-primary m-3\" role=\"status\"></div>",
+		            "processing":     "<div class=\"spinner-border text-primary m-3\"></div>",
 		            "search":         "",
 		            "zeroRecords":    "Ingen resultater matcher s&oslash;gningen",
 		            "paginate": {
@@ -697,7 +697,7 @@ class DataTable {
 			if (isset($column['data'])){
 				$ajax_columns[] = array('dt' => trim($column['name'],'\'"'), 'db' => trim($column['data'],'\'"'));
 			}else{
-				$ajax_columns[] = array('dt' => trim($column['name'],'\'"', ));
+				$ajax_columns[] = array('dt' => trim($column['name'],'\'"'), 'db' => '');
 			}
 		}
 
@@ -711,6 +711,10 @@ class DataTable {
 		);
 
 		require('includes/ssp.class.php');
+
+		// echo '<pre>';
+		// print_r($ajax_columns);
+		// print_r($this->utf8ize(SSP::simple( $get, $sql_details, $table, $ajax_columns)));
 		
 		header("Content-type: application/json; charset=utf-8");
 		echo json_encode(

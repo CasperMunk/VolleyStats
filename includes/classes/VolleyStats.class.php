@@ -164,11 +164,11 @@ class VolleyStats extends Helpers {
         $game_data["spectators"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_Spectators",$content));
 
         if (strpos($content, 'id="Content_Main_LB_Referees"') == true) {
-            $referee1_name = $this->reverseName(trim(explode("-",$this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text"))[0]));
-            $game_data["referee1_id"] = $this->getRefereeId($referee1_name);
-
-            $referee2_name = $this->reverseName(trim(explode("-",$this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text"))[1]));
-            $game_data["referee2_id"] = $this->getRefereeId($referee2_name);
+            $referees = $this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text");
+            foreach (explode("-",$referees) as $referee_id => $referee_name){
+                $referee_name = $this->reverseName(trim($referee_name));
+                if (!empty($referee_name)) $game_data["referee".($referee_id+1)."_id"] = $this->getRefereeId($referee_name);
+            }
         }
         
         $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));

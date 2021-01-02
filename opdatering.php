@@ -114,7 +114,7 @@ require('includes/header.php'); ?>
         </div>
     </div>
     <button id="update-button" class="btn btn-primary mt-2 mb-2" type="submit">
-        <span class="icon spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        <span class="icon spinner-border spinner-border-sm d-none"></span>
         <span class="text">Opdater</span>
     </button>
     <span id="cancel" class="m-2" style="display: none;"><a href="#">Annuller</a></span>
@@ -123,11 +123,11 @@ require('includes/header.php'); ?>
 
 <div class="mb-2">
     <div class="progress" style="height: 20px; display: none;">
-        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
     </div>
 </div>
 
-<div class="alert alert-secondary" id="status" role="alert" style="display: none;">
+<div class="alert alert-secondary" id="status" style="display: none;">
     <span>Klar...</span>
 </div>
             

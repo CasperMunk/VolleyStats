@@ -10,7 +10,7 @@
 
       gtag('config', 'G-CB8VY69MBD');
     </script>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?php echo $current_page['title'] ?> - VolleyStats.dk</title>
     <meta name="description" content="<?php echo $current_page['meta_description'] ?>">
@@ -30,7 +30,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" border="none" / class="me-1">VolleyStats
+                    <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" width="25" class="me-1">VolleyStats
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -51,7 +51,7 @@
                             }else{
                                 echo '
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                         '.$naviarray['navi_title'].'
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">';
@@ -76,7 +76,7 @@
     </header>
 
     <!-- Begin page content -->
-    <main role="main" class="flex-shrink-0">
+    <main class="flex-shrink-0">
         <div class="container">
             <h1 class="h2"><?php echo $current_page['title'] ?></h1>
     <?php endif; ?>

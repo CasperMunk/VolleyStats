@@ -18,7 +18,7 @@ array(
         <nav class="nav nav-pills btn-group record-tabs mb-2 mb-md-0">
             <?php 
             foreach ($tabs as $key => $tab){
-                echo '<a class="btn btn-outline-primary text-nowrap'.($key == 'games' ? ' active' : '').'" id="nav-'.$key.'-tab" data-bs-toggle="tab" href="#nav-'.$key.'" role="tab" aria-controls="nav-point">'.$tab.'</a>';
+                echo '<a class="btn btn-outline-primary text-nowrap'.($key == 'games' ? ' active' : '').'" id="nav-'.$key.'-tab" data-bs-toggle="tab" href="#nav-'.$key.'">'.$tab.'</a>';
             }
             ?>
         </nav>
@@ -29,21 +29,21 @@ array(
 </div>
 
 <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-games" role="tabpanel" aria-labelledby="nav-games-tab">
+    <div class="tab-pane fade show active" id="nav-games">
         <?php 
         
         ?>
     </div>
-    <div class="tab-pane fade" id="nav-sets" role="tabpanel" aria-labelledby="nav-sets-tab">
+    <div class="tab-pane fade" id="nav-sets">
         Kommer snart..
     </div>
-    <div class="tab-pane fade" id="nav-point-score" role="tabpanel" aria-labelledby="nav-point-score-tab">
+    <div class="tab-pane fade" id="nav-point-score">
         Kommer snart..
     </div>
-    <div class="tab-pane fade" id="nav-spectators" role="tabpanel" aria-labelledby="nav-spectators-tab">
+    <div class="tab-pane fade" id="nav-spectators">
         Kommer snart..
     </div>
-    <div class="tab-pane fade" id="nav-streaks" role="tabpanel" aria-labelledby="nav-streaks-tab">
+    <div class="tab-pane fade" id="nav-streaks">
         Kommer snart..
     </div>
 </div>
