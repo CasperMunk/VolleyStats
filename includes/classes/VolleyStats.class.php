@@ -1,11 +1,18 @@
 <?php
 require 'simple_html_dom.php';
-class VolleyStats extends VolleyStatsHelpers {
-    //Vars
+class VolleyStats extends Helpers {
     var $player_list;
-    var $db;
+    public $db;
 
-    function initializeMysql($host,$user,$pass,$db){
+    function __construct(){
+        $this->record_length = 10;
+    }
+
+    function __destruct(){
+        if (isset($this->db)) $this->db->close();
+    }
+
+    public function initializeMysql($host,$user,$pass,$db){
         if (!isset($this->db)){
             $this->db = new mysqli($host, $user, $pass, $db);
 
@@ -20,19 +27,48 @@ class VolleyStats extends VolleyStatsHelpers {
 
     }
 
-    function __destruct(){
-        if (isset($this->db)) $this->db->close();
+    public function fetchMysqlAll($query){
+        if ($result = $this->db->query($query)) {
+            if ($result->num_rows>0){
+                return $result->fetch_all(MYSQLI_ASSOC);
+            }else{
+                printf("MySQL Error: No rows returned. \n");
+                exit();
+            }
+        }else{
+            printf("MySQL Error: %s\n", $this->db->error);
+            exit();
+        }
     }
 
-    function getCompetitions($only_auto_update=false){
-        $query = "SELECT id, gender, year, auto_update FROM competitions";
-        if ($only_auto_update) $query .= " WHERE auto_update";
+    public function executeMysql($query){
+        if (empty($query)){
+            echo 'No Query!'; 
+            return;  
+        } 
+        if ($result = $this->db->query($query) === TRUE){
+            return $this->db->insert_id;
+        }else{
+            printf("MySQL Error: %s\n", $this->db->error);
+            echo '<p><pre>MySQL Query: '.$query;
+            exit();
+        }
+    }
+
+    public function getMysqlCount($query){
+        $query = "SELECT COUNT(*) FROM ($query) t";
+        return array_shift($this->fetchMysqlAll($query)[0]);
+    }
+
+    function getCompetitions($only_current=false){
+        $query = "SELECT id, gender, year, current FROM competitions";
+        if ($only_current) $query .= " WHERE current";
         $query .= " ORDER BY year DESC";
         return $this->fetchMysqlAll($query);
     }
 
     function getCompetition($competition_id){
-        $query = "SELECT id, gender, year, auto_update FROM competitions WHERE id = ".$competition_id;
+        $query = "SELECT id, gender, year, current FROM competitions WHERE id = ".$competition_id;
         return $this->fetchMysqlAll($query)[0];
     }
 
@@ -232,6 +268,16 @@ class VolleyStats extends VolleyStatsHelpers {
 
     }
 
+    function getGamesToday(){
+        if ($result = $this->db->query("SELECT g.id as game_id, g.competition_id, c.gender FROM games g LEFT JOIN competitions c ON g.competition_id = c.id WHERE date(date_time) = CURDATE();")) {
+            if ($result->num_rows>0){
+                return $this->fetchMysqlAll($result);
+            }else{
+                return false;
+            }
+        }
+    }
+
     function addPlayerStats($game_id,$team_id,$player_id,$data){
         if (empty($player_id) OR empty($game_id)) return false;
 
@@ -266,15 +312,19 @@ class VolleyStats extends VolleyStatsHelpers {
         $block_win =        $this->cleanInputData($data->find("span[id=BlockWin]",0)->plaintext);
         $win_loss =         $this->cleanInputData($data->find("span[id=L_VP]",0)->plaintext);
 
-        $this->executeMysql("REPLACE INTO player_stats (player_id,game_id,team_id,points_total,break_points,serve_total,serve_error,serve_ace,receive_total,receive_error,receive_position,receive_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$receive_total,$receive_error,$receive_position,$receive_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)");
+        $this->executeMysql("REPLACE INTO player_stats (player_id,game_id,team_id,point_total,point_break_points,serve_total,serve_error,serve_ace,receive_total,receive_error,receive_position,receive_perfect,spike_total,spike_error,spike_blocked,spike_win,block_win,point_win_loss) VALUES ($player_id,$game_id,$team_id,$points_total,$break_points,$serve_total,$serve_error,$serve_ace,$receive_total,$receive_error,$receive_position,$receive_perfect,$spike_total,$spike_error,$spike_blocked,$spike_win,$block_win,$win_loss)");
     }
 
     function getPlayerId($player_name,$gender){
         if (empty($player_name) OR $player_name == null) return false;
 
-        if ((time() - $_SESSION['players_updated']) > (60 * 30)) {
+        if (!isset($_SESSION['players_updated'])){
             $this->reloadPlayers();
-        }
+        }else{
+            if ((time() - $_SESSION['players_updated']) > (60 * 30)) {
+                $this->reloadPlayers();
+            }
+        }            
 
         //Search for player
         $player_id = array_search($player_name,$_SESSION['players']);
@@ -331,7 +381,7 @@ class VolleyStats extends VolleyStatsHelpers {
     }
 
     function getRefereeId($name){
-        if (empty($name)) return false;
+        if (empty(trim($name))) return false;
 
         if ($result = $this->db->query("SELECT id FROM referees WHERE name='$name'")) {
             if ($result->num_rows>0){
@@ -345,86 +395,79 @@ class VolleyStats extends VolleyStatsHelpers {
         return false;
     }
 
-    function getRecords($type){
+    function setRecordType($type){
         if (empty($type)) return false;
-        // COUNT(player_stats.player_id) as games_played
+        $this->recordType = $type;
+    }
+
+    function getRecordGroups($group){
+        if (empty($this->recordType)) return false;
+        if (empty($group)) return false;
+
+        return $this->fetchMysqlAll("SELECT id, title FROM records_config WHERE record_type = '".$this->recordType."' AND record_group = '".$group."' ORDER BY sorting");
+
+        //$query = "SELECT r.record_id, rank, game_id, title, record_group, player_name, gender FROM records r INNER JOIN records_config c ON r.record_id = c.id INNER JOIN players p ON p.id = r.player_id WHERE c.record_type = '".$this->recordType."' ORDER BY c.sorting, c.id, p.gender, r.rank";
+    }
+
+    function getRecordTabs(){
+        if (empty($this->recordType)) return false;
+        $tabs = array();
         
-        if ($type == 'games_played'){
-            $query = "
-                SELECT 
-                    players.id, players.player_name, players.gender, COUNT(player_stats.player_id) as ".$type."
-                FROM players 
-                    INNER JOIN player_stats ON player_stats.player_id = players.id 
-                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
-                    WHERE excluded_games.game_id IS NULL
-                GROUP BY players.id  
-                ORDER BY ".$type." DESC 
-                LIMIT 50
-            ";
-        }else{
-            $query = "
-                SELECT 
-                    players.id, players.player_name, players.gender, player_stats.game_id as game_id, MAX(player_stats.".$type.") as ".$type." 
-                FROM players 
-                    INNER JOIN player_stats ON player_stats.player_id = players.id 
-                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
-                    WHERE excluded_games.game_id IS NULL
-                GROUP BY players.id, players.gender, player_stats.game_id
-                ORDER BY ".$type." DESC 
-                LIMIT 50
-            ";
+        foreach ($this->fetchMysqlAll("SELECT record_group FROM records_config WHERE record_type = '".$this->recordType."' GROUP BY record_group, sorting ORDER BY sorting") as $tab){
+            $tabs[$tab['record_group']] = ucfirst($this->translateText($tab['record_group']));
         }
-        return $this->fetchMysqlAll($query);
+                
+        return $tabs;
     }
 
-    function printRecordTable($record){
-        echo '<h5 class="mt-2">'.$record['title'].'</h5>
-        <ol class="records">';
-            foreach ($this->getRecords($record['id']) as $result){
-                echo '
-                <li class="'.$result['gender'].' hidden">';
-                    if (isset($result['game_id'])) echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$result['game_id'].'" target="_blank">';
-                        echo '
-                        <span class="player_name">'.$result['player_name'].'</span>
-                        <span class="description">('.$result[$record['id']].' '.$record['measurement'].')</span>
-                        ';
-                    if (isset($result['game_id'])) echo '</a>';
-                echo '</li>
-                ';
-            }
-        echo '</ol>';
-    }
-
-    function fetchMysqlAll($query){
-        if ($result = $this->db->query($query)) {
+    function updateRecords(){
+        if ($result = $this->db->query("SELECT * FROM records_config")) {
             if ($result->num_rows>0){
-                return $result->fetch_all(MYSQLI_ASSOC);
+                while($r = $result->fetch_assoc()) {
+                    foreach (array("male","female") as $gender){
+                        if ($r['lookup_type'] == 'player_stats'){
+                            $query = "
+                            REPLACE INTO records
+                                (player_id, game_id, record_value, record_id, rank)
+                            SELECT player_id, game_id, record_value, record_id, @curRank := @curRank + 1 AS rank 
+                            FROM 
+                                (SELECT player_stats.player_id, player_stats.game_id, ".$r['calculation']."(player_stats.".$r['field'].") as record_value, ".$r['id']." as record_id 
+                                FROM player_stats 
+                                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id 
+                                    LEFT JOIN players ON player_stats.player_id = players.id 
+                                    LEFT JOIN games ON player_stats.game_id = games.id
+                                WHERE excluded_games.game_id IS NULL AND players.gender='".$gender."' 
+                                GROUP BY player_id, game_id
+                                ORDER BY record_value DESC, games.date_time DESC, players.id
+                                LIMIT ".$this->record_length.") t, 
+                                (SELECT @curRank := 0) r";
+                            echo $query."<br><br>";
+                            $this->executeMysql($query);
+                        }
+                    }    
+                }
+                return true;
             }else{
-                printf("MySQL Error: No rows returned. \n");
-                exit();
+                return false;
             }
-        }else{
-            printf("MySQL Error: %s\n", $this->db->error);
-            exit();
-        }
+            return false;
+        }   
     }
 
-    function executeMysql($query){
-        if (empty($query)){
-            echo 'No Query!'; 
-            return;  
-        } 
-        if ($result = $this->db->query($query) === TRUE){
-            return $this->db->insert_id;
-        }else{
-            printf("MySQL Error: %s\n", $this->db->error);
-            echo '<p><pre>MySQL Query: '.$query;
-            exit();
-        }
-    }
+    function getRecords($id){
+        if (empty($id)) return false;
 
-    function getMysqlCount($query){
-        $query = "SELECT COUNT(*) FROM ($query) t";
-        return array_shift($this->fetchMysqlAll($query)[0]);
+        return $this->fetchMysqlAll("
+            SELECT r.rank, r.game_id, p.player_name, p.gender, r.record_value, comp.year, comp.current 
+            FROM records r 
+                INNER JOIN records_config c ON r.record_id = c.id 
+                INNER JOIN players p ON p.id = r.player_id 
+                INNER JOIN games g ON g.id = r.game_id 
+                INNER JOIN competitions comp ON comp.id = g.competition_id
+            WHERE r.record_id=".$id."
+            ORDER BY r.record_value DESC
+        ");
+
+
     }
 }

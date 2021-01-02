@@ -297,8 +297,8 @@ class DataTable {
 					'render' => '$.fn.dataTable.render.number( ".", ",", 0, "", "")',
 		        ),
 		        array(
-					'name' => '"points_total"',
-					'data' => '"points_total"',
+					'name' => '"point_total"',
+					'data' => '"point_total"',
 		            'visible' => 'true',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
@@ -319,8 +319,8 @@ class DataTable {
 					'render' => $defaultFormat,
 		        ),
 		        array(
-					'name' => '"break_points"',
-					'data' => '"break_points"',
+					'name' => '"point_break_points"',
+					'data' => '"point_break_points"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',
@@ -330,8 +330,8 @@ class DataTable {
 					'render' => $defaultFormat,
 		        ),
 		        array(
-					'name' => '"win_loss"',
-					'data' => '"win_loss"',
+					'name' => '"point_win_loss"',
+					'data' => '"point_win_loss"',
 		            'visible' => 'false',
 		            'className' => '"colvisGroupPoint"',
 		            'orderable' => 'true',

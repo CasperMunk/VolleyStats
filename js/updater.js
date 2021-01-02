@@ -1,30 +1,47 @@
-var cancelAjax = false;
-var maxThreads = 1;
-var usedThreads = 1;
 $(document).ready(function(){
     $("button#update-button").click(function(e){
         e.preventDefault();
         $("#result").empty();
 
-        setStatus(true,"Henter turneringer..");
+        var updateGameList = false;
+        var updateGameStats = false;
+        var updateRecords = false;
 
-        var update_mode = 'get';
-        if ($("#update_game_list").is(":checked")) var update_mode = 'update';
+        if ($("#update_game_list").is(":checked")) updateGameList = true;
+        if ($("#update_game_stats").is(":checked")) updateGameStats = true;
+        if ($("#update_records").is(":checked")) updateRecords = true;
 
-        $.each($("#competitions option:selected"), function(){
-            $("#result").append('<div class="comp not-updated" comp-id="'+$(this).val()+'" update-mode="'+update_mode+'"></div>');
-        });
+        if (updateGameList == false && updateGameStats == false && updateRecords == false){
+            setStatus(false,"Ingen opdateringer valgt!");
+            return;
+        }
 
-        for (usedThreads = 1; usedThreads <= maxThreads; usedThreads++) {
-            console.log('Starting thread '+usedThreads); 
+        if (updateGameStats || updateGameList){
+            setStatus(true,"Henter turneringer..");
+
+            $.each($("#competitions option:selected"), function(){
+                if (updateGameList) {
+                    update_mode = 'get';
+                }else{
+                    update_mode = 'update';
+                }
+                $("#result").append('<div class="comp not-updated" comp-id="'+$(this).val()+'" update-mode="'+update_mode+'"></div>');
+            });
+        }
+
+        if (updateGameStats){
             updateNextCompetitionAjax();
+        }
+
+        if (!updateGameStats && updateRecords){
+            updateRecordsAjax();
         }
     });
 
     $("#cancel").click(function(){
+        setStatus(false,"Annullerer..");
         $(".not-updated").removeClass("not-updated");
         $(".updating").removeClass("updating");
-        setStatus(false,"Annullerer..");
     });
 
     $("#debug-mode").click(function(){
@@ -35,28 +52,14 @@ $(document).ready(function(){
 
 function updateNextCompetitionAjax(){
     if ($(".comp.not-updated").length == 0){
-        // No more comps to update
-        console.log('No more comps to update')
-
-        if ($(".comp.updating").length > 0){
-            //Some comps are still updating
-            //Wait for 2 seconds before updating games
-            console.log('Run update competitions again in 2 secs!')
-            setTimeout(updateNextCompetitionAjax,2000); 
-            return;
-        }else{
-            //All comps are updated, ready to update games
-            console.log('Start updating games')
-            updateNextGameAjax();
-            return;
-        }
+        updateNextGameAjax();
+        return;
     }
 
     comp_id = $(".comp.not-updated:first").attr("comp-id");
     update_mode = $(".comp.not-updated:first").attr("update-mode");
 
     setStatus(true,"Henter kampe for turnering ID "+comp_id+"..");
-    console.log('Updating comp ID '+comp_id);
 
     $('.comp[comp-id="'+comp_id+'"]').removeClass("not-updated").addClass("updating").load("?mode="+update_mode+"_competition&competition_id="+comp_id, function() {
         $(this).removeClass("updating").addClass("updated");
@@ -65,10 +68,10 @@ function updateNextCompetitionAjax(){
 }
 
 function updateNextGameAjax(){
-    console.log($(".game.not-updated").length);
+    // console.log($(".game.not-updated").length);
     if ($(".game.not-updated").length == 0){
-        setStatus(false,"Færdig!");
-        console.log('Done');
+        updateRecords();
+        // console.log('Done with matches');
         return;
     }
     game_id = $(".game.not-updated:first").attr("game-id");
@@ -76,7 +79,7 @@ function updateNextGameAjax(){
     gender = $(".game.not-updated:first").attr("gender");
     setStatus(true,"Opdaterer kamp ID "+game_id+"..");
 
-    console.log('Updating game ID '+game_id);
+    // console.log('Updating game ID '+game_id);
 
     $('.game[game-id="'+game_id+'"]').removeClass("not-updated").addClass("updating").children(".result").load("?mode=update_game&game_id="+game_id+"&competition_id="+competition_id+"&gender="+gender, function() {
         $(this).parent().removeClass("updating").addClass("updated");
@@ -84,15 +87,22 @@ function updateNextGameAjax(){
     });
 }
 
+function updateRecordsAjax(){
+    setStatus(true,"Opdaterer rekorder..");
+    $('#result').append('<div class="records"><span>Rekorder: </span><span class="result"></span></div>').find(".result").load("?mode=update_records", function() {
+        setStatus(false,"Færdig!");
+    });
+}
+
 function setStatus(spinner,val){
     $("#status span").prepend("<div>"+val+"</div>");
 
-    var count = $(".game.updated").length;
-    var total = $(".game").length;
+    var count = $(".game.updated").length+$(".comp.updated").length+$(".records").length;
+    var total = $(".game").length+$(".comp").length+$(".records").length;
     var pcg = count/total*100; 
 
     if(isNaN(pcg) == false && pcg > 0){
-        $('.progress').show().children(".progress-bar").attr('aria-valuenow',pcg).attr('style','width:'+pcg+'%').html(pcg.toFixed(1)+'%');
+        $('.progress').show().children(".progress-bar").attr('aria-valuenow',pcg).attr('style','width:'+pcg+'%').html(pcg.toFixed(2)+'%');
     }else{
         $('.progress').hide()
     }
@@ -104,7 +114,7 @@ function setStatus(spinner,val){
         $("#cancel").show();
         $("input:not(.always-on), select").prop("disabled",true);
     }else{
-        $("button#update-button").prop('disabled', false).find("span.text").html('Opdater').parent().find("span.icon").addClass("d-none");
+        $("button#update-button").prop('disabled', false).find("span.text").html('Færdig! Tryk for at køre igen..').parent().find("span.icon").addClass("d-none");
         $("#cancel").hide();
         $("input:not(.always-on), select").prop("disabled",false);
     }

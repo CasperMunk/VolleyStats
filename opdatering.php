@@ -38,19 +38,37 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
             echo '<span class="badge bg-warning">Kamp findes ikke i lokal database!</span>';
     }
     exit;
-}elseif ($mode == 'update_competitions_sync' OR $mode == 'get_competitions_sync'){
+}elseif ($mode == 'update_competitions_cronjob'){
     //Non-Ajax updates for cronjobs
-    $updateGameList = false;
-    if ($mode == 'update_competitions_sync') $updateGameList = true;
-
     foreach ($VolleyStats->getCompetitions(true) as $comp){
-        foreach ($VolleyStats->getGames($comp['id'],$updateGameList) as $game){
-
+        foreach ($VolleyStats->getGames($comp['id'],true) as $game){
             if ($result = $VolleyStats->getGameData($game,$comp['id'],$comp['gender'])){
-                echo $result;
+                //echo $result;
             }
         }
     }
+
+    $VolleyStats->updateRecords();
+    echo 'Updated';
+    exit;
+}elseif ($mode == 'update_todays_games_cronjob'){
+    //Non-Ajax updates for cronjobs
+    if ($games = $VolleyStats->getGamesToday()){
+        foreach ($games as $game){
+            if ($result = $VolleyStats->getGameData($game['id'],$game['competition_id'],$game['gender'])){
+                //echo $result;
+            }
+        }
+        $VolleyStats->updateRecords();
+        echo 'Updated';
+    }
+    exit;
+}elseif ($mode == 'update_records'){
+    if ($VolleyStats->updateRecords()){
+        echo '<span class="badge bg-success">Opdateret</span>';
+    }else{
+        echo '<span class="badge bg-warning">Fejl</span>';
+    };
 
     exit;
 }
@@ -63,8 +81,8 @@ require('includes/header.php'); ?>
         <div class="col-sm-4">
             <select multiple class="form-select" id="competitions" size="8">
               <?php foreach($VolleyStats->getCompetitions() as $comp): ?>
-                <option value="<?php echo $comp['id']; ?>" <?php echo ($comp['auto_update'] ? 'selected' : '')?>>
-                    <?php echo $comp['year']; ?> - <?php echo $VolleyStats->translateText($comp['gender']); ?> <?php echo ($comp['auto_update'] ? '(auto-opdateres)' : '')?>
+                <option value="<?php echo $comp['id']; ?>" <?php echo ($comp['current'] ? 'selected' : '')?>>
+                    <?php echo $comp['year']; ?> - <?php echo $VolleyStats->translateText($comp['gender']); ?> <?php echo ($comp['current'] ? '(auto-opdateres)' : '')?>
                 </option>
               <?php endforeach; ?>
             </select>
@@ -74,8 +92,16 @@ require('includes/header.php'); ?>
         <legend class="col-form-label col-sm-2 pt-0">Indstillinger</legend>
         <div class="col-sm-10">
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="update_game_list" name="update_game_list">
+                <input class="form-check-input" type="checkbox" id="update_game_list" name="update_game_list" />
                 <label class="form-check-label" for="update_game_list">Opdater kampliste</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="update_game_stats" name="update_game_stats" checked />
+                <label class="form-check-label" for="update_game_stats">Opdater kampstatistik</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="update_records" name="update_records" checked />
+                <label class="form-check-label" for="update_records">Opdater rekorder</label>
             </div>
         </div>
     </fieldset>

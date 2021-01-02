@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once('functions.php');
 require('secrets.php');
 include('autoload.php');
@@ -55,16 +57,6 @@ array(
         "items" => 
         array(
             array(
-                "url" => "rekorder-kampe",
-                "navi_title" => "Rekorder for kampe",
-                "title" => "Rekorder for kampe",
-                "meta_description" => "",
-            ),
-            array(
-                "navi_title" => "<divider>",
-                "url" => "",
-            ),
-            array(
                 "url" => "data-analyse-hold-totalt",
                 "navi_title" => "Data: Hold totalt",
                 "title" => "Data analyse: Hold totalt",
@@ -78,7 +70,18 @@ array(
             ),
         ),
     ),
-    
+    // array(
+    //     "navi_title" => "Kampe",
+    //     "items" => 
+    //     array(
+    //         array(
+    //             "url" => "rekorder-kampe",
+    //             "navi_title" => "Rekorder for kampe",
+    //             "title" => "Rekorder for kampe",
+    //             "meta_description" => "",
+    //         ),
+    //     )
+    // ),
     array(
         "url" => "betingelser",
         "navi_title" => "",

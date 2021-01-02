@@ -1,6 +1,5 @@
 <?php
-class VolleyStatsHelpers {
-
+class Helpers {
     public function ucname($string) {
         $string =ucwords(strtolower($string));
 
@@ -43,9 +42,34 @@ class VolleyStatsHelpers {
 
     public function translateText($text){
         $translations = array(
-            'male' => 'mand',
-            'female' => 'kvinde'
+            'male' =>       'mand',
+            'female' =>     'kvinde',
+            'spike' =>      'angreb',
+            'serve' =>      'serv',
+            'block' =>      'blok',
+            'receive' =>    'modtagning',
         );
         return strtr($text,$translations);
+    }
+
+    public function groupBy($array, $key) {
+        $result = array();
+    
+        foreach($array as $val) {
+            if(array_key_exists($key, $val)){
+                $result[$val[$key]][] = $val;
+            }else{
+                $result[""][] = $val;
+            }
+        }
+    
+        return $result;
+    }
+
+    public function filterBy($array, $key, $keyValue)
+    {
+        return array_filter($array, function($value) use ($key, $keyValue) {
+           return $value[$key] == $keyValue; 
+        });
     }
 }

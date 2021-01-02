@@ -11,7 +11,9 @@ function with($form, $password, $scope=null) {
   if( !$scope ) $scope = current_url();
   $session_key = 'password_protect_'.preg_replace('/\W+/', '_', $scope);
 
-  session_start();
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
 
   # Check the POST for access
   if (isset($_POST['password'])){

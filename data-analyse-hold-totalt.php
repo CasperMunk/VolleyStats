@@ -7,10 +7,10 @@ $query = "
 SELECT teams.team_name name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played 
 
-    ,SUM(player_stats.points_total) as points_total
+    ,SUM(player_stats.point_total) as point_total
     ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error) as error_total
-    ,SUM(player_stats.break_points) as break_points 
-    ,SUM(player_stats.win_loss) as win_loss
+    ,SUM(player_stats.point_break_points) as point_break_points 
+    ,SUM(player_stats.point_win_loss) as point_win_loss
 
     ,SUM(player_stats.serve_total) as serve_total 
     ,SUM(player_stats.serve_ace) as serve_ace 
@@ -37,7 +37,7 @@ FROM player_stats
     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
 WHERE excluded_games.game_id IS NULL
 GROUP BY teams.team_name, competitions.gender
-ORDER BY points_total DESC
+ORDER BY point_total DESC
 ";
 
 $dataTable = new DataTable($VolleyStats,$type,$context,$query);

@@ -27,7 +27,7 @@
 <body class="d-flex flex-column min-vh-100<?php if ($full_page) echo ' fullpage' ?>">
     <?php if ($full_page == false): ?>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="/">
                     <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" border="none" / class="me-1">VolleyStats
