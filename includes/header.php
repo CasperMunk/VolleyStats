@@ -51,7 +51,7 @@
                             }else{
                                 echo '
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                         '.$naviarray['navi_title'].'
                                     </a>
                                     <ul class="dropdown-menu">';
