@@ -34,7 +34,7 @@
     <?php endif; ?>
 
     <?php if (in_array('records.js',$loadElements)): ?>
-        <script async type="text/javascript" src="js/records.js"></script>
+        <script type="text/javascript" src="js/records.js"></script>
     <?php endif; ?>
     
     <?php if (!is_local()): ?>
