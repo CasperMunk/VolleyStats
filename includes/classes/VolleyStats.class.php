@@ -405,8 +405,6 @@ class VolleyStats extends Helpers {
         if (empty($group)) return false;
 
         return $this->fetchMysqlAll("SELECT id, title FROM records_config WHERE record_type = '".$this->recordType."' AND record_group = '".$group."' ORDER BY sorting");
-
-        //$query = "SELECT r.record_id, rank, game_id, title, record_group, player_name, gender FROM records r INNER JOIN records_config c ON r.record_id = c.id INNER JOIN players p ON p.id = r.player_id WHERE c.record_type = '".$this->recordType."' ORDER BY c.sorting, c.id, p.gender, r.rank";
     }
 
     function getRecordTabs(){
@@ -465,7 +463,7 @@ class VolleyStats extends Helpers {
                 INNER JOIN games g ON g.id = r.game_id 
                 INNER JOIN competitions comp ON comp.id = g.competition_id
             WHERE r.record_id=".$id."
-            ORDER BY r.record_value DESC
+            ORDER BY r.rank DESC
         ");
 
 
