@@ -70,7 +70,7 @@ function updateNextCompetitionAjax(){
 function updateNextGameAjax(){
     // console.log($(".game.not-updated").length);
     if ($(".game.not-updated").length == 0){
-        updateRecords();
+        updateRecordsAjax();
         // console.log('Done with matches');
         return;
     }

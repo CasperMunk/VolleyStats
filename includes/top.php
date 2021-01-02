@@ -70,18 +70,18 @@ array(
             ),
         ),
     ),
-    // array(
-    //     "navi_title" => "Kampe",
-    //     "items" => 
-    //     array(
-    //         array(
-    //             "url" => "rekorder-kampe",
-    //             "navi_title" => "Rekorder for kampe",
-    //             "title" => "Rekorder for kampe",
-    //             "meta_description" => "",
-    //         ),
-    //     )
-    // ),
+    array(
+        "navi_title" => "Kampe",
+        "items" => 
+        array(
+            array(
+                "url" => "rekorder-kampe",
+                "navi_title" => "Rekorder for kampe",
+                "title" => "Rekorder for kampe",
+                "meta_description" => "",
+            ),
+        )
+    ),
     array(
         "url" => "betingelser",
         "navi_title" => "",

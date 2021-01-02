@@ -42,12 +42,13 @@ class Helpers {
 
     public function translateText($text){
         $translations = array(
-            'male' =>       'mand',
-            'female' =>     'kvinde',
-            'spike' =>      'angreb',
-            'serve' =>      'serv',
-            'block' =>      'blok',
-            'receive' =>    'modtagning',
+            'male' =>           'mand',
+            'female' =>         'kvinde',
+            'spike' =>          'angreb',
+            'serve' =>          'serv',
+            'block' =>          'blok',
+            'receive' =>        'modtagning',
+            'spectators' =>     'tilskuere',
         );
         return strtr($text,$translations);
     }

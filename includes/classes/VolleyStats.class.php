@@ -183,45 +183,41 @@ class VolleyStats extends Helpers {
             $game_data["guest_set".$set_count] = explode("/",$score)[1];
             $set_count++;
         }
-
-        if (strpos($content, '_DIV_MatchStats') == false) {
-            //Update general info about game
-            $this->updateGameData($game_id,$game_data);
-            return 'Kampstats opdateret. Ingen spillerstat tilgængelig.';
-        }
-        
+ 
         //Get player statistics
         foreach (array("Home","Guest") as $team_type){
             //Get team name
-            $team_name = $this->cleanInputData($this->getTagById("span","Content_Main_ctl17_RP_MatchStats_TeamName_".$team_type."_0",$content),"text");
+            $team_name = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_".$team_type."Team",$content),"text");
 
             //Get team id (create one if it doesn't exist)
             $team_id = $this->getTeamId($team_name,$competition_id);
             if ($team_id == false){
-                echo 'Intet team ID for kamp ID '.$game_id;
+                echo 'Fejl ved oprettelse af team for kamp ID '.$game_id;
                 exit;
             }
 
             $game_data[strtolower($team_type)."_team_id"] = $team_id;
 
-            //Load stat table
-            $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
+            if (strpos($content, '_DIV_MatchStats') == true) {
+                //Load stat table
+                $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
 
-            if ($html = str_get_html($team_table)){
-                foreach ($html->find('table.rgMasterTable tbody tr') as $row){
-                    //Trim name
-                    $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
-                    if (in_array($player_name,$this->getExcludedPlayers())) continue;
-                    $player_name = $this->ucname(strtolower($this->reverseName($player_name)));
+                if ($html = str_get_html($team_table)){
+                    foreach ($html->find('table.rgMasterTable tbody tr') as $row){
+                        //Trim name
+                        $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
+                        if (in_array($player_name,$this->getExcludedPlayers())) continue;
+                        $player_name = $this->ucname(strtolower($this->reverseName($player_name)));
 
-                    //Get player id (create one if it doesn't exist)
-                    $player_id = $this->getPlayerId($player_name,$gender);
-                    
-                    //Add stats for player
-                    $this->addPlayerStats($game_id,$team_id,$player_id,$row);
+                        //Get player id (create one if it doesn't exist)
+                        $player_id = $this->getPlayerId($player_name,$gender);
+                        
+                        //Add stats for player
+                        $this->addPlayerStats($game_id,$team_id,$player_id,$row);
+                    }
+                }else{
+                    return 'Fejl ved load af HTML-data';
                 }
-            }else{
-                return 'Fejl ved load af HTML-data';
             }
         }
 
@@ -368,11 +364,11 @@ class VolleyStats extends Helpers {
     function getTeamId($team_name,$competition_id){
         if (empty($team_name) OR empty($competition_id)) return false;
 
-        if ($result = $this->db->query("SELECT id FROM teams WHERE team_name='$team_name' AND competition_id=$competition_id")) {
+        $query = "SELECT id FROM teams WHERE team_name='$team_name' AND competition_id=$competition_id";
+
+        if ($result = $this->db->query($query)) {
             if ($result->num_rows>0){
-                while($row = $result->fetch_assoc()) {
-                    return $row["id"];
-                }
+                return $this->fetchMysqlAll($query)[0]["id"];
             }else{
                 return $this->executeMysql("INSERT INTO teams (team_name, competition_id) VALUES ('$team_name', $competition_id)");
             }
@@ -404,7 +400,7 @@ class VolleyStats extends Helpers {
         if (empty($this->recordType)) return false;
         if (empty($group)) return false;
 
-        return $this->fetchMysqlAll("SELECT id, title FROM records_config WHERE record_type = '".$this->recordType."' AND record_group = '".$group."' ORDER BY sorting");
+        return $this->fetchMysqlAll("SELECT id, title, lookup_type FROM records_config WHERE record_type = '".$this->recordType."' AND record_group = '".$group."' ORDER BY sorting");
     }
 
     function getRecordTabs(){
@@ -419,29 +415,64 @@ class VolleyStats extends Helpers {
     }
 
     function updateRecords(){
+        $this->executeMysql("TRUNCATE table records");
         if ($result = $this->db->query("SELECT * FROM records_config")) {
             if ($result->num_rows>0){
                 while($r = $result->fetch_assoc()) {
                     foreach (array("male","female") as $gender){
                         if ($r['lookup_type'] == 'player_stats'){
                             $query = "
-                            REPLACE INTO records
-                                (player_id, game_id, record_value, record_id, rank)
-                            SELECT player_id, game_id, record_value, record_id, @curRank := @curRank + 1 AS rank 
-                            FROM 
-                                (SELECT player_stats.player_id, player_stats.game_id, ".$r['calculation']."(player_stats.".$r['field'].") as record_value, ".$r['id']." as record_id 
-                                FROM player_stats 
-                                    LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id 
-                                    LEFT JOIN players ON player_stats.player_id = players.id 
-                                    LEFT JOIN games ON player_stats.game_id = games.id
-                                WHERE excluded_games.game_id IS NULL AND players.gender='".$gender."' 
-                                GROUP BY player_id, game_id
-                                ORDER BY record_value DESC, games.date_time DESC, players.id
-                                LIMIT ".$this->record_length.") t, 
-                                (SELECT @curRank := 0) r";
-                            echo $query."<br><br>";
-                            $this->executeMysql($query);
+                            INSERT INTO records
+                            (player_id, game_id, record_value, record_id)
+
+                            SELECT player_stats.player_id, player_stats.game_id, ".$r['calculation']."(player_stats.".$r['field'].") record_value, ".$r['id']." as record_id 
+                            FROM player_stats 
+                                LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id 
+                                LEFT JOIN players ON player_stats.player_id = players.id 
+                                LEFT JOIN games ON player_stats.game_id = games.id
+                            WHERE excluded_games.game_id IS NULL AND players.gender='".$gender."' 
+                            GROUP BY player_id, game_id
+                            ORDER BY record_value DESC, games.date_time DESC, games.id
+                            LIMIT ".$this->record_length."
+                            ";
+                            
+                            
+                        }elseif ($r['lookup_type'] == 'game_stats') {
+                            $field = $r['field'];
+                            if (strpos($field,",") !== false){
+                                $field = explode(",",$field);
+                                $n = count($field);
+                            }
+                            $query = "
+                            INSERT INTO records
+                            (game_id, record_value, record_id)
+                        
+                            SELECT 
+                                g.id game_id, ";
+                                if (is_array($field)){
+                                    $query .= 'greatest(';
+                                    foreach ($field as $i => $sub_fields){
+                                        $query .= $r['calculation']."(".$sub_fields.")";
+                                        if (($i+1) != $n) $query .= ',';
+                                    }
+                                }else{
+                                    $query .= $r['calculation'] . '(';
+                                    $query .= $field;
+                                }
+                                $query .= ") record_value, ".$r['id']." as record_id 
+
+                            FROM games g
+                                LEFT JOIN excluded_games ex ON g.id = ex.game_id
+                                LEFT JOIN competitions c ON c.id = g.competition_id
+
+                                WHERE ex.game_id IS NULL AND c.gender='".$gender."'  
+                                GROUP BY g.id 
+                            ORDER BY record_value DESC, g.date_time DESC, g.id
+                            LIMIT ".$this->record_length."
+                            ";
                         }
+                        echo $query."<br><br>";
+                        $this->executeMysql($query);
                     }    
                 }
                 return true;
@@ -452,20 +483,89 @@ class VolleyStats extends Helpers {
         }   
     }
 
-    function getRecords($id){
+    function getRecords($id,$lookupType = ''){
         if (empty($id)) return false;
 
-        return $this->fetchMysqlAll("
-            SELECT r.rank, r.game_id, p.player_name, p.gender, r.record_value, comp.year, comp.current 
+        if ((empty($lookupType))) $lookupType = $this->fetchMysqlAll("SELECT lookup_type FROM records_config WHERE id = ".$id)[0]['lookup_type'];
+
+        if ($lookupType == 'player_stats'){
+            $query = "
+            SELECT r.game_id, p.player_name, p.gender, r.record_value, comp.year, comp.current 
             FROM records r 
                 INNER JOIN records_config c ON r.record_id = c.id 
                 INNER JOIN players p ON p.id = r.player_id 
                 INNER JOIN games g ON g.id = r.game_id 
                 INNER JOIN competitions comp ON comp.id = g.competition_id
             WHERE r.record_id=".$id."
-            ORDER BY r.record_value DESC, g.date_time DESC, p.id
-        ");
+            ORDER BY r.record_value DESC, g.date_time DESC, g.id
+            ";
+        }elseif ($lookupType == 'game_stats'){
+            $query = "
+            SELECT r.game_id, comp.gender, r.record_value, comp.year, comp.current, t_home.team_name home_team_name, t_guest.team_name guest_team_name, UNIX_TIMESTAMP(g.date_time) date_time
+            FROM records r 
+                INNER JOIN records_config c ON r.record_id = c.id 
+                INNER JOIN games g ON g.id = r.game_id 
+                INNER JOIN competitions comp ON comp.id = g.competition_id
+                LEFT JOIN teams t_home ON g.home_team_id = t_home.id
+                LEFT JOIN teams t_guest ON g.guest_team_id = t_guest.id
+            WHERE r.record_id=".$id."
+            ORDER BY r.record_value DESC, g.date_time DESC, g.id
+            ";
+        }
+
+        return $this->fetchMysqlAll($query);
 
 
+    }
+
+    function printRecords(){
+        $tabs = $this->getRecordTabs();
+        echo '
+        <div class="row">
+            <div class="col-md">
+                <nav class="nav nav-pills btn-group record-tabs mb-2 mb-md-0">';
+                    foreach ($tabs as $key => $tab){
+                        echo '<a class="btn btn-outline-primary text-nowrap'.(($tab === reset($tabs)) ? ' active' : '').'" id="nav-'.$key.'-tab" data-bs-toggle="tab" href="#nav-'.$key.'">'.$tab.'</a>';
+                    }
+                    echo '
+                </nav>
+            </div>
+            <div class="col-md text-md-end">';
+                include("includes/gender_picker.php");
+            echo '</div>
+        </div>
+
+        <div class="tab-content" id="nav-tabContent">';
+            foreach ($tabs AS $key => $tab){
+                echo '<div class="tab-pane fade show'.(($tab === reset($tabs)) ? ' active' : '').'" id="nav-'.$key.'">';
+                
+                foreach ($this->getRecordGroups($key) as $group){
+                    echo '<h1 class="mt-2 h5">'.$group['title'].'</h1>
+                    <ol class="records">';
+                        
+                            foreach ($this->getRecords($group['id']) as $record){
+                                echo '
+                                <li class="'.$record['gender'].' '.($record['current'] ? ' current' : '').'" data-value="'.$record['record_value'].'">';
+                                    
+                                        if ($group['lookup_type'] == 'player_stats'){
+                                            echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank" rel="noopener">';
+                                                echo '<span class="title">'.$record['player_name'].'</span>' ;
+                                                echo '<span class="record_value">('.$record['record_value'].')</span>';
+                                            echo '</a>';
+                                        }elseif ($group['lookup_type'] == 'game_stats'){
+                                            echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank" rel="noopener">';
+                                                echo '<span class="title">'.$record['home_team_name'].' - '.$record['guest_team_name'].'</span> ';
+                                                echo '<span class="record_value">('.$record['record_value'].')</span>';
+                                            echo '</a>';
+                                        }
+                                    if ($record['current']) echo ' <span class="badge bg-primary">Denne sæson</span>';
+                                echo '</li>
+                                ';
+                            }
+                    echo '</ol>';
+                }
+                echo '</div>';
+            }	
+            echo '</div>';
     }
 }
