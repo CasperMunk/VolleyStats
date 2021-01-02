@@ -33,7 +33,7 @@ $tabs = $VolleyStats->getRecordTabs();
 				    foreach ($VolleyStats->getRecords($group['id']) as $record){
 				        echo '
 				        <li class="'.$record['gender'].' '.($record['current'] ? ' current' : '').'" data-value="'.$record['record_value'].'">';
-				            echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank">';
+				            echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank" rel="noopener">';
 				                echo '
 				                <span class="player_name">'.$record['player_name'].'</span>
 				                <span class="description">('.$record['record_value'].')</span>';
