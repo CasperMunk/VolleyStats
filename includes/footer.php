@@ -23,22 +23,22 @@
         <link rel="preload" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css"></noscript>
 
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js" async></script>
+        <script async type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
+        <script async type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
         
         <?php if (isset($dataTable)) echo $dataTable->jsFile; ?>
     <?php endif; ?>
 
     <?php if (in_array('updater.js',$loadElements)): ?>
-        <script type="text/javascript" src="js/updater.js" async></script>
+        <script async type="text/javascript" src="js/updater.js"></script>
     <?php endif; ?>
 
     <?php if (in_array('records.js',$loadElements)): ?>
-        <script type="text/javascript" src="js/records.js" async></script>
+        <script async type="text/javascript" src="js/records.js"></script>
     <?php endif; ?>
     
     <?php if (!is_local()): ?>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8e413f14-cb38-4f21-b272-ef107fbe4387" data-blockingmode="auto" type="text/javascript"></script>
+    <script async id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="8e413f14-cb38-4f21-b272-ef107fbe4387" data-blockingmode="auto" type="text/javascript"></script>
     <?php endif; ?>
     
 </body>
