@@ -415,7 +415,7 @@ class VolleyStats extends Helpers {
     }
 
     function updateRecords(){
-        $this->executeMysql("TRUNCATE table records");
+        $this->executeMysql("TRUNCATE TABLE records");
         if ($result = $this->db->query("SELECT * FROM records_config")) {
             if ($result->num_rows>0){
                 while($r = $result->fetch_assoc()) {
@@ -471,7 +471,7 @@ class VolleyStats extends Helpers {
                             LIMIT ".$this->record_length."
                             ";
                         }
-                        echo $query."<br><br>";
+                        // echo $query."<br><br>";
                         $this->executeMysql($query);
                     }    
                 }
