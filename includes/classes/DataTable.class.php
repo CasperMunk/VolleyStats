@@ -32,7 +32,7 @@ class DataTable {
 		        array(
 		            array(
 		                'title' => 'Generelt',
-		                'colspan' => 4,
+		                'colspan' => 5,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 100,
@@ -46,21 +46,21 @@ class DataTable {
 		            ),
 		            array(
 		                'title' => 'Serv',
-		                'colspan' => 3,
+		                'colspan' => 5,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 300,
 		            ),
 		            array(
 		                'title' => 'Modtagning',
-		                'colspan' => 6,
+		                'colspan' => 7,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 400,
 		            ),
 		            array(
 		                'title' => 'Angreb',
-		                'colspan' => 6,
+		                'colspan' => 8,
 		                'rowspan' => null,
 		                'category' => null,
 		                'prio' => 800,
@@ -97,6 +97,13 @@ class DataTable {
 		            ),
 		            array(
 		                'title' => 'Kampe',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Generelt',
+		                'prio' => 300,
+					),
+					array(
+		                'title' => 'Sæt',
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Generelt',
@@ -138,14 +145,28 @@ class DataTable {
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Serv',
-		            ),
-		            array(
+					),
+					array(
 		                'title' => 'Es',
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Serv',
 		                'prio' => 600,
 		            ),
+		            array(
+		                'title' => 'Fejl %',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Serv',
+		                'prio' => 600,
+					),
+					array(
+		                'title' => 'Es %',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Serv',
+		                'prio' => 600,
+					),
 		            array(
 		                'title' => 'Tot',
 		                'colspan' => null,
@@ -178,7 +199,14 @@ class DataTable {
 		                'prio' => 700,
 					),
 		            array(
-		                'title' => 'Perf%',
+		                'title' => 'Perf %',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Modtagning',
+		                'prio' => 700,
+					),
+					array(
+		                'title' => 'Fejl %',
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Modtagning',
@@ -210,7 +238,7 @@ class DataTable {
 		                'prio' => 800,
 					),
 					array(
-		                'title' => 'Kill%',
+		                'title' => 'Kill %',
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Angreb',
@@ -218,6 +246,20 @@ class DataTable {
 					),
 					array(
 		                'title' => 'Eff',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Angreb',
+		                'prio' => 800,
+					),
+					array(
+		                'title' => 'Fejl %',
+		                'colspan' => null,
+		                'rowspan' => null,
+		                'category' => 'Angreb',
+		                'prio' => 800,
+					),
+					array(
+		                'title' => 'Blok %',
 		                'colspan' => null,
 		                'rowspan' => null,
 		                'category' => 'Angreb',
@@ -236,7 +278,7 @@ class DataTable {
 
 		$defaultFormat = '$.fn.dataTable.render.number( ".", ",", 0, "", "")';	
 
-		if ($this->context == 'per_game'){
+		if ($this->context == 'per_game' OR $this->context == 'per_set'){
 			$defaultFormat = '$.fn.dataTable.render.number( ".", ",", 2, "", "")';	
 		}
 		
@@ -295,6 +337,17 @@ class DataTable {
 		            'orderSequence' => '[ "desc","asc" ]',
 					'order' => null,
 					'render' => '$.fn.dataTable.render.number( ".", ",", 0, "", "")',
+				),
+				array(
+					'name' => '"sets_played"',
+					'data' => '"sets_played"',
+		            'visible' => 'true',
+		            'className' => '"colvisGroupGenerelt"',
+		            'orderable' => 'true',
+		            'searchable' => 'true',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => $defaultFormat
 		        ),
 		        array(
 					'name' => '"point_total"',
@@ -372,6 +425,28 @@ class DataTable {
 		            'orderSequence' => '[ "desc","asc" ]',
 					'order' => null,
 					'render' => $defaultFormat,
+				),
+				array(
+					'name' => '"serve_error_percent"',
+					'data' => '"serve_error_percent"',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupServ"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
+				),
+				array(
+					'name' => '"serve_ace_percent"',
+					'data' => '"serve_ace_percent"',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupServ"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
 		        ),
 		        array(
 					'name' => '"receive_total"',
@@ -432,6 +507,17 @@ class DataTable {
 					'name' => '"receive_perf_percent"',
 					'data' => '"receive_perf_percent"',
 		            'visible' => 'true',
+		            'className' => '"colvisGroupModtagning"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
+				),
+				array(
+					'name' => '"receive_error_percent"',
+					'data' => '"receive_error_percent"',
+		            'visible' => 'false',
 		            'className' => '"colvisGroupModtagning"',
 		            'orderable' => 'true',
 		            'searchable' => 'false',
@@ -503,7 +589,29 @@ class DataTable {
 		            'searchable' => 'false',
 		            'orderSequence' => '[ "desc","asc" ]',
 					'order' => null,
-					'render' => '$.fn.dataTable.render.number( ".", ",", 2, "", "")'
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
+				),
+				array(
+					'name' => '"spike_error_percent"',
+					'data' => '"spike_error_percent"',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
+				),
+				array(
+					'name' => '"spike_blocked_percent"',
+					'data' => '"spike_blocked_percent"',
+		            'visible' => 'false',
+		            'className' => '"colvisGroupAngreb"',
+		            'orderable' => 'true',
+		            'searchable' => 'false',
+		            'orderSequence' => '[ "desc","asc" ]',
+					'order' => null,
+					'render' => '$.fn.dataTable.render.number( ".", ",", 1, "", "%")'
 		        ),
 		        array(
 					'name' => '"block_win"',

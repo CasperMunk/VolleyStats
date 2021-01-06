@@ -50,6 +50,12 @@ array(
                 "title" => "Data analyse: Spiller pr. kamp",
                 "meta_description" => "",
             ),
+            array(
+                "url" => "data-analyse-spiller-per-set",
+                "navi_title" => "Data: Spillere pr. sæt",
+                "title" => "Data analyse: Spiller pr. sæt",
+                "meta_description" => "",
+            ),
         ),
     ),
     array(
@@ -66,6 +72,12 @@ array(
                 "url" => "data-analyse-hold-per-kamp",
                 "navi_title" => "Data: Hold pr. kamp",
                 "title" => "Data analyse: Hold pr. kamp",
+                "meta_description" => "",
+            ),
+            array(
+                "url" => "data-analyse-hold-per-set",
+                "navi_title" => "Data: Hold pr. sæt",
+                "title" => "Data analyse: Hold pr. sæt",
                 "meta_description" => "",
             ),
         ),
