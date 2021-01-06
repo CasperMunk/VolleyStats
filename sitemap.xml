@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://volleystats.dk/</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/rekorder-spiller-statistik</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-spiller-totalt</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-spiller-per-kamp</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-spiller-per-set</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-hold-totalt</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-hold-per-kamp</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/data-analyse-hold-per-set</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/rekorder-kampe</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://volleystats.dk/betingelser</loc>
+  <lastmod>2021-01-06T02:03:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>
