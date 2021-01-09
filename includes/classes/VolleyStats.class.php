@@ -565,7 +565,7 @@ class VolleyStats extends Helpers {
             ";
         }elseif ($lookupType == 'game_stats'){
             $query = "
-            SELECT r.game_id, comp.gender, r.record_value, comp.year, comp.current, t_home.team_name home_team_name, t_guest.team_name guest_team_name, UNIX_TIMESTAMP(g.date_time) date_time
+            SELECT r.game_id, comp.gender, r.record_value, comp.year, comp.current, t_home.name home_team_name, t_guest.name guest_team_name, UNIX_TIMESTAMP(g.date_time) date_time
             FROM records r 
                 INNER JOIN records_config c ON r.record_id = c.id 
                 INNER JOIN games g ON g.id = r.game_id 
