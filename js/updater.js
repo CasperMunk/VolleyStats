@@ -89,7 +89,8 @@ function updateNextGameAjax(){
 
 function updateRecordsAjax(){
     setStatus(true,"Opdaterer rekorder..");
-    $('#result').append('<div class="records"><span>Rekorder: </span><span class="result"></span></div>').find(".result").load("?mode=update_records", function() {
+    $('#result').append('<div class="records"><span>Rekorder: </span><span class="result"></span></div>');
+    $("#result .records .result").load("?mode=update_records", function() {
         setStatus(false,"Færdig!");
     });
 }
@@ -107,13 +108,13 @@ function setStatus(spinner,val){
         $('.progress').hide()
     }
 
-    if (pcg==100) $(".progress-bar").removeClass("progress-bar-animated");
-
     if (spinner){
+        $(".progress-bar").addClass("progress-bar-animated");
         $("button#update-button").prop('disabled', true).find("span.text").html('Henter..').parent().find("span.icon").removeClass("d-none");
         $("#cancel").show();
         $("input:not(.always-on), select").prop("disabled",true);
     }else{
+        $(".progress-bar").removeClass("progress-bar-animated");
         $("button#update-button").prop('disabled', false).find("span.text").html('Færdig! Tryk for at køre igen..').parent().find("span.icon").addClass("d-none");
         $("#cancel").hide();
         $("input:not(.always-on), select").prop("disabled",false);

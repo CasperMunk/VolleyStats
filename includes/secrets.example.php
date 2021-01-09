@@ -6,4 +6,5 @@ $secrets['mysql_username']  = '';
 $secrets['mysql_password']  = '';
 $secrets['mysql_database']  = '';
 $secrets['cronjob_key']  = '';
+$secrets['api_bearer']  = '';
 ?>

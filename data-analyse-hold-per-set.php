@@ -4,7 +4,7 @@ require('includes/top.php');
 $type = 'teams';
 $context = 'per_set';
 $query = "
-SELECT teams.team_name name, competitions.gender
+SELECT teams.name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played
     ,(SUM(games.home_sets)+SUM(games.guest_sets)) as sets_played
 
@@ -43,7 +43,7 @@ FROM player_stats
     LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id
     LEFT JOIN games ON games.id = player_stats.game_id
 WHERE excluded_games.game_id IS NULL
-GROUP BY teams.team_name, competitions.gender HAVING games_played > 100
+GROUP BY teams.name, competitions.gender HAVING games_played > 100
 ORDER BY point_total DESC
 ";
 

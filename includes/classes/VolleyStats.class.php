@@ -12,6 +12,10 @@ class VolleyStats extends Helpers {
         if (isset($this->db)) $this->db->close();
     }
 
+    function setSecrets($secrets){
+        $this->secrets = $secrets;
+    }
+
     public function initializeMysql($host,$user,$pass,$db){
         if (!isset($this->db)){
             $this->db = new mysqli($host, $user, $pass, $db);
@@ -22,7 +26,7 @@ class VolleyStats extends Helpers {
                 exit();
             }
 
-            $this->db->set_charset("utf8");
+            $this->db->set_charset("utf8mb4");
         }
 
     }
@@ -56,8 +60,15 @@ class VolleyStats extends Helpers {
     }
 
     public function getMysqlCount($query){
-        $query = "SELECT COUNT(*) FROM ($query) t";
-        return array_shift($this->fetchMysqlAll($query)[0]);
+        // $query = "SELECT COUNT(*) FROM ($query) t";
+        // return array_shift($this->fetchMysqlAll($query)[0]);
+
+        if ($result = $this->db->query($query)) {
+            return $result->num_rows;
+        }else{
+            printf("MySQL Error: %s\n", $this->db->error);
+            exit();
+        }
     }
 
     function getCompetitions($only_current=false){
@@ -137,67 +148,115 @@ class VolleyStats extends Helpers {
         }  
     }
 
+    function makeApiCall($url){
+        if (empty($url)) return false;
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = array(
+        "Authorization: ".$this->secrets['api_bearer'],
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+        $resp = json_decode(curl_exec($curl));
+        curl_close($curl);
+
+        if(!is_object($resp)){
+            echo "Fejl: Intet resultat ved API-kald ($url).<br>";
+            return false;
+        }
+
+        return $resp;
+    }
+
+    function updateStadium($id,$force=false){
+        if (empty($id)) return false;
+        if ($force == true OR $this->getMysqlCount("SELECT id from stadiums WHERE id = ".$id) == 0){
+            $data = $this->makeApiCall("https://dataprojectserviceswebapi.azurewebsites.net/v1/VO/dvbf/Stadium/".$id);
+
+            $query = "INSERT INTO stadiums (id,name,address,city,zipcode) VALUES($id,'$data->StadiumName','$data->Address','$data->City','$data->ZIPCode')";
+            $this->executeMysql($query);
+        }
+    }
+
+    function updateTeamAndClub($id,$competition_id,$force=false){
+        if (empty($id)) return false;
+
+        if ($force == true OR $this->getMysqlCount("SELECT id from teams WHERE id = ".$id) == 0){
+            $data = $this->makeApiCall("https://dataprojectserviceswebapi.azurewebsites.net/v1/VO/dvbf/Team/".$id);
+            $query = "INSERT INTO teams (id,name,competition_id,club_id) VALUES($id,'$data->Name',$competition_id,$data->ClubID)";
+            $this->executeMysql($query);
+
+            if ($force == true OR $this->getMysqlCount("SELECT id from clubs WHERE id = ".$data->ClubID) == 0){
+                $query = "INSERT INTO clubs (id,name) VALUES($data->ClubID,'$data->Club')";
+                $this->executeMysql($query);
+            }
+        }
+    }
+
+    function getApiGameData($id){
+        if (empty($id)) return false;
+
+        $match_data = $this->makeApiCall("https://dataprojectserviceswebapi.azurewebsites.net/v1/VO/dvbf/Match/".$id);
+        $match_livedata = $this->makeApiCall("https://dataprojectserviceswebapilive.azurewebsites.net/api/v1/dvbf/MatchLiveData/MatchID/".$id);
+        
+        foreach (array(1,2,3,4,5) as $i){
+            $match_data->{'Set'.$i.'Time'} = $match_livedata->{'TS'.$i};
+        }
+        
+        return $match_data;
+    }
+
     function getGameData($game_id,$competition_id,$gender){
         if (empty($game_id) OR empty($competition_id) OR empty($gender)) return false;
-        $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
-        $content = $this->getHtmlData($url);
 
-        $set_score_data = trim($this->cleanInputData($this->getTagById("span","Content_Main_LB_SetsPartials",$content),"text"));
+        //Get API data object/array
+        $data = $this->getApiGameData($game_id);
 
-        if (empty($set_score_data)) {
+        // echo '<pre>';
+        // print_r($data);
+
+        //Check if game is played yet
+        if ($data->Finalized != 1){
             return 'Kampen er ikke spillet endnu';
         }
 
-        //Get general info about game
+        $this->updateStadium($data->StadiumID);
+        $this->updateTeamAndClub($data->HomeTeamID,$competition_id);
+        $this->updateTeamAndClub($data->GuestTeamID,$competition_id);
+
+        //Add data fields to game_data array
         $game_data = array();
 
-        // $federation_id = preg_match_all("\d*(?=.*[0-9])\.pdf",$content,$matches);
-        // $game_data["federation_id"] = str_replace(".pdf","",);
-
-        $game_data["location"] = "'".$this->cleanInputData($this->getTagById("span","Content_Main_LB_Stadium",$content),"text")."'";
-
-        $date_time = $this->cleanInputData($this->getTagById("span","Content_Main_LB_DateTime",$content),"text");
-        $months_array = array("januar" => 1, "februar" => 2, "marts" => 3, "april" => 4, "maj" => 5, "juni" => 6, "juli" => 7, "august" => 8, "september" => 9, "oktober" => 10, "november" => 11, "december" => 12);
-        $date_time = strtr($date_time,$months_array);
-        $game_data["date_time"] = "'".DateTime::createFromFormat('j. n Y - H:i', $date_time)->format('Y-m-d H:i:s')."'";
-
-        $game_data["spectators"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_Spectators",$content));
-
-        if (strpos($content, 'id="Content_Main_LB_Referees"') == true) {
-            $referees = $this->cleanInputData($this->getTagById("span","Content_Main_LB_Referees",$content),"text");
-            foreach (explode("-",$referees) as $referee_id => $referee_name){
-                $referee_name = $this->reverseName(trim($referee_name));
-                if (!empty($referee_name)) $game_data["referee".($referee_id+1)."_id"] = $this->getRefereeId($referee_name);
-            }
+        $game_data['id'] =                  $data->MatchID;
+        $game_data['spectators'] =          $data->Spectators;
+        $game_data['home_team_id'] =        $data->HomeTeamID;
+        $game_data['guest_team_id'] =       $data->GuestTeamID;
+        $game_data['federation_match_id'] = $data->FederationMatchNumber;
+        $game_data['stadium_id'] =          $data->StadiumID;
+        $game_data['home_sets'] =           $data->Final_Home;
+        $game_data['guest_sets'] =          $data->Final_Guest;
+        foreach (array(1,2,3,4,5) as $i){
+            $game_data['home_set'.$i] =     $data->{'Set'.$i.'Home'};
+            $game_data['guest_set'.$i] =    $data->{'Set'.$i.'Guest'};
+            $game_data['time_set'.$i] =     $data->{'Set'.$i.'Time'};
         }
+        $game_data['spectators'] =          $data->Spectators;
+        $game_data['date_time'] =           "'".DateTime::createFromFormat('Y-m-d\TH:i:s', $data->MatchDateTime)->format('Y-m-d H:i:s')."'"; //Format: 2020-12-02T20:00:00
+
+
+        //Get refereee info
         
-        $game_data["home_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetHome",$content));
-        $game_data["guest_sets"] = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_WonSetGuest",$content));
 
-        //Get set scores an loop through them
-        $set_scores = explode(" ",$set_score_data);
+        //Update match player stats
 
-        $set_count = 1;
-        foreach ($set_scores as $score){
-            $game_data["home_set".$set_count] = explode("/",$score)[0];
-            $game_data["guest_set".$set_count] = explode("/",$score)[1];
-            $set_count++;
-        }
+        $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
+        $content = $this->getHtmlData($url);
  
         //Get player statistics
         foreach (array("Home","Guest") as $team_type){
-            //Get team name
-            $team_name = $this->cleanInputData($this->getTagById("span","Content_Main_LBL_".$team_type."Team",$content),"text");
-
-            //Get team id (create one if it doesn't exist)
-            $team_id = $this->getTeamId($team_name,$competition_id);
-            if ($team_id == false){
-                echo 'Fejl ved oprettelse af team for kamp ID '.$game_id;
-                exit;
-            }
-
-            $game_data[strtolower($team_type)."_team_id"] = $team_id;
-
             if (strpos($content, '_DIV_MatchStats') == true) {
                 //Load stat table
                 $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
@@ -213,10 +272,11 @@ class VolleyStats extends Helpers {
                         $player_id = $this->getPlayerId($player_name,$gender);
                         
                         //Add stats for player
-                        $this->addPlayerStats($game_id,$team_id,$player_id,$row);
+                        $this->addPlayerStats($game_id,$data->{$team_type.'TeamID'},$player_id,$row);
                     }
                 }else{
-                    return 'Fejl ved load af HTML-data';
+                    echo 'Fejl ved load af spiller-statistik!';
+                    return false;
                 }
             }
         }
@@ -326,7 +386,7 @@ class VolleyStats extends Helpers {
         $player_id = array_search($player_name,$_SESSION['players']);
         if ($player_id == false){
             //Add new player
-            $query = "INSERT INTO players (player_name,gender) VALUES ('$player_name','$gender')";
+            $query = "INSERT INTO players (name,gender) VALUES ('$player_name','$gender')";
             $player_id = $this->executeMysql($query);
             $_SESSION['players'][$player_id] = $player_name;
             $_SESSION['players_updated'] = time();
@@ -337,10 +397,10 @@ class VolleyStats extends Helpers {
 
     function reloadPlayers(){
         $_SESSION['players'] = array();
-        if ($result = $this->db->query("SELECT id, player_name FROM players")) {
+        if ($result = $this->db->query("SELECT id, name FROM players")) {
             if ($result->num_rows>0){
                 while($row = $result->fetch_assoc()) {
-                    $_SESSION['players'][$row["id"]] = $row["player_name"];
+                    $_SESSION['players'][$row["id"]] = $row["name"];
                 }
 
                 $_SESSION['players_updated'] = time();
@@ -350,10 +410,10 @@ class VolleyStats extends Helpers {
 
     function getExcludedPlayers(){
         if (!isset($this->excluded_player_list)){
-            if ($result = $this->db->query("SELECT player_name FROM excluded_players")) {
+            if ($result = $this->db->query("SELECT name FROM excluded_players")) {
                 if ($result->num_rows>0){
                     while($row = $result->fetch_assoc()) {
-                        $this->excluded_player_list[] = $row['player_name'];
+                        $this->excluded_player_list[] = $row['name'];
                     }
                 }
             }
@@ -430,13 +490,12 @@ class VolleyStats extends Helpers {
                                 LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id 
                                 LEFT JOIN players ON player_stats.player_id = players.id 
                                 LEFT JOIN games ON player_stats.game_id = games.id
-                            WHERE excluded_games.game_id IS NULL AND players.gender='".$gender."' 
+                                LEFT JOIN excluded_records ex_r ON player_stats.game_id = ex_r.game_id AND ex_r.record_id = ".$r['id']."
+                            WHERE excluded_games.game_id IS NULL AND ex_r.game_id IS NULL AND players.gender='".$gender."' 
                             GROUP BY player_id, game_id
                             ORDER BY record_value DESC, games.date_time DESC, games.id
                             LIMIT ".$this->record_length."
-                            ";
-                            
-                            
+                            ";  
                         }elseif ($r['lookup_type'] == 'game_stats') {
                             $field = $r['field'];
                             if (strpos($field,",") !== false){
@@ -448,24 +507,29 @@ class VolleyStats extends Helpers {
                             (game_id, record_value, record_id)
                         
                             SELECT 
-                                g.id game_id, ";
-                                if (is_array($field)){
+                                g.id game_id, (";
+                                if ($r['special_calculation'] != NULL){
+                                    $query .= $r['special_calculation'];
+                                }elseif (is_array($field)){
                                     $query .= 'greatest(';
                                     foreach ($field as $i => $sub_fields){
                                         $query .= $r['calculation']."(".$sub_fields.")";
                                         if (($i+1) != $n) $query .= ',';
                                     }
+                                    $query .= ')';
                                 }else{
                                     $query .= $r['calculation'] . '(';
                                     $query .= $field;
+                                    $query .= ')';
                                 }
                                 $query .= ") record_value, ".$r['id']." as record_id 
 
                             FROM games g
                                 LEFT JOIN excluded_games ex ON g.id = ex.game_id
                                 LEFT JOIN competitions c ON c.id = g.competition_id
+                                LEFT JOIN excluded_records ex_r ON g.id = ex_r.game_id AND ex_r.record_id = ".$r['id']."
 
-                                WHERE ex.game_id IS NULL AND c.gender='".$gender."'  
+                                WHERE ex.game_id IS NULL AND c.gender='".$gender."' AND ex_r.game_id IS NULL
                                 GROUP BY g.id 
                             ORDER BY record_value DESC, g.date_time DESC, g.id
                             LIMIT ".$this->record_length."
@@ -490,7 +554,7 @@ class VolleyStats extends Helpers {
 
         if ($lookupType == 'player_stats'){
             $query = "
-            SELECT r.game_id, p.player_name, p.gender, r.record_value, comp.year, comp.current 
+            SELECT r.game_id, p.name player_name, p.gender, r.record_value, comp.year, comp.current 
             FROM records r 
                 INNER JOIN records_config c ON r.record_id = c.id 
                 INNER JOIN players p ON p.id = r.player_id 

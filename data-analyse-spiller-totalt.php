@@ -5,7 +5,7 @@ $type = 'players';
 $context = 'total';
 $query = "
 SELECT 
-    players.id, players.player_name as name, players.gender
+    players.id, players.name, players.gender
     ,COUNT(player_stats.player_id) as games_played
     ,SUM(games.home_sets)+SUM(games.guest_sets) as sets_played 
 
