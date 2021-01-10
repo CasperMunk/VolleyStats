@@ -115,6 +115,13 @@ array(
         "meta_description" => "",
         "exclude_from_navi" => true,
     ),
+    array(
+        "url" => "faq",
+        "filename" => "faq.php",
+        "navi_title" => "FAQ",
+        "title" => "FAQ",
+        "meta_description" => "",
+    ),
 );
 
 $script_name = basename($_SERVER['SCRIPT_NAME']);

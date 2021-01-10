@@ -347,7 +347,7 @@ class DataTable {
 		            'searchable' => 'true',
 		            'orderSequence' => '[ "desc","asc" ]',
 					'order' => null,
-					'render' => $defaultFormat
+					'render' => '$.fn.dataTable.render.number( ".", ",", 0, "", "")',
 		        ),
 		        array(
 					'name' => '"point_total"',

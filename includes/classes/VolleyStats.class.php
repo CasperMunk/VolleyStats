@@ -60,9 +60,6 @@ class VolleyStats extends Helpers {
     }
 
     public function getMysqlCount($query){
-        // $query = "SELECT COUNT(*) FROM ($query) t";
-        // return array_shift($this->fetchMysqlAll($query)[0]);
-
         if ($result = $this->db->query($query)) {
             return $result->num_rows;
         }else{
@@ -251,7 +248,6 @@ class VolleyStats extends Helpers {
         
 
         //Update match player stats
-
         $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
         $content = $this->getHtmlData($url);
  
@@ -485,7 +481,7 @@ class VolleyStats extends Helpers {
                             INSERT INTO records
                             (player_id, game_id, record_value, record_id)
 
-                            SELECT player_stats.player_id, player_stats.game_id, ".$r['calculation']."(player_stats.".$r['field'].") record_value, ".$r['id']." as record_id 
+                            SELECT player_stats.player_id, player_stats.game_id, ".$r['calculation']." as record_value, ".$r['id']." as record_id 
                             FROM player_stats 
                                 LEFT JOIN excluded_games ON player_stats.game_id = excluded_games.game_id 
                                 LEFT JOIN players ON player_stats.player_id = players.id 
@@ -493,36 +489,17 @@ class VolleyStats extends Helpers {
                                 LEFT JOIN excluded_records ex_r ON player_stats.game_id = ex_r.game_id AND ex_r.record_id = ".$r['id']."
                             WHERE excluded_games.game_id IS NULL AND ex_r.game_id IS NULL AND players.gender='".$gender."' 
                             GROUP BY player_id, game_id
-                            ORDER BY record_value DESC, games.date_time DESC, games.id
+                            ORDER BY record_value ".$r['direction'].", games.date_time DESC, games.id
                             LIMIT ".$this->record_length."
                             ";  
-                        }elseif ($r['lookup_type'] == 'game_stats') {
-                            $field = $r['field'];
-                            if (strpos($field,",") !== false){
-                                $field = explode(",",$field);
-                                $n = count($field);
-                            }
+                        }elseif ($r['lookup_type'] == 'games') {
+                            
                             $query = "
                             INSERT INTO records
                             (game_id, record_value, record_id)
                         
                             SELECT 
-                                g.id game_id, (";
-                                if ($r['special_calculation'] != NULL){
-                                    $query .= $r['special_calculation'];
-                                }elseif (is_array($field)){
-                                    $query .= 'greatest(';
-                                    foreach ($field as $i => $sub_fields){
-                                        $query .= $r['calculation']."(".$sub_fields.")";
-                                        if (($i+1) != $n) $query .= ',';
-                                    }
-                                    $query .= ')';
-                                }else{
-                                    $query .= $r['calculation'] . '(';
-                                    $query .= $field;
-                                    $query .= ')';
-                                }
-                                $query .= ") record_value, ".$r['id']." as record_id 
+                                g.id game_id, (". $r['calculation'].") as record_value, ".$r['id']." as record_id 
 
                             FROM games g
                                 LEFT JOIN excluded_games ex ON g.id = ex.game_id
@@ -531,7 +508,7 @@ class VolleyStats extends Helpers {
 
                                 WHERE ex.game_id IS NULL AND c.gender='".$gender."' AND ex_r.game_id IS NULL
                                 GROUP BY g.id 
-                            ORDER BY record_value DESC, g.date_time DESC, g.id
+                            ORDER BY record_value ".$r['direction'].", g.date_time DESC, g.id
                             LIMIT ".$this->record_length."
                             ";
                         }
@@ -554,7 +531,7 @@ class VolleyStats extends Helpers {
 
         if ($lookupType == 'player_stats'){
             $query = "
-            SELECT r.game_id, p.name player_name, p.gender, r.record_value, comp.year, comp.current 
+            SELECT r.game_id, p.name player_name, p.gender, r.record_value, comp.year, comp.current, c.date_format, c.suffix 
             FROM records r 
                 INNER JOIN records_config c ON r.record_id = c.id 
                 INNER JOIN players p ON p.id = r.player_id 
@@ -563,9 +540,9 @@ class VolleyStats extends Helpers {
             WHERE r.record_id=".$id."
             ORDER BY r.record_value DESC, g.date_time DESC, g.id
             ";
-        }elseif ($lookupType == 'game_stats'){
+        }elseif ($lookupType == 'games'){
             $query = "
-            SELECT r.game_id, comp.gender, r.record_value, comp.year, comp.current, t_home.name home_team_name, t_guest.name guest_team_name, UNIX_TIMESTAMP(g.date_time) date_time
+            SELECT r.game_id, comp.gender, r.record_value, comp.year, comp.current, t_home.name home_team_name, t_guest.name guest_team_name, UNIX_TIMESTAMP(g.date_time) date_time, c.date_format, c.suffix
             FROM records r 
                 INNER JOIN records_config c ON r.record_id = c.id 
                 INNER JOIN games g ON g.id = r.game_id 
@@ -608,18 +585,21 @@ class VolleyStats extends Helpers {
                     <ol class="records">';
                         
                             foreach ($this->getRecords($group['id']) as $record){
+                                $record_value = $record['record_value'];
+                                if ($record['date_format'] != null) $record_value = DateTime::createFromFormat('His', $record['record_value'])->format($record['date_format']);
+                                if ($record['suffix'] != null) $record_value .= $record['suffix'];
                                 echo '
                                 <li class="'.$record['gender'].' '.($record['current'] ? ' current' : '').'" data-value="'.$record['record_value'].'">';
                                     
                                         if ($group['lookup_type'] == 'player_stats'){
                                             echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank" rel="noopener">';
                                                 echo '<span class="title">'.$record['player_name'].'</span>' ;
-                                                echo '<span class="record_value">('.$record['record_value'].')</span>';
+                                                echo '<span class="record_value">('.$record_value.')</span>';
                                             echo '</a>';
-                                        }elseif ($group['lookup_type'] == 'game_stats'){
+                                        }elseif ($group['lookup_type'] == 'games'){
                                             echo '<a href="https://dvbf-web.dataproject.com/MatchStatistics.aspx?mID='.$record['game_id'].'" target="_blank" rel="noopener">';
                                                 echo '<span class="title">'.$record['home_team_name'].' - '.$record['guest_team_name'].'</span> ';
-                                                echo '<span class="record_value">('.$record['record_value'].')</span>';
+                                                echo '<span class="record_value">('.$record_value.')</span>';
                                             echo '</a>';
                                         }
                                     if ($record['current']) echo ' <span class="badge bg-primary">Denne sæson</span>';

@@ -6,7 +6,7 @@ $context = 'per_game';
 $query = "
 SELECT teams.name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played
-    ,(SUM(games.home_sets)+SUM(games.guest_sets))/COUNT(player_stats.player_id) as sets_played
+    ,(SUM(games.home_sets)+SUM(games.guest_sets)) as sets_played 
 
     ,SUM(player_stats.point_total)/COUNT(player_stats.player_id) as point_total
     ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error)/COUNT(player_stats.player_id) as error_total

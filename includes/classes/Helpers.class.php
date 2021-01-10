@@ -49,6 +49,8 @@ class Helpers {
             'block' =>          'blok',
             'receive' =>        'modtagning',
             'spectators' =>     'tilskuere',
+            'length' =>         'længde',
+            'time' =>           'tidspunkt',
         );
         return strtr($text,$translations);
     }
