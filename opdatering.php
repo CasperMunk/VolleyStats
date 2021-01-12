@@ -1,34 +1,40 @@
 <?php 
 require('includes/top.php');
+
+$update = get('update');
+$game_id = get('game_id');
+$gender = get('gender');
+$competition_id = get('competition_id');
+$update_game_list = get('update_game_list');
+$update_game_result = get('update_game_result');
+$update_game_stats = get('update_game_stats');
+$cronjob_key = get('cronjob_key');
+
 if ($cronjob_key != $secrets['cronjob_key']){
     require('includes/protect.php');
     Protect\with('login.php', $secrets['password'],"VolleyStats");    
 }
 $loadElements = array("jQuery","updater.js");
 
-if ($mode == 'update_competition' OR $mode == 'get_competition'){
+if ($update == 'competition'){
     //Ajax response for update competitions
     if (empty($competition_id)) exit();
 
     $competition = $VolleyStats->getCompetition($competition_id);
     
     echo '<h3>'.$competition['year'].' ('.$competition['gender'].')</h3>';
-
-    $update_game = false;
-    if ($mode == 'update_competition'){
-        $update_game = true;
-    }
     
-    foreach($VolleyStats->getGames($competition['id'],$update_game) as $game){
-        echo '<div class="game not-updated" game-id="'.$game.'" competition_id="'.$competition['id'].'" gender="'.$competition['gender'].'">
+    foreach($VolleyStats->getGames($competition['id'],$update_game_list) as $game){
+        echo '  <div class="game not-updated" game-id="'.$game.'" competition_id="'.$competition['id'].'" gender="'.$competition['gender'].'" update_game_result="'.$update_game_result.'" update_game_stats="'.$update_game_stats.'">
                     <span class="title">Kamp '.$game.':</span> 
                     <span class="result"></span>
                 </div>';
     }
     exit;
-}elseif ($mode == "update_game"){
+}elseif ($update == "game"){
     //Ajax response for update game
-    if ($result = $VolleyStats->getGameData($game_id,$competition_id,$gender)){
+
+    if ($result = $VolleyStats->getGameData($game_id,$competition_id,$gender,$update_game_stats)){
         if ($result === true){
             echo '<span class="badge bg-success">Opdateret</span>';        
         }else{
@@ -38,7 +44,7 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
             echo '<span class="badge bg-warning">Kamp findes ikke i lokal database!</span>';
     }
     exit;
-}elseif ($mode == 'update_competitions_cronjob'){
+}elseif ($update == 'competitions_cronjob'){
     //Non-Ajax updates for cronjobs
     foreach ($VolleyStats->getCompetitions(true) as $comp){
         foreach ($VolleyStats->getGames($comp['id'],true) as $game){
@@ -51,7 +57,7 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
     $VolleyStats->updateRecords();
     echo 'Updated';
     exit;
-}elseif ($mode == 'update_todays_games_cronjob'){
+}elseif ($update == 'todays_games_cronjob'){
     //Non-Ajax updates for cronjobs
     if ($games = $VolleyStats->getGamesToday()){
         foreach ($games as $game){
@@ -63,7 +69,7 @@ if ($mode == 'update_competition' OR $mode == 'get_competition'){
         echo 'Updated';
     }
     exit;
-}elseif ($mode == 'update_records'){
+}elseif ($update == 'records'){
     if ($VolleyStats->updateRecords()){
         echo '<span class="badge bg-success">Opdateret</span>';
     }else{
@@ -94,6 +100,10 @@ require('includes/header.php'); ?>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="update_game_list" name="update_game_list" />
                 <label class="form-check-label" for="update_game_list">Opdater kampliste</label>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="update_game_result" name="update_game_result" checked />
+                <label class="form-check-label" for="update_game_result">Opdater kampresultat og info</label>
             </div>
             <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="update_game_stats" name="update_game_stats" checked />

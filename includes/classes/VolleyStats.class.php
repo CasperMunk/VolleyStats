@@ -209,7 +209,8 @@ class VolleyStats extends Helpers {
         return $match_data;
     }
 
-    function getGameData($game_id,$competition_id,$gender){
+    function getGameData($game_id,$competition_id,$gender,$update_stats=false){
+        if ($update_stats == 'false') $update_stats = false;
         if (empty($game_id) OR empty($competition_id) OR empty($gender)) return false;
 
         //Get API data object/array
@@ -249,34 +250,35 @@ class VolleyStats extends Helpers {
 
 
         //Get refereee info
-        
+        if ($update_stats == true){
+            echo 'updating stats';
+            //Update match player stats
+            $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
+            $content = $this->getHtmlData($url);
+    
+            //Get player statistics
+            foreach (array("Home","Guest") as $team_type){
+                if (strpos($content, '_DIV_MatchStats') == true) {
+                    //Load stat table
+                    $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
 
-        //Update match player stats
-        $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
-        $content = $this->getHtmlData($url);
- 
-        //Get player statistics
-        foreach (array("Home","Guest") as $team_type){
-            if (strpos($content, '_DIV_MatchStats') == true) {
-                //Load stat table
-                $team_table = $this->getTagById("div","RG_".$team_type."Team",$content);
+                    if ($html = str_get_html($team_table)){
+                        foreach ($html->find('table.rgMasterTable tbody tr') as $row){
+                            //Trim name
+                            $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
+                            if (in_array($player_name,$this->getExcludedPlayers())) continue;
+                            $player_name = $this->ucname(strtolower($this->reverseName($player_name)));
 
-                if ($html = str_get_html($team_table)){
-                    foreach ($html->find('table.rgMasterTable tbody tr') as $row){
-                        //Trim name
-                        $player_name = trim(str_replace('(L)', '', $row->find('td', 1)->plaintext));
-                        if (in_array($player_name,$this->getExcludedPlayers())) continue;
-                        $player_name = $this->ucname(strtolower($this->reverseName($player_name)));
-
-                        //Get player id (create one if it doesn't exist)
-                        $player_id = $this->getPlayerId($player_name,$gender);
-                        
-                        //Add stats for player
-                        $this->addPlayerStats($game_id,$data->{$team_type.'TeamID'},$player_id,$row);
+                            //Get player id (create one if it doesn't exist)
+                            $player_id = $this->getPlayerId($player_name,$gender);
+                            
+                            //Add stats for player
+                            $this->addPlayerStats($game_id,$data->{$team_type.'TeamID'},$player_id,$row);
+                        }
+                    }else{
+                        echo 'Fejl ved load af spiller-statistik!';
+                        return false;
                     }
-                }else{
-                    echo 'Fejl ved load af spiller-statistik!';
-                    return false;
                 }
             }
         }
