@@ -221,7 +221,7 @@ class VolleyStats extends Helpers {
         //Check if game is played yet
         // if ($data->Finalized != 1){
         if ($data->Final_Home == 0 AND $data->Final_Guest == 0){
-            return 'Kampen er ikke spillet endnu';
+            return 'Kampresultat kan ikke findes';
         }
 
         $this->updateStadium($data->StadiumID);
