@@ -116,9 +116,12 @@ class VolleyStats extends Helpers {
 
             preg_match_all("/MatchStatistics\.aspx\?mID=\d*(?=.*[0-9])/",$content,$games);
             $games = array_unique(str_replace("MatchStatistics.aspx?mID=","",array_shift($games)));
+
+            //Remove empty values
+            array_filter($games, function($value) { return !is_null($value) && $value !== ''; });
         
             $all_games = $all_games + $games;
-        }    
+        }
 
         foreach ($all_games as $game){
             $this->executeMysql("REPLACE INTO games (id,competition_id) VALUES ($game,$competition_id)");
@@ -216,7 +219,8 @@ class VolleyStats extends Helpers {
         // print_r($data);
 
         //Check if game is played yet
-        if ($data->Finalized != 1){
+        // if ($data->Finalized != 1){
+        if ($data->Final_Home == 0 AND $data->Final_Guest == 0){
             return 'Kampen er ikke spillet endnu';
         }
 
