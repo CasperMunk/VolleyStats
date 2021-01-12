@@ -131,6 +131,7 @@ class VolleyStats extends Helpers {
     }
 
     function getGames($competition_id,$update=false){
+        if ($update == 'false') $update = false;
         if($update){
             return $this->reloadGames($competition_id);
         }else{
@@ -251,7 +252,6 @@ class VolleyStats extends Helpers {
 
         //Get refereee info
         if ($update_stats == true){
-            echo 'updating stats';
             //Update match player stats
             $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;
             $content = $this->getHtmlData($url);
