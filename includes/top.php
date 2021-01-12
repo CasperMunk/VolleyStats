@@ -6,12 +6,6 @@ require_once('functions.php');
 require('secrets.php');
 include('autoload.php');
 
-$mode = get('mode');
-$game_id = get('game_id');
-$gender = get('gender');
-$competition_id = get('competition_id');
-$cronjob_key = get('cronjob_key');
-
 $full_page = false;
 $loadElements = array();
 
