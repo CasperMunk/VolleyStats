@@ -29,8 +29,9 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="/">
-                    <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" width="25" class="me-1">VolleyStats
+                <a class="navbar-brand<?php if (is_local()) echo ' text-warning';?>" href="/">
+                    <img src="img/icon-volleyball.svg" alt="Volleyball Icon" height="25" width="25" class="me-1">
+                    <?php if (is_local()){ echo 'VolleyStats.local';}else{echo 'VolleyStats';}?>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                     <span class="navbar-toggler-icon"></span>
