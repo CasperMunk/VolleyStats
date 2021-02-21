@@ -642,7 +642,7 @@ class DataTable {
 
 		include('includes/gender_picker.php');
 		echo '
-		<table id="DataTable" class="table table-striped table-bordered table-hover table-sm nowrap" style="width:100%; display:none;">
+		<table id="DataTable" class="table table-striped table-hover table-sm nowrap" style="width:100%; display:none;">
 		    <thead>
 		        ';
 		        foreach ($this->headers as $headerRows){
@@ -789,15 +789,19 @@ class DataTable {
 				$(".datatables-export")
 			);
 
+			$(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
+		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
+			$("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
+
 			$("#DataTable").show();
 
 			dataTable.on("page.dt", function() {
 				$("html, body").animate({
-				  scrollTop: $(".dataTables_wrapper").offset().top
-				}, "fast");
-			  
-				// $("thead tr th:first-child").focus().blur();
-			  });
+					scrollTop: $(".dataTables_wrapper").offset().top
+				}, "slow");
+				
+				$("h1:first-child").focus().blur();
+			});
 
 		    dataTable.on( "draw.dt", function () {
 		        dataTable.column(0, {order:"applied"}).nodes().each( function (cell, i) {
@@ -805,10 +809,6 @@ class DataTable {
 		            cell.innerHTML = i+1+PageInfo.start;
 		        } );
 		    } );
-
-		    $(".dataTables_filter label input").removeClass("form-control-sm").addClass("ms-0");
-		    $(".dataTables_wrapper .dt-buttons button").removeClass("btn-secondary").addClass("btn-primary");
-			$("#gender_picker").show().appendTo($(".top-buttons div:nth-child(3)"));
 
 		    $("#gender_picker",this).on("change", function () {
 		    	var val = $("#gender_picker :checked").val();
