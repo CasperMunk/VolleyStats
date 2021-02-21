@@ -67,6 +67,8 @@ if ($update == 'competition'){
         }
         $VolleyStats->updateRecords();
         echo 'Updated';
+    }else{
+        echo 'No games today';
     }
     exit;
 }elseif ($update == 'records'){
