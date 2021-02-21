@@ -706,7 +706,7 @@ class DataTable {
 		            "thousands":      ".",
 		            "lengthMenu":     "Vis _MENU_ linjer",
 		            "loadingRecords": "Henter...",
-		            "processing":     "<div class=\"spinner-border text-primary m-3\"></div>",
+		            "processing":     "<div><div class=\"spinner-border text-primary m-3\"></div></div>",
 		            "search":         "",
 		            "zeroRecords":    "Ingen resultater matcher s&oslash;gningen",
 		            "paginate": {
