@@ -795,6 +795,9 @@ class DataTable {
 
 			$("#DataTable").show();
 
+			dataTable.fixedHeader.enable();
+			dataTable.fixedHeader.adjust();
+
 			dataTable.on("page.dt", function() {
 				$("html, body").animate({
 					scrollTop: $(".dataTables_wrapper").offset().top
