@@ -791,6 +791,14 @@ class DataTable {
 
 			$("#DataTable").show();
 
+			dataTable.on("page.dt", function() {
+				$("html, body").animate({
+				  scrollTop: $(".dataTables_wrapper").offset().top
+				}, "fast");
+			  
+				// $("thead tr th:first-child").focus().blur();
+			  });
+
 		    dataTable.on( "draw.dt", function () {
 		        dataTable.column(0, {order:"applied"}).nodes().each( function (cell, i) {
 					var PageInfo = $("#DataTable").DataTable().page.info();
