@@ -16,7 +16,7 @@ class DataTable {
 		$this->VolleyStats = $VolleyStats;
 		$this->type = $type;
 		$this->context = $context;
-		$this->length = 30;
+		$this->length = 50;
 		$this->query = $query;
 
 		$this->init();
@@ -724,7 +724,7 @@ class DataTable {
 		                colvis: "Kolonner"
 		            }
 		        },
-		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-4 order-1 col-md-4 order-md-1 text-start\'B><\'col-12 order-12 col-md-4 order-md-2 text-md-center mb-2\'f><\'col-8 order-2 col-md-4 order-md-3 pr-0 text-end\'>>>rtpi",
+		        "dom": "<\'top-buttons container-fluid px-0\'<\'row px-0\'<\'col-4 order-1 col-md-4 order-md-1 text-start\'B><\'col-12 order-12 col-md-4 order-md-2 text-md-center mb-2\'f><\'col-8 order-2 col-md-4 order-md-3 pr-0 text-end\'>>>rt<\'position-relative\'<\'datatables-export text-end position-absolute top-0 end-0\'>pi>",
 		        "buttons": [
 		            {
 		                extend: "colvis",
@@ -765,6 +765,30 @@ class DataTable {
 				$js .= '],
 				
 			});
+
+			new $.fn.dataTable.Buttons( dataTable, {
+				buttons: [
+					{
+						extend:    "excel",
+						text:      "<i class=\'fa fa-file-excel-o\'></i>",
+						titleAttr: "Eksporter til Excel",
+						autoFilter: true,
+            			sheetName: "Data eksport fra VolleyStats.dk",
+						className: "btn-light"
+					},
+					{
+						extend:    "csv",
+						text:      "<i class=\'fa fa-file-text-o\'></i>",
+						titleAttr: "Eksporter til CSV",
+						className: "btn-light"
+					}
+				]
+			} );
+		 
+			dataTable.buttons( 1, null ).container().appendTo(
+				$(".datatables-export")
+			);
+
 			$("#DataTable").show();
 
 		    dataTable.on( "draw.dt", function () {
