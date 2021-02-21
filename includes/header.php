@@ -15,7 +15,7 @@
     <title><?php echo $current_page['title'] ?> - VolleyStats.dk</title>
     <meta name="description" content="<?php echo $current_page['meta_description'] ?>">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css" />
 
     <meta name="theme-color" content="#ffffff">
