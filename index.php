@@ -42,7 +42,7 @@ require('includes/header.php');
             </p>
 
             <p>
-                Forslag og ideer modtages gerne på <span id="e732944326">[beskyttet e-mail adresse]</span><script type="text/javascript">/*<![CDATA[*/eval("var a=\"jKtc@iuseoPkrLgHFmUSE5b37.2BnpYTfRvZlMdG86JQAwayz4CX9_q+1DxhW0ION-V\";var b=a.split(\"\").sort().join(\"\");var c=\"Q6h1wx_0qXLy_649tQ+_\";var d=\"\";for(var e=0;e<c.length;e++)d+=b.charAt(a.indexOf(c.charAt(e)));document.getElementById(\"e732944326\").innerHTML=\"<a href=\\\"mailto:\"+d+\"\\\">\"+d+\"</a>\"")/*]]>*/</script>.
+                Forslag og ideer modtages gerne via e-mail.
             </p>
         </div>
         <div class="col-md-3">

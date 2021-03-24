@@ -25,7 +25,7 @@ $faq = array(
     ),
     array(
         'q' => 'Hvor tit opdateres statistikken?',
-        'a' => 'Dagens kampe opdateres en gang pr. minut. Hele sæsonens kampe opdateres en gang i døgnet og data fra tidligere sæsonen opdateres kun efter behov.'
+        'a' => 'Dagens kampe opdateres en gang pr. minut. Hele sæsonens kampe opdateres en gang i døgnet og data fra tidligere sæsoner opdateres kun efter behov.'
     ),
     array(
         'q' => 'Hvad skal alt dette bruges til?',
@@ -34,7 +34,7 @@ $faq = array(
 );
 ?>
 
-<p>Herunder finder du svar på de mest stillede spørgsmål. Se i øvrigt også <a href="/betingelser">betingelser for brug</a>. Har du et spørgsmål så send mig en mail på <span id="e732944326">[beskyttet e-mail adresse]</span><script type="text/javascript">/*<![CDATA[*/eval("var a=\"jKtc@iuseoPkrLgHFmUSE5b37.2BnpYTfRvZlMdG86JQAwayz4CX9_q+1DxhW0ION-V\";var b=a.split(\"\").sort().join(\"\");var c=\"Q6h1wx_0qXLy_649tQ+_\";var d=\"\";for(var e=0;e<c.length;e++)d+=b.charAt(a.indexOf(c.charAt(e)));document.getElementById(\"e732944326\").innerHTML=\"<a href=\\\"mailto:\"+d+\"\\\">\"+d+\"</a>\"")/*]]>*/</script>.</p>
+<p>Herunder finder du svar på de mest stillede spørgsmål. Se i øvrigt også <a href="/betingelser">betingelser for brug</a>. Har du et spørgsmål så send mig en e-mail.</p>
 <div class="accordion w-50" id="FAQ_accordion">
     <div class="accordion-item">
         <?php foreach($faq as $key => $item): ?>
