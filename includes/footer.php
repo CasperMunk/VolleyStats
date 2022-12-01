@@ -17,7 +17,7 @@
     </ul>
     <p class="text-center text-muted small">
         <img src="/img/icon-volleyball.svg" alt="Volleyball Icon" height="25" width="25" class="mb-2"><br>
-        Lavet af Casper Munk Christiansen
+        VolleyStats.dk
     </p>
   </footer>
 
