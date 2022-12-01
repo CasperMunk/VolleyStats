@@ -43,7 +43,7 @@ $(document).ready(function(){
     $("#cancel").click(function(){
         $(".not-updated").removeClass("not-updated");
         $(".updating").removeClass("updating");
-        setStatus(false,"Anulleret!");
+        setStatus(false,"Annulleret!");
     });
 
     $("#debug-mode").click(function(){

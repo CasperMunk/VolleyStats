@@ -691,7 +691,7 @@ class DataTable {
 				"responsive": true,
 		        "fixedHeader": true,
 				"pageLength": '.$this->length.',
-				"processing": true,
+				"processing": false,
 				"serverSide": true,
 				"ajax": true,
 				"deferLoading": '.$count.',

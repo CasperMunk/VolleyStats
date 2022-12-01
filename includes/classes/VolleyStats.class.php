@@ -28,7 +28,6 @@ class VolleyStats extends Helpers {
 
             $this->db->set_charset("utf8mb4");
         }
-
     }
 
     public function fetchMysqlAll($query){
@@ -150,6 +149,7 @@ class VolleyStats extends Helpers {
     }
 
     function makeApiCall($url){
+
         if (empty($url)) return false;
 
         $curl = curl_init($url);
@@ -166,6 +166,9 @@ class VolleyStats extends Helpers {
 
         if(!is_object($resp)){
             echo "Fejl: Intet resultat ved API-kald ($url).<br>";
+            return false;
+        }elseif (isset($resp->{'Message'})){
+            echo "Fejl: ".$resp->{'Message'}." ved kald ($url).<br>";
             return false;
         }
 
@@ -202,55 +205,67 @@ class VolleyStats extends Helpers {
 
         $match_data = $this->makeApiCall("https://dataprojectserviceswebapi.azurewebsites.net/v1/VO/dvbf/Match/".$id);
         $match_livedata = $this->makeApiCall("https://dataprojectserviceswebapilive.azurewebsites.net/api/v1/dvbf/MatchLiveData/MatchID/".$id);
-        
-        foreach (array(1,2,3,4,5) as $i){
-            $match_data->{'Set'.$i.'Time'} = $match_livedata->{'TS'.$i};
+        if ($match_data != false && $match_livedata != false){
+            foreach (array(1,2,3,4,5) as $i){
+                $match_data->{'Set'.$i.'Time'} = $match_livedata->{'TS'.$i};
+            }
+            
+            return $match_data;
+        }else{
+            return false;
         }
-        
-        return $match_data;
     }
 
     function getGameData($game_id,$competition_id,$gender,$update_stats=false){
         if ($update_stats == 'false') $update_stats = false;
-        if (empty($game_id) OR empty($competition_id) OR empty($gender)) return false;
+        if (empty($game_id) OR empty($competition_id) OR empty($gender)) return 'Fejl: Mangler parametre';
 
-        //Get API data object/array
-        $data = $this->getApiGameData($game_id);
-
-        // echo '<pre>';
-        // print_r($data);
-
-        //Check if game is played yet
-        // if ($data->Finalized != 1){
-        if ($data->Final_Home == 0 AND $data->Final_Guest == 0){
-            return 'Kampresultat kan ikke findes';
-        }
-
-        $this->updateStadium($data->StadiumID);
-        $this->updateTeamAndClub($data->HomeTeamID,$competition_id);
-        $this->updateTeamAndClub($data->GuestTeamID,$competition_id);
-
-        //Add data fields to game_data array
         $game_data = array();
 
-        $game_data['id'] =                  $data->MatchID;
-        $game_data['spectators'] =          $data->Spectators;
-        $game_data['home_team_id'] =        $data->HomeTeamID;
-        $game_data['guest_team_id'] =       $data->GuestTeamID;
-        $game_data['federation_match_id'] = $data->FederationMatchNumber;
-        $game_data['stadium_id'] =          $data->StadiumID;
-        $game_data['home_sets'] =           $data->Final_Home;
-        $game_data['guest_sets'] =          $data->Final_Guest;
-        foreach (array(1,2,3,4,5) as $i){
-            $game_data['home_set'.$i] =     $data->{'Set'.$i.'Home'};
-            $game_data['guest_set'.$i] =    $data->{'Set'.$i.'Guest'};
-            $game_data['time_set'.$i] =     $data->{'Set'.$i.'Time'};
+        //Get API data object/array
+        if ($data = $this->getApiGameData($game_id)){
+            // print_r($data);
+            // return false;
+            //Check if game is played yet
+            // if ($data->Finalized != 1){
+            // if(isset($data->Final_Home) AND isset($data->Final_Guest)){
+            //     if ($data->Final_Home == 0 AND $data->Final_Guest == 0){
+            //         return 'Kampresultat kan ikke findes';
+            //     }
+            // }else{
+            //     return 'Final_Home og Final_Guest kan ikke findes ';
+            // }
+
+            if(empty($data->Final_Home) AND empty($data->Final_Guest)){
+                return 'Final_Home og Final_Guest kan ikke findes ';
+            }
+
+            $this->updateStadium($data->StadiumID);
+            $this->updateTeamAndClub($data->HomeTeamID,$competition_id);
+            $this->updateTeamAndClub($data->GuestTeamID,$competition_id);
+
+            //Add data fields to game_data array
+            
+
+            $game_data['id'] =                  $data->MatchID;
+            $game_data['spectators'] =          $data->Spectators;
+            $game_data['home_team_id'] =        $data->HomeTeamID;
+            $game_data['guest_team_id'] =       $data->GuestTeamID;
+            $game_data['federation_match_id'] = $data->FederationMatchNumber;
+            $game_data['stadium_id'] =          $data->StadiumID;
+            $game_data['home_sets'] =           $data->Final_Home;
+            $game_data['guest_sets'] =          $data->Final_Guest;
+            foreach (array(1,2,3,4,5) as $i){
+                $game_data['home_set'.$i] =     $data->{'Set'.$i.'Home'};
+                $game_data['guest_set'.$i] =    $data->{'Set'.$i.'Guest'};
+                $game_data['time_set'.$i] =     $data->{'Set'.$i.'Time'};
+            }
+            $game_data['spectators'] =          $data->Spectators;
+            $game_data['date_time'] =           "'".DateTime::createFromFormat('Y-m-d\TH:i:s', $data->MatchDateTime)->format('Y-m-d H:i:s')."'"; //Format: 2020-12-02T20:00:00            
+        }else{
+            return 'API Fejl';
         }
-        $game_data['spectators'] =          $data->Spectators;
-        $game_data['date_time'] =           "'".DateTime::createFromFormat('Y-m-d\TH:i:s', $data->MatchDateTime)->format('Y-m-d H:i:s')."'"; //Format: 2020-12-02T20:00:00
 
-
-        //Get refereee info
         if ($update_stats == true){
             //Update match player stats
             $url = 'http://dvbf-web.dataproject.com/MatchStatistics.aspx?ID='.$competition_id.'&mID='.$game_id;

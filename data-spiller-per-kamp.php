@@ -50,6 +50,11 @@ ORDER BY point_total DESC
 $dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
+
+$page_info = array(
+    'title' => 'Data for spillere (pr. kamp)',
+);
+
 require('includes/header.php');
 
 echo '<p>Spillere med mindre end 20 kampe er undtaget denne liste.</p>';

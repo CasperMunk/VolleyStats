@@ -50,6 +50,11 @@ ORDER BY point_total DESC
 $dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
+
+$page_info = array(
+    'title' => 'Data for spillere (totalt)',
+);
+
 require('includes/header.php');
 
 $dataTable->print();

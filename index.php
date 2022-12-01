@@ -1,6 +1,9 @@
 <?php 
 require('includes/top.php');
 $loadElements = array();
+$page_info = array(
+    'title' => 'Statistik og rekorder fra VolleyLigaen',
+);
 require('includes/header.php'); 
 ?>
     <div class="row">
@@ -23,17 +26,6 @@ require('includes/header.php');
 
             <p></p>
 
-            <p>Der indsamles kun statistik data for VolleyLigaen (inkl. slutspil, playdown og kvalifikation) og kun kampe som er færdigspillede. Pokal-kampe er pt. ikke med i alle sæsoner, men kommer det måske på et senere tidspunkt. Statistik for den indeværende volleyball sæson opdateres en gang i døgnet. Statistik fra tidligere sæsoner opdateres ved lejlighed.
-            </p>
-
-        <!--     <p>
-                Der findes data for disse sæsoner:
-                <ul>
-                    <?php foreach($VolleyStats->getSeasonYears() as $comp): ?>
-                    <li><?php echo $comp['year']; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </p> -->
             <?php 
             $stats = $VolleyStats->getOverviewStats();
             ?>
@@ -42,7 +34,7 @@ require('includes/header.php');
             </p>
 
             <p>
-                Forslag og ideer modtages gerne via e-mail.
+                Forslag og ideer modtages gerne på <script type="text/javascript">document.write('<'+'a'+' '+'h'+'r'+'e'+'f'+'='+"'"+'m'+'a'+'i'+'l'+'t'+'o'+':'+'c'+'a'+'s'+'p'+'e'+'r'+'m'+'u'+'n'+'k'+'@'+'g'+'m'+'a'+'i'+'l'+'.'+'c'+'o'+'m'+"'"+'>'+'c'+'a'+'s'+'p'+'e'+'r'+'m'+'u'+'n'+'k'+'@'+'g'+'m'+'a'+'i'+'l'+'.'+'c'+'o'+'m'+'<'+'/'+'a'+'>');</script>.
             </p>
         </div>
         <div class="col-md-3">

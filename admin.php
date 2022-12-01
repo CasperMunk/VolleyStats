@@ -34,15 +34,14 @@ if ($update == 'competition'){
 }elseif ($update == "game"){
     //Ajax response for update game
 
-    if ($result = $VolleyStats->getGameData($game_id,$competition_id,$gender,$update_game_stats)){
-        if ($result === true){
-            echo '<span class="badge bg-success">Opdateret</span>';        
-        }else{
-            echo '<span class="badge bg-warning">'.$result.'</span>';
-        }
+    $result = $VolleyStats->getGameData($game_id,$competition_id,$gender,$update_game_stats);
+
+    if ($result === true){
+        echo '<span class="badge bg-success">Opdateret</span>';        
     }else{
-            echo '<span class="badge bg-warning">Kamp findes ikke i lokal database!</span>';
+        echo '<span class="badge bg-warning">'.$result.'</span>';
     }
+
     exit;
 }elseif ($update == 'competitions_cronjob'){
     //Non-Ajax updates for cronjobs
@@ -80,7 +79,9 @@ if ($update == 'competition'){
 
     exit;
 }
-
+$page_info = array(
+    'title' => 'Admin opdatering',
+);
 require('includes/header.php'); ?>
 
 <form method="get" action="?mode=update">

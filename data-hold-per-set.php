@@ -2,41 +2,41 @@
 require('includes/top.php');
 
 $type = 'teams';
-$context = 'per_game';
+$context = 'per_set';
 $query = "
 SELECT teams.name, competitions.gender
     ,COUNT(player_stats.player_id) as games_played
     ,(SUM(games.home_sets)+SUM(games.guest_sets)) as sets_played 
 
-    ,SUM(player_stats.point_total)/COUNT(player_stats.player_id) as point_total
-    ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error)/COUNT(player_stats.player_id) as error_total
-    ,SUM(player_stats.point_break_points)/COUNT(player_stats.player_id) as point_break_points 
-    ,SUM(player_stats.point_win_loss)/COUNT(player_stats.player_id) as point_win_loss
+    ,SUM(player_stats.point_total)/(SUM(games.home_sets)+SUM(games.guest_sets)) as point_total
+    ,SUM(player_stats.receive_error+player_stats.spike_error+player_stats.serve_error)/(SUM(games.home_sets)+SUM(games.guest_sets)) as error_total
+    ,SUM(player_stats.point_break_points)/(SUM(games.home_sets)+SUM(games.guest_sets)) as point_break_points 
+    ,SUM(player_stats.point_win_loss)/(SUM(games.home_sets)+SUM(games.guest_sets)) as point_win_loss
 
-    ,SUM(player_stats.serve_total)/COUNT(player_stats.player_id) as serve_total 
-    ,SUM(player_stats.serve_ace)/COUNT(player_stats.player_id) as serve_ace 
-    ,SUM(player_stats.serve_error)/COUNT(player_stats.player_id) as serve_error
+    ,SUM(player_stats.serve_total)/(SUM(games.home_sets)+SUM(games.guest_sets)) as serve_total 
+    ,SUM(player_stats.serve_ace)/(SUM(games.home_sets)+SUM(games.guest_sets)) as serve_ace 
+    ,SUM(player_stats.serve_error)/(SUM(games.home_sets)+SUM(games.guest_sets)) as serve_error
     ,SUM(player_stats.serve_error)/SUM(player_stats.serve_total)*100 as serve_error_percent
     ,SUM(player_stats.serve_ace)/SUM(player_stats.serve_total)*100 as serve_ace_percent
 
-    ,SUM(player_stats.receive_total)/COUNT(player_stats.player_id) as receive_total 
-    ,SUM(player_stats.receive_position)/COUNT(player_stats.player_id) as receive_position 
-    ,SUM(player_stats.receive_perfect)/COUNT(player_stats.player_id) as receive_perfect
-    ,SUM(player_stats.receive_error)/COUNT(player_stats.player_id) as receive_error
+    ,SUM(player_stats.receive_total)/(SUM(games.home_sets)+SUM(games.guest_sets)) as receive_total 
+    ,SUM(player_stats.receive_position)/(SUM(games.home_sets)+SUM(games.guest_sets)) as receive_position 
+    ,SUM(player_stats.receive_perfect)/(SUM(games.home_sets)+SUM(games.guest_sets)) as receive_perfect
+    ,SUM(player_stats.receive_error)/(SUM(games.home_sets)+SUM(games.guest_sets)) as receive_error
     ,SUM(player_stats.receive_position)/SUM(player_stats.receive_total)*100 as receive_pos_percent
     ,SUM(player_stats.receive_perfect)/SUM(player_stats.receive_total)*100 as receive_perf_percent
     ,SUM(player_stats.receive_error)/SUM(player_stats.receive_total)*100 as receive_error_percent
     
-    ,SUM(player_stats.spike_total)/COUNT(player_stats.player_id) as spike_total 
-    ,SUM(player_stats.spike_win)/COUNT(player_stats.player_id) as spike_win 
-    ,SUM(player_stats.spike_error)/COUNT(player_stats.player_id) as spike_error 
-    ,SUM(player_stats.spike_blocked)/COUNT(player_stats.player_id) as spike_blocked
+    ,SUM(player_stats.spike_total)/(SUM(games.home_sets)+SUM(games.guest_sets)) as spike_total 
+    ,SUM(player_stats.spike_win)/(SUM(games.home_sets)+SUM(games.guest_sets)) as spike_win 
+    ,SUM(player_stats.spike_error)/(SUM(games.home_sets)+SUM(games.guest_sets)) as spike_error 
+    ,SUM(player_stats.spike_blocked)/(SUM(games.home_sets)+SUM(games.guest_sets)) as spike_blocked
     ,SUM(player_stats.spike_win)/SUM(player_stats.spike_total)*100 as kill_percent
     ,(SUM(player_stats.spike_win)-SUM(player_stats.spike_error)-SUM(player_stats.spike_blocked))/SUM(player_stats.spike_total)*100 as spike_eff
     ,SUM(player_stats.spike_error)/SUM(player_stats.spike_total)*100 as spike_error_percent
     ,SUM(player_stats.spike_blocked)/SUM(player_stats.spike_total)*100 as spike_blocked_percent
     
-    ,SUM(player_stats.block_win)/COUNT(player_stats.player_id) as block_win
+    ,SUM(player_stats.block_win)/(SUM(games.home_sets)+SUM(games.guest_sets)) as block_win
 FROM player_stats 
     INNER JOIN teams ON teams.id = player_stats.team_id 
     INNER JOIN competitions ON competitions.id = teams.competition_id
@@ -50,6 +50,11 @@ ORDER BY point_total DESC
 $dataTable = new DataTable($VolleyStats,$type,$context,$query);
 
 $loadElements = array("jQuery","DataTables");
+
+$page_info = array(
+    'title' => 'Data for hold (pr. sæt)',
+);
+
 require('includes/header.php');
 
 echo '<p>Hold med mindre end 100 kampe er undtaget denne liste.</p>';
