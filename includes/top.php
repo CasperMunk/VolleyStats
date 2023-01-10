@@ -2,6 +2,9 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+global $page_info;
+$page_info['title'] = "NO TITLE";
+
 require_once('functions.php');
 require('secrets.php');
 include('autoload.php');

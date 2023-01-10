@@ -1,5 +1,6 @@
 <?php
-if (!is_array($page_info)) $page_info = array();
+$page_info = isset($page_info) ? $page_info : '';
+if (!is_array($page_info) OR !isset($page_info)) $page_info = array();
 $page_header_title = isset($page_info['title']) ? $page_info['title'] : 'NO TITLE';
 $page_title_tag = isset($page_info['title_tag']) ? $page_info['title_tag'] : $page_info['title'];
 $page_meta_description = isset($page_info['meta_description']) ? $page_info['meta_description'] : '';
@@ -29,8 +30,8 @@ $page_meta_description = isset($page_info['meta_description']) ? $page_info['met
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="/css/styles.css" />
 

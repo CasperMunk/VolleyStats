@@ -527,7 +527,7 @@ class VolleyStats extends Helpers {
                                 LEFT JOIN competitions c ON c.id = g.competition_id
                                 LEFT JOIN excluded_records ex_r ON g.id = ex_r.game_id AND ex_r.record_id = ".$r['id']."
 
-                                WHERE ex.game_id IS NULL AND c.gender='".$gender."' AND ex_r.game_id IS NULL
+                                WHERE ex.game_id IS NULL AND c.gender='".$gender."' AND ex_r.game_id IS NULL AND (g.home_set1+g.home_set2+g.home_set3+g.home_set4+g.home_set5+g.guest_set1+g.guest_set2+g.guest_set3+g.guest_set4+g.guest_set5) != 75
                                 GROUP BY g.id 
                             ORDER BY record_value ".$r['direction'].", g.date_time DESC, g.id
                             LIMIT ".$this->record_length."

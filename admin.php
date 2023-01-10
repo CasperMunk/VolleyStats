@@ -9,6 +9,7 @@ $update_game_list = get('update_game_list');
 $update_game_result = get('update_game_result');
 $update_game_stats = get('update_game_stats');
 $cronjob_key = get('cronjob_key');
+$page_info['title'] = "Admin";
 
 if ($cronjob_key != $secrets['cronjob_key']){
     require('includes/protect.php');
@@ -79,9 +80,7 @@ if ($update == 'competition'){
 
     exit;
 }
-$page_info = array(
-    'title' => 'Admin opdatering',
-);
+
 require('includes/header.php'); ?>
 
 <form method="get" action="?mode=update">
